@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sat Jun 11 17:47:03 2016 Etienne Pasteur
-** Last update Sat Jun 11 22:37:59 2016 Etienne Pasteur
+** Last update Sat Jun 11 22:43:28 2016 Etienne Pasteur
 */
 
 #include <LinkedList.h>
@@ -52,7 +52,7 @@ static void	initPtrFunc(LinkedList *this)
 void		LinkedListInit(LinkedList *this)
 {
   initPtrFunc(this);
-  this->myList = malloc(sizeof t_list*);
+  this->myList = malloc(sizeof(t_list*));
   if (this->myList != NULL )
     {
       this->myList->prev = this->myList;
@@ -110,7 +110,7 @@ static bool	addElemFront(LinkedList *this, void *data)
 {
   t_list	*newElem;
 
-  newElem = malloc(sizeof t_list*);
+  newElem = malloc(sizeof(t_list*));
   if (newElem != NULL)
     {
       newElem->data = data;
@@ -127,7 +127,7 @@ static bool	addElemEnd(LinkedList *this, void *data)
 {
   t_list	*newElem;
 
-  newElem = malloc(sizeof t_list*);
+  newElem = malloc(sizeof(t_list*));
   if (newElem != NULL)
     {
       newElem->data = data;
@@ -152,7 +152,7 @@ static bool	addElemAtPos(LinkedList *this, int pos, void *data)
     {
       if (i == pos)
 	{
-	  newElem = malloc(sizeof t_list*);
+	  newElem = malloc(sizeof(t_list*));
 	  if (newElem != NULL)
 	    {
 	      newElem->data = data;
@@ -173,7 +173,7 @@ static bool	addElemAtPos(LinkedList *this, int pos, void *data)
 
 static bool	removeElemFront(LinkedList *this)
 {
-  if (this->myList->next != this)
+  if (this->myList->next != this->myList)
     {
       this->myList->next->prev->next = this->myList->next->next;
       this->myList->next->next->prev = this->myList->next->prev;
@@ -184,7 +184,7 @@ static bool	removeElemFront(LinkedList *this)
 
 static bool	removeElemEnd(LinkedList *this)
 {
-  if (this->myList->prev != this)
+  if (this->myList->prev != this->myList)
     {
       this->myList->prev->prev->next = this->myList->prev->next;
       this->myList->prev->next->prev = this->myList->prev->prev;
