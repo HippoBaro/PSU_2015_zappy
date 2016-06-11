@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sat Jun 11 17:47:03 2016 Etienne Pasteur
-** Last update Sat Jun 11 22:43:28 2016 Etienne Pasteur
+** Last update Sat Jun 11 23:08:14 2016 Etienne Pasteur
 */
 
 #include <LinkedList.h>
@@ -52,7 +52,7 @@ static void	initPtrFunc(LinkedList *this)
 void		LinkedListInit(LinkedList *this)
 {
   initPtrFunc(this);
-  this->myList = malloc(sizeof(t_list*));
+  this->myList = malloc(sizeof(*this->myList));
   if (this->myList != NULL )
     {
       this->myList->prev = this->myList;
@@ -110,7 +110,7 @@ static bool	addElemFront(LinkedList *this, void *data)
 {
   t_list	*newElem;
 
-  newElem = malloc(sizeof(t_list*));
+  newElem = malloc(sizeof(*newElem));
   if (newElem != NULL)
     {
       newElem->data = data;
@@ -127,7 +127,7 @@ static bool	addElemEnd(LinkedList *this, void *data)
 {
   t_list	*newElem;
 
-  newElem = malloc(sizeof(t_list*));
+  newElem = malloc(sizeof(*newElem));
   if (newElem != NULL)
     {
       newElem->data = data;
@@ -152,7 +152,7 @@ static bool	addElemAtPos(LinkedList *this, int pos, void *data)
     {
       if (i == pos)
 	{
-	  newElem = malloc(sizeof(t_list*));
+	  newElem = malloc(sizeof(*newElem));
 	  if (newElem != NULL)
 	    {
 	      newElem->data = data;
