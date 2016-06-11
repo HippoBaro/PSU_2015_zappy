@@ -49,7 +49,7 @@ int main(void)
   data5->id = 5;
 
 
-  list = LinkedListInit();
+  list = CreateLinkedList();
   list->addElemFront(list, (void *)data1);
   list->addElemFront(list, (void *)data2);
   list->addElemFront(list, (void *)data3);

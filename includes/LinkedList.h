@@ -11,10 +11,9 @@
 #ifndef LINKED_LIST_H_
 # define LINKED_LIST_H_
 
-# include <stdio.h>
-# include <stdlib.h>
+# include "Generic.h"
 
-typedef enum {false, true} bool;
+#define LinkedList(type)    LinkedList
 
 typedef struct	s_list
 {
@@ -48,7 +47,7 @@ typedef struct	LinkedList
   void		(*forEachElements)(struct LinkedList *this, void (*forEachFunc)(void *element, void *userData), void * someData);
 }		LinkedList;
 
-LinkedList	*LinkedListInit();
+LinkedList	*CreateLinkedList();
 void		LinkedListDestroy(LinkedList *this);
 
 #endif /* !LINKED_LIST_H_ */

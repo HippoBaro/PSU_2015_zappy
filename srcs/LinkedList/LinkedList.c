@@ -53,18 +53,15 @@ static void	initPtrFunc(LinkedList *this)
   this->forEachElements = &forEachElements;
 }
 
-LinkedList	*LinkedListInit()
+LinkedList	*CreateLinkedList()
 {
   LinkedList	*this;
 
-  this = malloc(sizeof(LinkedList));
+  this = xmalloc(sizeof(LinkedList));
   initPtrFunc(this);
-  this->myList = malloc(sizeof(t_list));
-  if (this->myList != NULL )
-    {
-      this->myList->prev = this->myList;
-      this->myList->next = this->myList;
-    }
+  this->myList = xmalloc(sizeof(t_list));
+  this->myList->prev = this->myList;
+  this->myList->next = this->myList;
   return (this);
 }
 
