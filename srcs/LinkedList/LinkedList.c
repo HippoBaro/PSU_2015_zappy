@@ -218,7 +218,8 @@ static bool freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list 
         if (it == elem) {
             it->prev->next = it->next;
             it->next->prev = it->prev;
-            freeFunc(it->data);
+            if (freeFunc != NULL)
+                freeFunc(it->data);
             free(it);
             return (true);
         }
@@ -234,7 +235,8 @@ static bool freeElemFront(LinkedList *this, void (*freeFunc)(void *elem)) {
     if (it != this->myList) {
         it->prev->next = it->next;
         it->next->prev = it->prev;
-        freeFunc(it->data);
+        if (freeFunc != NULL)
+            freeFunc(it->data);
         free(it);
         return (true);
     }
@@ -248,7 +250,8 @@ static bool freeElemEnd(LinkedList *this, void (*freeFunc)(void *elem)) {
     if (it != this->myList) {
         it->prev->next = it->next;
         it->next->prev = it->prev;
-        freeFunc(it->data);
+        if (freeFunc != NULL)
+            freeFunc(it->data);
         free(it);
         return (true);
     }
@@ -284,7 +287,8 @@ static bool freeAll(LinkedList *this, void (*freeFunc)(void *elem)) {
         it->prev->next = it->next;
         it->next->prev = it->prev;
         tmp = it->next;
-        freeFunc(it->data);
+        if (freeFunc != NULL)
+            freeFunc(it->data);
         free(it);
         it = tmp;
     }

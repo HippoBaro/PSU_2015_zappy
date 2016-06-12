@@ -6,8 +6,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 include_directories("includes/")
 
 set(SOURCE_FILES
-        srcs/main.c
+        #srcs/main.c
         srcs/LinkedList/LinkedList.c
+        srcs/Network/Network.c
         srcs/Request/Request.c
         srcs/Generic.c
         srcs/Drone/Drone.c
@@ -16,6 +17,7 @@ set(SOURCE_FILES
         includes/Drone.h
         includes/Generic.h
         includes/LinkedList.h
+        includes/Network.h
         includes/Request.h
         includes/Response.h
         )
