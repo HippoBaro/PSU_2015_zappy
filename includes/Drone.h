@@ -11,6 +11,7 @@ typedef struct e_Drone {
     string      team;
     LinkedList(Item)  *inventory;
     int         socketFd;
+    Rotation    rotation;
     void        *mapTile;
     void        (*Move)(struct e_Drone *self);
     void        (*Look)(struct e_Drone *self);
