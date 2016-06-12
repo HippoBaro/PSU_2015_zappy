@@ -24,7 +24,7 @@ static void Rotate(struct e_Drone *self, Rotation rotation) {
 }
 
 static string ListInventory(struct e_Drone *self) {
-    self->inventory->forEachElements(self->inventory, lambda(void *, (void *param), {
+    self->inventory->forEachElements(self->inventory, (void (*)(void *, void *)) lambda(void *, (void *param), {
 
     }), NULL);
 }

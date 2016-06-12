@@ -80,9 +80,9 @@ int main(void)
   list->freeThisElem(list, &testFree, elem);
 
   list->forEachElements(list, &actOnElem, "toto");
-  list->forEachElements(list,  lambda(void *, (void *param), {
-      printf("ELEM Value with LAMBDA: %d\n", ((t_data*)param)->id);
-    }), "toto2");
+  list->forEachElements(list, (void (*)(void *, void *)) lambda(void *, (void *param, void *userData), {
+        printf("ELEM Value with LAMBDA: %d %s\n", ((t_data*)param)->id, (string)userData);
+      }), "toto2");
 
   if (list->freeAll(list, &testFree) == true)
     printf("Yep!\n");
