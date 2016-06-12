@@ -8,12 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define lambda(l_ret_type, l_arguments, l_body)         \
-  ({                                                    \
-   l_ret_type l_anonymous_functions_name l_arguments   \
-   l_body                                            \
-   &l_anonymous_functions_name;                        \
-   })
+#define lambda(ret, args, body) ({ ret l_anonymous_functions_name args body &l_anonymous_functions_name; })
 
 typedef char * string;
 
@@ -26,12 +21,12 @@ typedef enum e_LogLevel {
     INFORMATION,
     WARNING,
     ERROR
-}       LogLevel;
+}           LogLevel;
 
 typedef enum e_Destination {
     EVERYBODY,
     SUBSET
-}       Destination;
+}           Destination;
 
 typedef enum e_Action {
     TAKE = 0,

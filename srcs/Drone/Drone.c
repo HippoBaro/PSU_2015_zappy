@@ -2,6 +2,7 @@
 // Created by barrauh on 6/12/16.
 //
 
+#include <string.h>
 #include "Drone.h"
 
 static void DestroyDrone(Drone *drone) {
@@ -24,9 +25,16 @@ static void Rotate(struct e_Drone *self, Rotation rotation) {
 }
 
 static string ListInventory(struct e_Drone *self) {
-    self->inventory->forEachElements(self->inventory, (void (*)(void *, void *)) lambda(void *, (void *param), {
-
+    string ret = strdup("{ ");
+    self->inventory->forEachElements(self->inventory, lambda(void *, (void *param, void *userDat), {
+//        Item *item = (Item *)param;
+//        ret = realloc(ret, sizeof(strlen(ret)) + sizeof(strlen(item->name)) + 1);
+//        ret = strcat(ret, " ");
+//        ret = strcat(ret, titem->name);
     }), NULL);
+    ret = realloc(ret, sizeof(strlen(ret)) + 1);
+    ret = strcat(ret, "}");
+    return ret;
 }
 
 Drone   *CreateDrone() {
@@ -37,5 +45,9 @@ Drone   *CreateDrone() {
     ret->mapTile = NULL;
     ret->team = NULL;
 
+    ret->Move = &Move;
+    ret->Look = &Look;
+    ret->Rotate = &Rotate;
+    ret->ListInventory = &ListInventory;
     ret->Free = &DestroyDrone;
 }

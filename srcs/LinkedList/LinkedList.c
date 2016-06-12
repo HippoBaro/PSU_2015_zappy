@@ -47,6 +47,8 @@ static t_list *firstElementFromPredicate(LinkedList *this, bool (*predicate)(voi
 
 static void forEachElements(LinkedList *this, void (*forEachFunc)(void *element, void *userData), void *someData);
 
+static void LinkedListDestroy(LinkedList *this);
+
 static void initPtrFunc(LinkedList *this) {
     this->countLinkedList = &countLinkedList;
     this->addElemFront = &addElemFront;
@@ -66,6 +68,7 @@ static void initPtrFunc(LinkedList *this) {
     this->getElementAtPos = &getElementAtPos;
     this->firstElementFromPredicate = &firstElementFromPredicate;
     this->forEachElements = &forEachElements;
+    this->Free = &LinkedListDestroy;
 }
 
 LinkedList *CreateLinkedList() {
@@ -79,16 +82,9 @@ LinkedList *CreateLinkedList() {
     return (this);
 }
 
-void LinkedListDestroy(LinkedList *this) {
-    t_list *it;
-    t_list *next;
-
-    it = this->myList->next;
-    while (it != this->myList) {
-        next = it->next;
-        free(it);
-        it = next;
-    }
+static void LinkedListDestroy(LinkedList *this) {
+    if (countLinkedList(this) > 0)
+        Log(WARNING, "You're freeing a non-empty linkedList !");
     free(this->myList);
     this->myList = NULL;
     free(this);

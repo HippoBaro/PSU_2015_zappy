@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
 project(PSU_2015_zappy)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
 
 include_directories("includes/")
 
 set(SOURCE_FILES
-        #srcs/main.c
+        srcs/main.c
         srcs/LinkedList/LinkedList.c
-        srcs/Network/Network.c
+        #srcs/Network/Network.c
         srcs/Request/Request.c
         srcs/Generic.c
         srcs/Drone/Drone.c

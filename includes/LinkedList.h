@@ -79,12 +79,11 @@ typedef struct LinkedList {
     // Designed to browse all the element of the list and to call a func ptr with the current node and userData
     void        (*forEachElements)(struct LinkedList *this, void (*forEachFunc)(void *element, void *userData),
                                    void *someData);
+
+    void        (*Free)(struct LinkedList *this);
 } LinkedList;
 
 // Init the LinkedList and return a pointer which is malloc
 LinkedList *CreateLinkedList();
-
-// Destroy the LinkedList and free the internal list but not the data and free the LinkedList ptr itself
-void LinkedListDestroy(LinkedList *this);
 
 #endif /* !LINKED_LIST_H_ */

@@ -15,7 +15,7 @@ void testFree(void *elem) {
 }
 
 bool predic(void *elem, void *userData) {
-    if (((t_data *) elem)->id == (int *) userData)
+    if (((t_data *) elem)->id == (int) userData)
         return (true);
     return (false);
 }
@@ -82,7 +82,7 @@ int main(void) {
     if (list->freeAll(list, &testFree) == true)
         printf("Yep!\n");
 
-    LinkedListDestroy(list);
+    list->Free(list);
     free(data1);
     free(data2);
     free(data3);
