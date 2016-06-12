@@ -81,7 +81,7 @@ int main(void)
 
   list->forEachElements(list, &actOnElem, "toto");
   list->forEachElements(list,  lambda(void *, (void *param), {
-      printf("ELEM Value with LAMBDA: %d\n", ((t_data*)elem)->id);
+      printf("ELEM Value with LAMBDA: %d\n", ((t_data*)param)->id);
     }), "toto2");
 
   if (list->freeAll(list, &testFree) == true)
