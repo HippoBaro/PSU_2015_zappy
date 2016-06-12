@@ -2,7 +2,7 @@
 // Created by pasteu_e on 06/06/16.
 //
 
-#include "../includes/LinkedList.h"
+#include <LinkedList.h>
 
 // JUST A MAIN TEST FOR THE LINKEDLIST MODULE
 

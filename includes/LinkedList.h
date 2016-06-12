@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sat Jun 11 17:47:57 2016 Etienne Pasteur
-** Last update Sun Jun 12 02:08:28 2016 Etienne Pasteur
+** Last update Sun Jun 12 15:10:21 2016 Etienne Pasteur
 */
 
 #ifndef LINKED_LIST_H_
@@ -13,7 +13,7 @@
 
 # include "Generic.h"
 
-#define LinkedList(type)    LinkedList
+# define LinkedList(type)    LinkedList
 
 typedef struct	s_list
 {

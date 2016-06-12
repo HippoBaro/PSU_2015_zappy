@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sat Jun 11 17:47:03 2016 Etienne Pasteur
-** Last update Sun Jun 12 02:05:32 2016 Etienne Pasteur
+** Last update Sun Jun 12 15:45:57 2016 Etienne Pasteur
 */
 
 #include <LinkedList.h>
@@ -100,16 +100,12 @@ static bool	addElemFront(LinkedList *this, void *data)
   t_list	*newElem;
 
   newElem = xmalloc(sizeof(t_list));
-  if (newElem != NULL)
-    {
-      newElem->data = data;
-      newElem->prev = this->myList->prev;
-      newElem->next = this->myList;
-      this->myList->prev->next = newElem;
-      this->myList->prev = newElem;
-      return (true);
-    }
-  return (false);
+  newElem->data = data;
+  newElem->prev = this->myList->prev;
+  newElem->next = this->myList;
+  this->myList->prev->next = newElem;
+  this->myList->prev = newElem;
+  return (true);
 }
 
 static bool	addElemEnd(LinkedList *this, void *data)
@@ -117,16 +113,12 @@ static bool	addElemEnd(LinkedList *this, void *data)
   t_list	*newElem;
 
   newElem = xmalloc(sizeof(t_list));
-  if (newElem != NULL)
-    {
-      newElem->data = data;
-      newElem->prev = this->myList;
-      newElem->next = this->myList->next;
-      this->myList->next->prev = newElem;
-      this->myList->next = newElem;
-      return (true);
-    }
-  return (false);
+  newElem->data = data;
+  newElem->prev = this->myList;
+  newElem->next = this->myList->next;
+  this->myList->next->prev = newElem;
+  this->myList->next = newElem;
+  return (true);
 }
 
 static bool	addElemAtPos(LinkedList *this, int pos, void *data)
@@ -135,27 +127,21 @@ static bool	addElemAtPos(LinkedList *this, int pos, void *data)
   int		i;
   t_list	*newElem;
 
-  i = 0;
+  i = -1;
   it = this->myList->next;
   while (it != this->myList)
     {
-      if (i == pos)
+      if (++i == pos)
 	{
 	  newElem = xmalloc(sizeof(t_list));
-	  if (newElem != NULL)
-	    {
-	      newElem->data = data;
-	      newElem->prev = it;
-	      newElem->next = it->next;
-	      it->next->prev = newElem;
-	      it->next = newElem;
-	      return (true);
-	    }
-	  else
-	    return (false);
+	  newElem->data = data;
+	  newElem->prev = it;
+	  newElem->next = it->next;
+	  it->next->prev = newElem;
+	  it->next = newElem;
+	  return (true);
 	}
       it = it->next;
-      i += 1;
     }
   return (false);
 }
