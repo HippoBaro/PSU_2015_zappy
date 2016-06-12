@@ -4,6 +4,8 @@
 
 #include "../includes/LinkedList.h"
 
+// JUST A MAIN TEST FOR THE LINKEDLIST MODULE
+
 typedef struct	s_data
 {
   int	id;
@@ -37,15 +39,15 @@ int main(void)
 
   t_list *elem;
 
-  data1 = malloc(sizeof(t_data*));
+  data1 = xmalloc(sizeof(t_data*));
   data1->id = 1;
-  data2 = malloc(sizeof(t_data*));
+  data2 = xmalloc(sizeof(t_data*));
   data2->id = 2;
-  data3 = malloc(sizeof(t_data*));
+  data3 = xmalloc(sizeof(t_data*));
   data3->id = 3;
-  data4 = malloc(sizeof(t_data*));
+  data4 = xmalloc(sizeof(t_data*));
   data4->id = 4;
-  data5 = malloc(sizeof(t_data*));
+  data5 = xmalloc(sizeof(t_data*));
   data5->id = 5;
 
 
@@ -60,7 +62,6 @@ int main(void)
   elem = list->getElementAtPos(list, 0);
   if (elem != NULL)
     printf("First Value: %d\n", ((t_data*)elem->data)->id);
-  list->printLinkedList(list);
 
   /* if (list->removeElemAtPos(list, 0) == true) */
   /*   printf("Yep!\n"); */
@@ -72,7 +73,6 @@ int main(void)
   /*   printf("Yep!\n"); */
   /* if (list->removeElemAtPos(list, 0) == true) */
   /*   printf("Yep!\n"); */
-  /* list->printLinkedList(list); */
 
   elem = list->firstElementFromPredicate(list, &predic, (void*)5);
   if (elem != NULL)
@@ -87,7 +87,6 @@ int main(void)
   if (list->freeAll(list, &testFree) == true)
     printf("Yep!\n");
 
-  list->printLinkedList(list);
   LinkedListDestroy(list);
   free(data1);
   free(data2);
