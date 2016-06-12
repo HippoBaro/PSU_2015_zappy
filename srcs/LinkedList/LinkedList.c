@@ -8,359 +8,336 @@
 ** Last update Sun Jun 12 15:45:57 2016 Etienne Pasteur
 */
 
-#include <LinkedList.h>
+#include "LinkedList.h"
 
-static int	countLinkedList(LinkedList *this);
-static bool	addElemFront(LinkedList *this, void *data);
-static bool	addElemEnd(LinkedList *this, void *data);
-static bool	addElemAtPos(LinkedList *this, int pos, void *data);
-static bool	removeThisElem(LinkedList *this, t_list *elem);
-static bool	removeElemFront(LinkedList *this);
-static bool	removeElemEnd(LinkedList *this);
-static bool	removeElemAtPos(LinkedList *this, int pos);
-static bool	freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list *elem);
-static bool	freeElemFront(LinkedList *this, void (*freeFunc)(void *elem));
-static bool	freeElemEnd(LinkedList *this, void (*freeFunc)(void *elem));
-static bool	freeElemAtPos(LinkedList *this, int pos, void (*freeFunc)(void *elem));
-static bool	freeAll(LinkedList *this, void (*freeFunc)(void *elem));
-static t_list*	getElementFirst(LinkedList *this);
-static t_list*	getElementEnd(LinkedList *this);
-static t_list*	getElementAtPos(LinkedList *this, int pos);
-static t_list*	firstElementFromPredicate(LinkedList *this, bool (*predicate)(void *elem, void* userData), void *someData);
-static void	forEachElements(LinkedList *this, void (*forEachFunc)(void *element, void *userData), void *someData);
+static int countLinkedList(LinkedList *this);
 
-static void	initPtrFunc(LinkedList *this)
-{
-  this->countLinkedList = &countLinkedList;
-  this->addElemFront = &addElemFront;
-  this->addElemEnd = &addElemEnd;
-  this->addElemAtPos = &addElemAtPos;
-  this->removeThisElem = &removeThisElem;
-  this->removeElemFront = &removeElemFront;
-  this->removeElemEnd = &removeElemEnd;
-  this->removeElemAtPos = &removeElemAtPos;
-  this->freeThisElem = &freeThisElem;
-  this->freeElemFront = &freeElemFront;
-  this->freeElemEnd = &freeElemEnd;
-  this->freeElemAtPos = &freeElemAtPos;
-  this->freeAll = &freeAll;
-  this->getElementFirst = &getElementFirst;
-  this->getElementEnd = &getElementEnd;
-  this->getElementAtPos = &getElementAtPos;
-  this->firstElementFromPredicate = &firstElementFromPredicate;
-  this->forEachElements = &forEachElements;
+static bool addElemFront(LinkedList *this, void *data);
+
+static bool addElemEnd(LinkedList *this, void *data);
+
+static bool addElemAtPos(LinkedList *this, int pos, void *data);
+
+static bool removeThisElem(LinkedList *this, t_list *elem);
+
+static bool removeElemFront(LinkedList *this);
+
+static bool removeElemEnd(LinkedList *this);
+
+static bool removeElemAtPos(LinkedList *this, int pos);
+
+static bool freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list *elem);
+
+static bool freeElemFront(LinkedList *this, void (*freeFunc)(void *elem));
+
+static bool freeElemEnd(LinkedList *this, void (*freeFunc)(void *elem));
+
+static bool freeElemAtPos(LinkedList *this, int pos, void (*freeFunc)(void *elem));
+
+static bool freeAll(LinkedList *this, void (*freeFunc)(void *elem));
+
+static t_list *getElementFirst(LinkedList *this);
+
+static t_list *getElementEnd(LinkedList *this);
+
+static t_list *getElementAtPos(LinkedList *this, int pos);
+
+static t_list *firstElementFromPredicate(LinkedList *this, bool (*predicate)(void *elem, void *userData),
+                                         void *someData);
+
+static void forEachElements(LinkedList *this, void (*forEachFunc)(void *element, void *userData), void *someData);
+
+static void initPtrFunc(LinkedList *this) {
+    this->countLinkedList = &countLinkedList;
+    this->addElemFront = &addElemFront;
+    this->addElemEnd = &addElemEnd;
+    this->addElemAtPos = &addElemAtPos;
+    this->removeThisElem = &removeThisElem;
+    this->removeElemFront = &removeElemFront;
+    this->removeElemEnd = &removeElemEnd;
+    this->removeElemAtPos = &removeElemAtPos;
+    this->freeThisElem = &freeThisElem;
+    this->freeElemFront = &freeElemFront;
+    this->freeElemEnd = &freeElemEnd;
+    this->freeElemAtPos = &freeElemAtPos;
+    this->freeAll = &freeAll;
+    this->getElementFirst = &getElementFirst;
+    this->getElementEnd = &getElementEnd;
+    this->getElementAtPos = &getElementAtPos;
+    this->firstElementFromPredicate = &firstElementFromPredicate;
+    this->forEachElements = &forEachElements;
 }
 
-LinkedList	*CreateLinkedList()
-{
-  LinkedList	*this;
+LinkedList *CreateLinkedList() {
+    LinkedList *this;
 
-  this = xmalloc(sizeof(LinkedList));
-  initPtrFunc(this);
-  this->myList = xmalloc(sizeof(t_list));
-  this->myList->prev = this->myList;
-  this->myList->next = this->myList;
-  return (this);
+    this = xmalloc(sizeof(LinkedList));
+    initPtrFunc(this);
+    this->myList = xmalloc(sizeof(t_list));
+    this->myList->prev = this->myList;
+    this->myList->next = this->myList;
+    return (this);
 }
 
-void		LinkedListDestroy(LinkedList *this)
-{
-  t_list	*it;
-  t_list	*next;
+void LinkedListDestroy(LinkedList *this) {
+    t_list *it;
+    t_list *next;
 
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      next = it->next;
-      free(it);
-      it = next;
+    it = this->myList->next;
+    while (it != this->myList) {
+        next = it->next;
+        free(it);
+        it = next;
     }
-  free(this->myList);
-  this->myList = NULL;
-  free(this);
+    free(this->myList);
+    this->myList = NULL;
+    free(this);
 }
 
-static int	countLinkedList(LinkedList *this)
-{
-  t_list	*it;
-  int		i;
+static int countLinkedList(LinkedList *this) {
+    t_list *it;
+    int i;
 
-  i = 0;
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      it = it->next;
-      i += 1;
+    i = 0;
+    it = this->myList->next;
+    while (it != this->myList) {
+        it = it->next;
+        i += 1;
     }
-  return (i);
+    return (i);
 }
 
-static bool	addElemFront(LinkedList *this, void *data)
-{
-  t_list	*newElem;
+static bool addElemFront(LinkedList *this, void *data) {
+    t_list *newElem;
 
-  newElem = xmalloc(sizeof(t_list));
-  newElem->data = data;
-  newElem->prev = this->myList->prev;
-  newElem->next = this->myList;
-  this->myList->prev->next = newElem;
-  this->myList->prev = newElem;
-  return (true);
+    newElem = xmalloc(sizeof(t_list));
+    newElem->data = data;
+    newElem->prev = this->myList->prev;
+    newElem->next = this->myList;
+    this->myList->prev->next = newElem;
+    this->myList->prev = newElem;
+    return (true);
 }
 
-static bool	addElemEnd(LinkedList *this, void *data)
-{
-  t_list	*newElem;
+static bool addElemEnd(LinkedList *this, void *data) {
+    t_list *newElem;
 
-  newElem = xmalloc(sizeof(t_list));
-  newElem->data = data;
-  newElem->prev = this->myList;
-  newElem->next = this->myList->next;
-  this->myList->next->prev = newElem;
-  this->myList->next = newElem;
-  return (true);
+    newElem = xmalloc(sizeof(t_list));
+    newElem->data = data;
+    newElem->prev = this->myList;
+    newElem->next = this->myList->next;
+    this->myList->next->prev = newElem;
+    this->myList->next = newElem;
+    return (true);
 }
 
-static bool	addElemAtPos(LinkedList *this, int pos, void *data)
-{
-  t_list	*it;
-  int		i;
-  t_list	*newElem;
+static bool addElemAtPos(LinkedList *this, int pos, void *data) {
+    t_list *it;
+    int i;
+    t_list *newElem;
 
-  i = -1;
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      if (++i == pos)
-	{
-	  newElem = xmalloc(sizeof(t_list));
-	  newElem->data = data;
-	  newElem->prev = it;
-	  newElem->next = it->next;
-	  it->next->prev = newElem;
-	  it->next = newElem;
-	  return (true);
-	}
-      it = it->next;
+    i = -1;
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (++i == pos) {
+            newElem = xmalloc(sizeof(t_list));
+            newElem->data = data;
+            newElem->prev = it;
+            newElem->next = it->next;
+            it->next->prev = newElem;
+            it->next = newElem;
+            return (true);
+        }
+        it = it->next;
     }
-  return (false);
+    return (false);
 }
 
-static bool	removeThisElem(LinkedList *this, t_list *elem)
-{
-  t_list	*it;
+static bool removeThisElem(LinkedList *this, t_list *elem) {
+    t_list *it;
 
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      if (it == elem)
-	{
-	  it->prev->next = it->next;
-	  it->next->prev = it->prev;
-	  return (true);
-	}
-      it = it->next;
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (it == elem) {
+            it->prev->next = it->next;
+            it->next->prev = it->prev;
+            return (true);
+        }
+        it = it->next;
     }
-  return (false);
+    return (false);
 }
 
-static bool	removeElemFront(LinkedList *this)
-{
-  t_list	*it;
+static bool removeElemFront(LinkedList *this) {
+    t_list *it;
 
-  it = this->myList->next;
-  if (it != this->myList)
-    {
-      it->prev->next = it->next;
-      it->next->prev = it->prev;
-      return (true);
+    it = this->myList->next;
+    if (it != this->myList) {
+        it->prev->next = it->next;
+        it->next->prev = it->prev;
+        return (true);
     }
-  return (false);
+    return (false);
 }
 
-static bool	removeElemEnd(LinkedList *this)
-{
-  t_list	*it;
+static bool removeElemEnd(LinkedList *this) {
+    t_list *it;
 
-  it = this->myList->prev;
-  if (it != this->myList)
-    {
-      it->prev->next = it->next;
-      it->next->prev = it->prev;
-      return (true);
+    it = this->myList->prev;
+    if (it != this->myList) {
+        it->prev->next = it->next;
+        it->next->prev = it->prev;
+        return (true);
     }
-  return (false);
+    return (false);
 }
 
-static bool	removeElemAtPos(LinkedList *this, int pos)
-{
-  t_list	*it;
-  int		i;
+static bool removeElemAtPos(LinkedList *this, int pos) {
+    t_list *it;
+    int i;
 
-  i = 0;
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      if (i == pos)
-	{
-	  it->prev->next = it->next;
-	  it->next->prev = it->prev;
-	  return (true);
-	}
-      it = it->next;
-      i += 1;
+    i = 0;
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (i == pos) {
+            it->prev->next = it->next;
+            it->next->prev = it->prev;
+            return (true);
+        }
+        it = it->next;
+        i += 1;
     }
-  return (false);
+    return (false);
 }
 
-static bool	freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list *elem)
-{
-  t_list	*it;
+static bool freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list *elem) {
+    t_list *it;
 
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      if (it == elem)
-	{
-	  it->prev->next = it->next;
-	  it->next->prev = it->prev;
-	  freeFunc(it->data);
-	  free(it);
-	  return (true);
-	}
-      it = it->next;
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (it == elem) {
+            it->prev->next = it->next;
+            it->next->prev = it->prev;
+            freeFunc(it->data);
+            free(it);
+            return (true);
+        }
+        it = it->next;
     }
-  return (false);
+    return (false);
 }
 
-static bool	freeElemFront(LinkedList *this, void (*freeFunc)(void *elem))
-{
-  t_list	*it;
+static bool freeElemFront(LinkedList *this, void (*freeFunc)(void *elem)) {
+    t_list *it;
 
-  it = this->myList->next;
-  if (it != this->myList)
-    {
-      it->prev->next = it->next;
-      it->next->prev = it->prev;
-      freeFunc(it->data);
-      free(it);
-      return (true);
+    it = this->myList->next;
+    if (it != this->myList) {
+        it->prev->next = it->next;
+        it->next->prev = it->prev;
+        freeFunc(it->data);
+        free(it);
+        return (true);
     }
-  return (false);
+    return (false);
 }
 
-static bool	freeElemEnd(LinkedList *this, void (*freeFunc)(void *elem))
-{
-  t_list	*it;
+static bool freeElemEnd(LinkedList *this, void (*freeFunc)(void *elem)) {
+    t_list *it;
 
-  it = this->myList->prev;
-  if (it != this->myList)
-    {
-      it->prev->next = it->next;
-      it->next->prev = it->prev;
-      freeFunc(it->data);
-      free(it);
-      return (true);
+    it = this->myList->prev;
+    if (it != this->myList) {
+        it->prev->next = it->next;
+        it->next->prev = it->prev;
+        freeFunc(it->data);
+        free(it);
+        return (true);
     }
-  return (false);
+    return (false);
 }
 
-static bool	freeElemAtPos(LinkedList *this, int pos, void (*freeFunc)(void *elem))
-{
-  t_list	*it;
-  int		i;
+static bool freeElemAtPos(LinkedList *this, int pos, void (*freeFunc)(void *elem)) {
+    t_list *it;
+    int i;
 
-  i = 0;
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      if (i == pos)
-	{
-	  it->prev->next = it->next;
-	  it->next->prev = it->prev;
-	  freeFunc(it->data);
-	  free(it);
-	  return (true);
-	}
-      it = it->next;
-      i += 1;
+    i = 0;
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (i == pos) {
+            it->prev->next = it->next;
+            it->next->prev = it->prev;
+            freeFunc(it->data);
+            free(it);
+            return (true);
+        }
+        it = it->next;
+        i += 1;
     }
-  return (false);
+    return (false);
 }
 
-static bool	freeAll(LinkedList *this, void (*freeFunc)(void *elem))
-{
-  t_list	*it;
-  t_list	*tmp;
+static bool freeAll(LinkedList *this, void (*freeFunc)(void *elem)) {
+    t_list *it;
+    t_list *tmp;
 
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      it->prev->next = it->next;
-      it->next->prev = it->prev;
-      tmp = it->next;
-      freeFunc(it->data);
-      free(it);
-      it = tmp;
+    it = this->myList->next;
+    while (it != this->myList) {
+        it->prev->next = it->next;
+        it->next->prev = it->prev;
+        tmp = it->next;
+        freeFunc(it->data);
+        free(it);
+        it = tmp;
     }
-  return (true);
+    return (true);
 }
 
-static t_list*	getElementFirst(LinkedList *this)
-{
-  if (this->myList->next != this->myList)
-    return (this->myList->next);
-  return (NULL);
+static t_list *getElementFirst(LinkedList *this) {
+    if (this->myList->next != this->myList)
+        return (this->myList->next);
+    return (NULL);
 }
 
-static t_list*	getElementEnd(LinkedList *this)
-{
-  if (this->myList->prev != this->myList)
-    return (this->myList->prev);
-  return (NULL);
+static t_list *getElementEnd(LinkedList *this) {
+    if (this->myList->prev != this->myList)
+        return (this->myList->prev);
+    return (NULL);
 }
 
-static t_list*	getElementAtPos(LinkedList *this, int pos)
-{
-  t_list	*it;
-  int		i;
+static t_list *getElementAtPos(LinkedList *this, int pos) {
+    t_list *it;
+    int i;
 
-  i = 0;
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      if (i == pos)
-	{
-	  return (it);
-	}
-      it = it->next;
-      i += 1;
+    i = 0;
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (i == pos) {
+            return (it);
+        }
+        it = it->next;
+        i += 1;
     }
-  return (NULL);
+    return (NULL);
 }
 
-static t_list*	firstElementFromPredicate(LinkedList *this, bool (*predicate)(void *elem, void* userData), void *someData)
-{
-  t_list	*it;
+static t_list *firstElementFromPredicate(LinkedList *this, bool (*predicate)(void *elem, void *userData),
+                                         void *someData) {
+    t_list *it;
 
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      if (predicate(it->data, someData) == true)
-	return (it);
-      it = it->next;
-     }
-  return (NULL);
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (predicate(it->data, someData) == true)
+            return (it);
+        it = it->next;
+    }
+    return (NULL);
 }
 
-static void	forEachElements(LinkedList *this, void (*forEachFunc)(void *element, void *userData), void *someData)
-{
-  t_list	*it;
+static void forEachElements(LinkedList *this, void (*forEachFunc)(void *element, void *userData), void *someData) {
+    t_list *it;
 
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      forEachFunc(it->data, someData);
-      it = it->next;
-     }
+    it = this->myList->next;
+    while (it != this->myList) {
+        forEachFunc(it->data, someData);
+        it = it->next;
+    }
 }

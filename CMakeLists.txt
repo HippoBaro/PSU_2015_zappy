@@ -10,10 +10,10 @@ set(SOURCE_FILES
         srcs/main.c
         srcs/Request/Request.c
         srcs/Generic.c
-	srcs/Drone/Drone.c
-	includes/Drone.h
-	includes/Response.h
-	srcs/Response/Response.c
-	)
+        srcs/Drone/Drone.c
+        includes/Drone.h
+        includes/Response.h
+        srcs/Response/Response.c
+        )
 
 add_executable(PSU_2015_zappy ${SOURCE_FILES})
