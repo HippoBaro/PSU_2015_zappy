@@ -5,12 +5,11 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sat Jun 11 17:47:03 2016 Etienne Pasteur
-** Last update Sun Jun 12 01:38:21 2016 Etienne Pasteur
+** Last update Sun Jun 12 02:05:32 2016 Etienne Pasteur
 */
 
 #include <LinkedList.h>
 
-static void	printLinkedList(LinkedList *this);
 static int	countLinkedList(LinkedList *this);
 static bool	addElemFront(LinkedList *this, void *data);
 static bool	addElemEnd(LinkedList *this, void *data);
@@ -32,7 +31,6 @@ static void	forEachElements(LinkedList *this, void (*forEachFunc)(void *element,
 
 static void	initPtrFunc(LinkedList *this)
 {
-  this->printLinkedList = &printLinkedList;
   this->countLinkedList = &countLinkedList;
   this->addElemFront = &addElemFront;
   this->addElemEnd = &addElemEnd;
@@ -82,27 +80,6 @@ void		LinkedListDestroy(LinkedList *this)
   free(this);
 }
 
-typedef struct	s_data
-{
-  int	id;
-}		t_data;
-
-static void	printLinkedList(LinkedList *this)
-{
-  t_list	*it;
-  int		i;
-
-  i = 0;
-  it = this->myList->next;
-  while (it != this->myList)
-    {
-      printf("Data Value: %d\n", ((t_data*)it->data)->id);
-      it = it->next;
-      i += 1;
-    }
-  printf("Nb_elem : %d\n", i);
-}
-
 static int	countLinkedList(LinkedList *this)
 {
   t_list	*it;
@@ -122,7 +99,7 @@ static bool	addElemFront(LinkedList *this, void *data)
 {
   t_list	*newElem;
 
-  newElem = malloc(sizeof(t_list));
+  newElem = xmalloc(sizeof(t_list));
   if (newElem != NULL)
     {
       newElem->data = data;
@@ -139,7 +116,7 @@ static bool	addElemEnd(LinkedList *this, void *data)
 {
   t_list	*newElem;
 
-  newElem = malloc(sizeof(t_list));
+  newElem = xmalloc(sizeof(t_list));
   if (newElem != NULL)
     {
       newElem->data = data;
@@ -164,7 +141,7 @@ static bool	addElemAtPos(LinkedList *this, int pos, void *data)
     {
       if (i == pos)
 	{
-	  newElem = malloc(sizeof(t_list));
+	  newElem = xmalloc(sizeof(t_list));
 	  if (newElem != NULL)
 	    {
 	      newElem->data = data;
