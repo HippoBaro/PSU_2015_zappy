@@ -10,6 +10,12 @@
 
 #include "Map.h"
 
+void DestroyMap(Map *map) {
+    map->mapTiles->freeAll(map->mapTiles, (void (*)(void *)) &DestroyMapTile);
+    map->mapTiles->Free(map->mapTiles);
+    free(map);
+}
+
 Map *CreateMap(int width, int height) {
     Map *world;
     int i;
@@ -20,6 +26,8 @@ Map *CreateMap(int width, int height) {
     world = xmalloc(sizeof(Map));
     world->X = width;
     world->Y = height;
+    world->Free = &DestroyMap;
+
     world->mapTiles = CreateLinkedList();
     while (i != width * height)
     {
