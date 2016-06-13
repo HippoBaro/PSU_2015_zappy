@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 18:37:28 2016 Christian Diaconu
-** Last update Sun Jun 12 23:27:55 2016 Christian Diaconu
+** Last update Mon Jun 13 16:29:46 2016 Christian Diaconu
 */
 
 #include "LinkedList.h"
@@ -24,7 +24,7 @@ void		create_players(t_maptile *tile)
   while (i != RESSOURCES_TO_CREATE)
     {
       printf("  ---> Player (null) +1\n");
-      add_refplayer(tile, NULL);
+      tile->AddRefPlayer(tile, NULL);
       i++;
     }
 }
@@ -32,10 +32,10 @@ void		create_players(t_maptile *tile)
 int		main()
 {
   t_maptile	*maptile;
-  t_player	*player;
+  Drone		*player;
 
   maptile = init_maptile(META_X, META_Y);
-  player = xmalloc(sizeof(t_player));
+  player = CreateDrone();
   if (maptile == NULL)
     {
       printf("	---> Creating a maptile : KO\n");
@@ -50,29 +50,30 @@ int		main()
       return (-1);
     }
   create_players(maptile);
-  if (count_players(maptile) != RESSOURCES_TO_CREATE)
+  if (maptile->CountPlayers(maptile) != RESSOURCES_TO_CREATE)
     {
       printf("  ---> Player count : KO\n");
       return (-1);
     }
   else
     printf("  ---> Player count : OK\n");
-  remove_refplayer(maptile, NULL);
-  if (count_players(maptile) != (RESSOURCES_TO_CREATE -1))
+  maptile->AddRefPlayer(maptile, player);
+  maptile->RemovePlayer(maptile, player);
+  if (maptile->CountPlayers(maptile) == (RESSOURCES_TO_CREATE))
     printf("  ---> Removing [1] player : OK\n");
   else
     {
       printf("  ---> Removing [1] player : KO\n");
       return (-1);
     }
-  add_refplayer(maptile, player);
-  if (is_refplayer(maptile, player) == (-1))
+  maptile->AddRefPlayer(maptile, (void *)player);
+  if (maptile->PlayerExists(maptile, player) == (-1))
     {
       printf("  ---> Player exists ? : KO\n");
       return (-1);
     }
   else
     printf("  ---> Player exists ? : OK\n");
-  free_maptile(maptile);
+  maptile->Free(maptile);
   free(player);
 }

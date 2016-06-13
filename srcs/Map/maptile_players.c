@@ -9,45 +9,43 @@
 */
 
 #include "MapTile.h"
+#include "Drone.h"
 
-bool		add_refplayer(t_maptile *tile, t_player *player)
+static bool        sorting_player(void *elem, void *player)
 {
-  t_player	*this_player;
-
-  return (tile->players->addElemFront(tile->players, (void *)this_player));
-}
-
-bool		is_refplayer(t_maptile *tile, t_player *player)
-{
-  t_list	*elem;
-  int		i;
-
-  i = 0;
-  while ((elem = tile->players->getElementAtPos(tile->players, i)) != NULL)
-    {
-      if (((t_player *)elem->data) == player)
-	return (true);
-      i++;
-    }
+  if ((elem) == (player))
+    return (true);
   return (false);
 }
 
-bool		remove_refplayer(t_maptile *tile, t_player *player)
+bool		  add_refplayer(t_maptile *tile, Drone *player)
 {
-  t_list	*elem;
-  int		i;
+  return (tile->players->addElemFront(tile->players, (void *)player));
+}
 
-  i = 0;
-  while ((elem = tile->players->getElementAtPos(tile->players, i)) != NULL)
-    {
-      if (elem->data == player)
-	return (tile->players->removeThisElem(tile->players, elem));
-      i++;
-    }
+bool		  is_refplayer(t_maptile *tile, Drone *player)
+{
+  t_list	    *elem;
+
+  elem = tile->players->firstElementFromPredicate(tile->players, &sorting_player, (void *) player);
+  if (elem != NULL) {
+    return (true);
+  }
   return (false);
 }
 
-int		count_players(t_maptile *tile)
+bool		  remove_refplayer(t_maptile *tile, Drone *player)
+{
+  t_list	    *elem;
+
+  elem = tile->players->firstElementFromPredicate(tile->players, &sorting_player, (void *) player);
+  if (elem != NULL) {
+    return (tile->players->removeThisElem(tile->players, elem) == true);
+  }
+  return (false);
+}
+
+int		    count_players(t_maptile *tile)
 {
   return (tile->players->countLinkedList(tile->players));
 }

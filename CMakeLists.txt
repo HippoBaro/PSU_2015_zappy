@@ -17,6 +17,8 @@ set(SOURCE_FILES
         srcs/Item/Item.c
         srcs/Map/map.c
         srcs/Map/maptile.c
+        srcs/Map/maptile_players.c
+        srcs/Map/maptile_ressources.c
 
         includes/Drone.h
         includes/Generic.h

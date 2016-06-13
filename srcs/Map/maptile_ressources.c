@@ -5,35 +5,38 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 15:26:32 2016 Christian Diaconu
-** Last update Sun Jun 12 23:09:27 2016 Christian Diaconu
+** Last update Mon Jun 13 12:54:17 2016 Christian Diaconu
 */
 
 #include "MapTile.h"
+#include "Generic.h"
+#include "Item.h"
 
-bool		add_ressource(t_maptile *tile, ObjectType type)
+static bool        sorting_itemtype(void *elem, void *seeked_type)
 {
-  t_ressource	*ressource;
-
-  if ((ressource = malloc(sizeof(t_ressource))) == NULL)
+    if (((Item *) elem)->type == (ItemType) seeked_type)
+        return (true);
     return (false);
-  ressource->type = type;
-  return (tile->ressources->addElemFront(tile->ressources, (void *)ressource));
 }
 
-ObjectType	get_ressource(t_maptile *tile, ObjectType type)
+bool		add_ressource(t_maptile *tile, ItemType type)
 {
-  t_list	*elem;
-  int		i;
+    Item        *item;
 
-  i = 0;
-  while ((elem = tile->ressources->getElementAtPos(tile->ressources, i)) != NULL)
-    {
-      if (((t_ressource *)elem->data)->type == type)
-	{
-	  tile->ressources->removeThisElem(tile->ressources, elem);
-	  return (type);
-	}
-      i++;
+    item = CreateItemFrom(type);
+    // Log(INFORMATION, "Creating a new ressource");
+    return (tile->ressources->addElemFront(tile->ressources, (void *)item));
+}
+
+ItemType	get_ressource(t_maptile *tile, ItemType type)
+{
+    t_list	    *elem;
+
+    elem = tile->ressources->firstElementFromPredicate(tile->ressources, &sorting_itemtype, (void *) type);
+    if (elem != NULL) {
+        // Log(INFORMATION, "Picking up a ressource");
+        tile->ressources->removeThisElem(tile->ressources, elem);
+        return (type);
     }
   return (-1);
 }

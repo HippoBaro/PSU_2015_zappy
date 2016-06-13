@@ -5,7 +5,7 @@
 ## Login   <diacon_c@epitech.net>
 ## 
 ## Started on  Sun Jun 12 17:02:15 2016 Christian Diaconu
-## Last update Mon Jun 13 00:10:17 2016 Christian Diaconu
+## Last update Mon Jun 13 13:07:10 2016 Christian Diaconu
 ##
 
 INC	=	includes/
@@ -18,7 +18,8 @@ SRC	=	srcs/Generic.c \
 		srcs/Map/maptile.c \
 		srcs/Map/map.c \
 		srcs/Request/Request.c \
-		srcs/Response/Response.c
+		srcs/Response/Response.c \
+		srcs/Item/Item.c
 
 NAME	=	zappy_server
 

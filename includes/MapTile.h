@@ -9,8 +9,8 @@
 */
 
 #include <stdlib.h>
-#include "Generic.h"
 #include "LinkedList.h"
+#include "Drone.h"
 #include "Player.h"
 
 /*	Map Scheme
@@ -32,14 +32,40 @@
 
 typedef struct		s_maptile
 {
-  LinkedList(Item)		*ressources;
-  LinkedList(Drone)		*drones;
+  LinkedList		*ressources;
+  LinkedList		*players;
   int			X;
   int			Y;
-}			    MapTitle;
+
+    /* FX Ptr - Players */
+    bool		(*AddRefPlayer)(struct s_maptile *tile, Drone *player);
+    bool        (*PlayerExists)(struct s_maptile *tile, Drone *player);
+    bool		(*RemovePlayer)(struct s_maptile *tile, Drone *player);
+    int		    (*CountPlayers)(struct s_maptile *tile);
+
+    /* FX Ptr - Ressources */
+    bool		(*AddRessource)(struct s_maptile *tile, ItemType type);
+    ItemType	(*GetRessource)(struct s_maptile *tile, ItemType type);
+    int		    (*CountRessources)(struct s_maptile *tile);
+
+    /* FX Ptr - Generic */
+    void        (*Free)(struct s_maptile *tile);
+
+}			t_maptile;
 
 /* init_map in maptile.c */
-MapTitle       *CreateMapTitle(int X, int Y);
-void		    DestroyMapTile(MapTitle *map);
+t_maptile       *init_maptile(int X, int Y);
+
+/* FX Ptr - Players */
+bool		add_refplayer(struct s_maptile *tile, Drone *player);
+bool        is_refplayer(struct s_maptile *tile, Drone *player);
+bool		remove_refplayer(struct s_maptile *tile, Drone *player);
+int		    count_players(struct s_maptile *tile);
+
+/* FX Ptr - Ressources */
+bool		add_ressource(struct s_maptile *tile, ItemType type);
+ItemType	get_ressource(struct s_maptile *tile, ItemType type);
+int		    count_ressources(struct s_maptile *tile);
+void		free_maptile(struct s_maptile *map);
 
 #endif
