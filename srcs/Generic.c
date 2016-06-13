@@ -8,6 +8,7 @@
 void Log(LogLevel level, const string log) {
     if (level == ERROR) {
         fprintf(stderr, "ERROR : %s\n", log);
+        exit(EXIT_FAILURE);
     }
     else if (level == WARNING) {
         fprintf(stdout, "WARNING : %s\n", log);
@@ -50,7 +51,6 @@ string strappend(string dest, string source, Selection freeOption) {
 string tolowers(string str)
 {
     int i;
-    char c;
 
     i = 0;
     while(str[i])

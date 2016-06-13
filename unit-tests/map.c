@@ -10,65 +10,54 @@
 
 #include "Map.h"
 
-#define WORLD_SIZE_X	5
-#define	WORLD_SIZE_Y	5
-#define WORLD_POS_X	2
-#define WORLD_POS_Y	3
+#define WORLD_SIZE_X    5
+#define    WORLD_SIZE_Y    5
+#define WORLD_POS_X    2
+#define WORLD_POS_Y    3
 
-int		test_all_map(Map *world)
-{
-  MapTile	*tile;
-  int		passed;
-  int		error;
-  int		i_x;
-  int		i_y;
+void test_all_map() {
+    MapTile *tile;
+    int passed;
+    int error;
+    int i_x;
+    int i_y;
 
-  i_x = 0;
-  error = 0;
-  passed = 0;
-  while (i_x != world->X)
-    {
-      i_y = 0;
-      while (i_y != world->Y)
-	{
-	  if ((tile = world->GetTile(world, i_x, i_y)) == NULL
-	      && (tile->X != i_x || tile->Y == i_y))
-	    {
-	      printf("\x1B[31m  ---> Getting MapTile @%ix%i : KO\n", i_x, i_y);
-	      error++;
-	      return (-1);
-	    }
-	  else
-	    {
-	      printf("\x1B[32m  ---> Getting MapTile @%ix%i : OK\n", i_x, i_y);
-	      passed++;
-	    }
-	  i_y++;
-	}
-      i_x++;
+    Map *world;
+
+    if ((world = CreateMap(WORLD_SIZE_X, WORLD_SIZE_Y)) == NULL) {
+        printf("  ---> Creating Map %ix%i : KO\n",
+               WORLD_SIZE_X, WORLD_SIZE_Y);
+        return;
     }
-  printf("\x1B[37m  ---> Map test execute on [%i] elements with [%i] error : ",
-	 passed + error, error);
-  if (error > 0)
-    printf("KO\n");
-  else
-    printf("OK\n");
-}
+    printf("  ---> Creating map %ix%i : OK\n", WORLD_SIZE_X, WORLD_SIZE_Y);
+    printf("\x1B[33m  ---> Testing all maptiles in 2 seconds...\n");
 
-int		main()
-{
-  Map		*world;
-  MapTile	*tile;
 
-  if ((world = CreateMap(WORLD_SIZE_X, WORLD_SIZE_Y)) == NULL)
-    {
-      printf("  ---> Creating Map %ix%i : KO\n",
-	     WORLD_SIZE_X, WORLD_SIZE_Y);
-      return (-1);
+    i_x = 0;
+    error = 0;
+    passed = 0;
+    while (i_x != world->X) {
+        i_y = 0;
+        while (i_y != world->Y) {
+            if ((tile = world->GetTile(world, i_x, i_y)) == NULL
+                && (tile->X != i_x || tile->Y == i_y)) {
+                printf("\x1B[31m  ---> Getting MapTile @%ix%i : KO\n", i_x, i_y);
+                error++;
+                return;
+            }
+            else {
+                printf("\x1B[32m  ---> Getting MapTile @%ix%i : OK\n", i_x, i_y);
+                passed++;
+            }
+            i_y++;
+        }
+        i_x++;
     }
-  printf("  ---> Creating map %ix%i : OK\n", WORLD_SIZE_X, WORLD_SIZE_Y);
-  printf("\x1B[33m  ---> Testing all maptiles in 2 seconds...\n");
-  test_all_map(world);
+    printf("\x1B[37m  ---> Map test execute on [%i] elements with [%i] error : ",
+           passed + error, error);
+    if (error > 0)
+        printf("KO\n");
+    else
+        printf("OK\n");
     world->Free(world);
-    return 0;
 }

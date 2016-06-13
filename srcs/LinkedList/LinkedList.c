@@ -284,7 +284,7 @@ static bool freeAll(LinkedList *this, void (*freeFunc)(void *elem)) {
         it->prev->next = it->next;
         it->next->prev = it->prev;
         tmp = it->next;
-        if (freeFunc != NULL)
+        if (freeFunc != NULL && it->data != NULL)
             freeFunc(it->data);
         free(it);
         it = tmp;

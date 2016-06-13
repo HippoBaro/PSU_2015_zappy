@@ -11,11 +11,17 @@
 
 #define lambda(ret, args, body) ({ ret l_anonymous_functions_name args body &l_anonymous_functions_name; })
 
+#define atomicdup(type, value) lambda(void *, (void), { \
+    type *tmp = xmalloc(sizeof(type));                  \
+    *tmp = value;   \
+    return tmp; \
+})
+
 typedef char * string;
 
 typedef enum e_bool {
-    false,
-    true
+    false = 0,
+    true = 1
 }           bool;
 
 typedef enum e_LogLevel {
@@ -24,13 +30,19 @@ typedef enum e_LogLevel {
     ERROR
 }           LogLevel;
 
+typedef enum e_RequestType {
+    UNKNOWN_REQUESTTYPE = 0,
+    NEW_CLIENT = 1,
+    EXISTING_CLIENT = 0
+}               RequestType;
+
 typedef enum e_Destination {
     EVERYBODY,
     SUBSET
 }           Destination;
 
 typedef enum e_Action {
-    UNKNOWN = -1,
+    UNKNOWN_ACTION = -1,
     TAKE = 0,
     DROP = 1,
     FORK = 2,
@@ -52,13 +64,13 @@ typedef enum e_Selection {
 }           Selection;
 
 typedef enum e_ItemType {
+    UNKNOWN_ITEMTYPE = -1,
     LINEMATE = 0,
     DERAUMERE = 1,
     SIBUR = 2,
     MENDIANE = 3,
     PHIRAS = 4,
     THYSTAME = 5
-    //todo Food ? Can't find it in subject.
 }           ItemType;
 
 typedef enum e_Rotation {

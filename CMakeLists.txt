@@ -1,13 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 project(PSU_2015_zappy)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Werror")
+set(CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-function")
 
 include_directories("includes/")
 
 set(SOURCE_FILES
-        unit-tests/map.c
-        #srcs/main.c
         srcs/LinkedList/LinkedList.c
         #srcs/Network/Network.c
         srcs/Request/Request.c
@@ -19,6 +17,9 @@ set(SOURCE_FILES
         srcs/Map/maptile.c
         srcs/Map/maptile_players.c
         srcs/Map/maptile_ressources.c
+        srcs/Request/Parser.c
+        srcs/ZappyServer/ZappyServer.c
+        srcs/ZappyServer/Configuration.c
 
         includes/Map.h
         includes/MapTile.h
@@ -28,6 +29,25 @@ set(SOURCE_FILES
         includes/Network.h
         includes/Request.h
         includes/Response.h
-        includes/Item.h)
+        includes/Item.h
+        includes/ZappyServer.h)
 
-add_executable(PSU_2015_zappy ${SOURCE_FILES})
+set(UNIT_TEST_SOURCE
+        unit-tests/linked_list.c
+        unit-tests/Drones.c
+        unit-tests/map.c
+        unit-tests/maptile_player.c
+        unit-tests/main.c)
+
+set(MAIN_SOURCE
+        srcs/main.c)
+
+set(UNIT_TEST TRUE)
+
+if (UNIT_TEST)
+    add_executable(PSU_2015_zappy ${SOURCE_FILES} ${UNIT_TEST_SOURCE})
+else()
+    add_executable(PSU_2015_zappy ${SOURCE_FILES} ${MAIN_SOURCE})
+endif()
+
+
