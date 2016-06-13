@@ -3,12 +3,14 @@
 //
 
 #include <string.h>
+#include <Response.h>
 #include "Drone.h"
 
 static void DestroyDrone(Drone *drone) {
     if (drone->team != NULL)
         free(drone);
-    drone->inventory->freeAll(drone->inventory, NULL); //Todo set item destructor
+    drone->inventory->freeAll(drone->inventory, (void (*)(void *)) &DestroyItem); //Todo set item destructor
+    drone->inventory->Free(drone->inventory);
     free(drone);
 }
 
@@ -25,15 +27,48 @@ static void Rotate(struct e_Drone *self, Rotation rotation) {
 }
 
 static string ListInventory(struct e_Drone *self) {
-    string ret = strdup("{ ");
-    self->inventory->forEachElements(self->inventory, lambda(void *, (void *param, void *userDat), {
-//        Item *item = (Item *)param;
-//        ret = realloc(ret, sizeof(strlen(ret)) + sizeof(strlen(item->name)) + 1);
-//        ret = strcat(ret, " ");
-//        ret = strcat(ret, titem->name);
-    }), NULL);
-    ret = realloc(ret, sizeof(strlen(ret)) + 1);
-    ret = strcat(ret, "}");
+    string ret = NULL;
+    bool isFirst;
+
+    isFirst = true;
+    if (self->inventory->countLinkedList(self->inventory) > 0)
+        self->inventory->forEachElements(self->inventory, lambda(void, (void *param, void *t), {
+            Item *item = (Item *)param;
+            if (!isFirst)
+                ret = strappend(ret, ", ", FIRST);
+            ret = strappend(ret, item->ToString(item), FIRST);
+            isFirst = false;
+        }), NULL);
+    ret = strappend(ret, " }", FIRST);
+    return strappend("{ ", ret, SECOND);
+}
+
+static void Take (struct e_Drone *self, Item *item) {
+    //todo take item
+}
+
+static void Drop (struct e_Drone *self, Item *item) {
+    //todo drop item
+}
+
+static void Expulse (struct e_Drone *self) {
+    //todo expulse drone from mapTile
+}
+
+static void Fork (struct e_Drone *self) {
+    //todo fork
+}
+
+static void Die (struct e_Drone *self) {
+    //todo remove self from mapTile & Free self
+}
+
+static Response *Broadcast(struct e_Drone *self, string message) {
+    Response    *ret;
+
+    ret = CreateEmptyResponse();
+    ret->destination = EVERYBODY;
+    ret->message = message;
     return ret;
 }
 
@@ -49,5 +84,12 @@ Drone   *CreateDrone() {
     ret->Look = &Look;
     ret->Rotate = &Rotate;
     ret->ListInventory = &ListInventory;
+    ret->Take = &Take;
+    ret->Drop = &Drop;
+    ret->Expulse = &Expulse;
+    ret->Fork = &Fork;
+    ret->Die = &Die;
     ret->Free = &DestroyDrone;
+
+    return ret;
 }

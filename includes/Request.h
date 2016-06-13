@@ -17,4 +17,6 @@ typedef struct t_Request {
     void        (*Free)(struct t_Request *self);
 }               Request;
 
+Request *CreateRequest(string message, int socketFd);
+
 #endif //PSU_2015_ZAPPY_REQUEST_H

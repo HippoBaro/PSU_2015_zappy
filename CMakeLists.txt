@@ -20,6 +20,6 @@ set(SOURCE_FILES
         includes/Network.h
         includes/Request.h
         includes/Response.h
-        )
+        srcs/Item/Item.c includes/Item.h)
 
 add_executable(PSU_2015_zappy ${SOURCE_FILES})

@@ -6,6 +6,7 @@
 #define PSU_2015_ZAPPY_RESPONSE_H
 
 #include "Generic.h"
+#include "Request.h"
 #include "LinkedList.h"
 
 typedef struct e_Response {
@@ -15,5 +16,8 @@ typedef struct e_Response {
     void                (*Send)(struct e_Response *self);
     void                (*Free)(struct e_Response *self);
 }           Response;
+
+Response    *CreateEmptyResponse();
+Response    *CreateResponseFrom(Request *request);
 
 #endif //PSU_2015_ZAPPY_RESPONSE_H

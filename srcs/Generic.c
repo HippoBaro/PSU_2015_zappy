@@ -28,3 +28,20 @@ void *xmalloc(size_t size) {
     }
     return ret;
 }
+
+string strappend(string dest, string source, Selection freeOption) {
+    char *new_str;
+    if (dest == NULL)
+        new_str = xmalloc(strlen(source) + 1);
+    else
+        new_str = xmalloc(strlen(dest) + strlen(source) + 1);
+    new_str[0] = '\0';
+    if (dest != NULL)
+        strcat(new_str, dest);
+    strcat(new_str, source);
+    if ((freeOption == FIRST || freeOption == BOTH)  && dest != NULL)
+        free(dest);
+    if ((freeOption == SECOND || freeOption == BOTH)  && source != NULL)
+        free(source);
+    return new_str;
+}

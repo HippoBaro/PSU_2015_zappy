@@ -9,6 +9,7 @@
 */
 
 #include "LinkedList.h"
+#include "Item.h"
 
 static int countLinkedList(LinkedList *this);
 
@@ -335,6 +336,10 @@ static t_list *firstElementFromPredicate(LinkedList *this, bool (*predicate)(voi
 static void forEachElements(LinkedList *this, void (*forEachFunc)(void *element, void *userData), void *someData) {
     t_list *it;
 
+    if (forEachFunc == NULL) {
+        Log(WARNING, "Trying to foreach with a NULL-function pointers.");
+        return;
+    }
     it = this->myList->next;
     while (it != this->myList) {
         forEachFunc(it->data, someData);

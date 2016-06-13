@@ -2,6 +2,8 @@
 // Created by pasteu_e on 06/06/16.
 //
 
+#include <Drone.h>
+#include <assert.h>
 #include "LinkedList.h"
 
 // JUST A MAIN TEST FOR THE LINKEDLIST MODULE
@@ -24,7 +26,7 @@ void actOnElem(void *elem, void *userData) {
     printf("ELEM Value: %d\n", ((t_data *) elem)->id);
 }
 
-int main(void) {
+static void TestLinkedList() {
     LinkedList *list;
     t_data *data1;
     t_data *data2;
@@ -88,5 +90,47 @@ int main(void) {
     free(data3);
     free(data4);
     free(data5);
-    return (0);
+}
+
+static void TestDrone() {
+    Drone   *drone = CreateDrone();
+    string  inventory;
+
+    printf("List inventory : %s\n", inventory = drone->ListInventory(drone));
+    free(inventory);
+
+    puts("Adding one item...");
+    drone->inventory->addElemEnd(drone->inventory, CreateItemFrom(THYSTAME));
+    printf("List inventory : %s\n", inventory = drone->ListInventory(drone));
+    free(inventory);
+
+    puts("Adding several ones...");
+    drone->inventory->addElemEnd(drone->inventory, CreateItemFrom(LINEMATE));
+    drone->inventory->addElemEnd(drone->inventory, CreateItemFrom(SIBUR));
+
+    printf("List inventory : %s\n", inventory = drone->ListInventory(drone));
+    free(inventory);
+
+    printf("Count = %d\n", drone->inventory->countLinkedList(drone->inventory));
+    puts("Deleting SIBUR....");
+    t_list *elem = drone->inventory->firstElementFromPredicate(drone->inventory, lambda(bool, (void *item, void *test), {
+      if (((Item *)item)->type == SIBUR)
+          return true;
+      return false;
+    }), NULL);
+    assert(elem != NULL);
+    drone->inventory->freeThisElem(drone->inventory, ((Item *)elem->data)->Free, elem);
+    printf("Count = %d\n", drone->inventory->countLinkedList(drone->inventory));
+    printf("List inventory : %s\n", inventory = drone->ListInventory(drone));
+    free(inventory);
+
+    puts("Freeing everything...");
+    drone->Free(drone);
+}
+
+int main(void) {
+    //puts("Testing LINKEDLIST :");
+    //TestLinkedList();
+    TestDrone();
+    return 0;
 }

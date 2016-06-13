@@ -24,4 +24,6 @@ Request *CreateRequest(string message, int socketFd) {
     ret->Free = &DestroyRequest;
     //todo set Validate
     //todo set Parse
+
+    return ret;
 }

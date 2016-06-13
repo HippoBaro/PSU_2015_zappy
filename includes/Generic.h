@@ -5,6 +5,7 @@
 #ifndef PSU_2015_ZAPPY_GENERIC_H
 #define PSU_2015_ZAPPY_GENERIC_H
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -43,6 +44,22 @@ typedef enum e_Action {
     LOOK = 11
 }               Action;
 
+typedef enum e_Selection {
+    FIRST,
+    SECOND,
+    BOTH
+}           Selection;
+
+typedef enum e_ItemType {
+    LINEMATE = 0,
+    DERAUMERE = 1,
+    SIBUR = 2,
+    MENDIANE = 3,
+    PHIRAS = 4,
+    THYSTAME = 5
+    //todo Food ? Can't find it in subject.
+}           ItemType;
+
 typedef enum e_Rotation {
     LEFT = 0,
     RIGHT = 1
@@ -50,5 +67,6 @@ typedef enum e_Rotation {
 
 void Log(LogLevel level, const string log);
 void *xmalloc(size_t size);
+string strappend(string dest, string source, Selection freeOption);
 
 #endif //PSU_2015_ZAPPY_GENERIC_H
