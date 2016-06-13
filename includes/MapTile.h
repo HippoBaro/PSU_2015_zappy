@@ -9,6 +9,7 @@
 */
 
 #include <stdlib.h>
+#include "Generic.h"
 #include "LinkedList.h"
 #include "Player.h"
 
@@ -29,30 +30,16 @@
 #ifndef _H_ZAPPY_MAPTILE_
 #define _H_ZAPPY_MAPTILE_
 
-typedef enum		e_object
-{
-  LINEMATE,
-  DERAUMERE,
-  SIBUR,
-  MENDIANE,
-  PHIRAS,
-  THYSTAME
-}			ObjectType;
-
-typedef struct		s_ressource
-{
-  ObjectType		type;
-}			t_ressource;
-
 typedef struct		s_maptile
 {
-  LinkedList		*ressources;
-  LinkedList		*players;
+  LinkedList(Item)		*ressources;
+  LinkedList(Drone)		*drones;
   int			X;
   int			Y;
-}			t_maptile;
+}			    MapTitle;
 
 /* init_map in maptile.c */
-t_maptile       *init_maptile(int X, int Y);
+MapTitle       *CreateMapTitle(int X, int Y);
+void		    DestroyMapTile(MapTitle *map);
 
 #endif

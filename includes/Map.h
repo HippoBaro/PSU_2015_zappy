@@ -13,15 +13,16 @@
 #ifndef _ZAPPY_MAPTILE_H_
 # define _ZAPPY_MAPTILE_H_
 
-typedef struct	s_map
+typedef struct	        s_map
 {
-  int		X;
-  int		Y;
-  t_maptile	***map;
-}		t_map;
+  int		            X;
+  int		            Y;
+  LinkedList(MapTitle)	*mapTiles;
+}		                Map;
 
 
 /* map_gettile() in map.c */
-t_maptile       *map_gettile(t_map *world, int X, int Y);
+MapTitle       *map_gettile(Map *world, int X, int Y);
+Map            *CreateMap(int width, int height);
 
 #endif

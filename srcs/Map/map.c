@@ -10,39 +10,39 @@
 
 #include "Map.h"
 
-t_map		*createmap(int X, int Y)
-{
-  t_map		*world;
-  int		i_x;
-  int		i_y;
+Map *CreateMap(int width, int height) {
+    Map *world;
+    int i;
+    int x;
+    int y;
 
-  i_x = 0;
-  if ((world = malloc(sizeof(t_map))) == NULL)
-    return (NULL);
-  world->X = X;
-  world->Y = Y;
-  if ((world->map = malloc(sizeof(t_maptile *) * X)) == NULL)
-    return (NULL);
-  while (i_x != X)
+    i = x = y = 0;
+    world = xmalloc(sizeof(Map));
+    world->X = width;
+    world->Y = height;
+    world->mapTiles = CreateLinkedList();
+    while (i != width * height)
     {
-      if ((world->map[i_x] = malloc(sizeof(t_maptile *) * Y)) == NULL)
-	return (NULL);
-      i_y = 0;
-      while (i_y != Y)
-	{
-	  world->map[i_x][i_y] = init_maptile(i_x, i_y);
-	  i_y++;
-	}
-      i_x++;
+        world->mapTiles->addElemEnd(world->mapTiles, CreateMapTitle(x, y));
+        ++i;
+        ++x;
+        if (x >= width)
+        {
+            x = 0;
+            ++y;
+        }
     }
-  return (world);
+    return (world);
 }
 
-t_maptile	*map_gettile(t_map *world, int X, int Y)
-{
-  if (world == NULL)
-    return (NULL);
-  if (X > world->X || Y > world->Y)
-    return (NULL);
-  return (world->map[X][Y]);
+MapTitle *map_gettile(Map *world, int X, int Y) {
+    t_list *ret;
+
+    if (world == NULL)
+        return (NULL);
+    if (X > world->X || Y > world->Y)
+        return (NULL);
+    if ((ret = world->mapTiles->getElementAtPos(world->mapTiles, X * Y)) == NULL)
+        return NULL;
+    return ret->data;
 }
