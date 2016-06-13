@@ -5,7 +5,7 @@
 ** Login   <antoine@epitech.net>
 **
 ** Started on  Mon Jun 13 14:37:03 2016 antoine
-** Last update Mon Jun 13 19:45:20 2016 antoine
+** Last update Mon Jun 13 19:52:03 2016 antoine
 */
 
 #include "Request.h"
@@ -137,7 +137,7 @@ static void	reqDeath(Request *req)
   req->actionSubject = NULL;
 }
 
-static const struct s_command_string toStringRequests[] =
+static const struct s_command_string requestsArray[] =
   {
     { "avance\n\0", &reqMove},
     { "droite\n\0", &reqRotateRight },
@@ -162,6 +162,6 @@ void		Parse(Request *request)
   i = 0;
   cut = cutMessage(request->message);
   while (i++ < 12)
-    if (strcmp(cut, toStringRequests[i].str) == 0)
-      toStringRequests[i].doAction(request);
+    if (strcmp(cut, requestsArray[i].str) == 0)
+      requestsArray[i].doAction(request);
 }
