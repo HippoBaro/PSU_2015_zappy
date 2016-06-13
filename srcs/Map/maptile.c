@@ -10,35 +10,38 @@
 
 #include "MapTile.h"
 #include "LinkedList.h"
+#include "Drone.h"
 
+void        DestroyMapTile(MapTile *map) {
+    map->drones->freeAll(map->drones, (void (*)(void *)) &DestroyDrone);
+    map->drones->Free(map->drones);
+    map->ressources->freeAll(map->ressources, (void (*)(void *)) &DestroyItem);
+    map->ressources->Free(map->ressources);
+    free(map);
+}
 
-t_maptile	*init_maptile(int X, int Y)
+MapTile	    *CreateMapTile(int X, int Y)
 {
-  t_maptile	*tile;
+  MapTile	*tile;
 
-  if ((tile = malloc(sizeof(t_maptile))) == NULL)
+  if ((tile = malloc(sizeof(MapTile))) == NULL)
     return (NULL);
 
   tile->X = X;
   tile->Y = Y;
-  tile->players = CreateLinkedList();
+  tile->drones = CreateLinkedList();
   tile->ressources = CreateLinkedList();
-  tile->AddRefPlayer = &add_refplayer;
-  tile->CountPlayers = &count_players;
+  tile->AddDrone = &add_refplayer;
+  tile->CountDrones = &count_players;
   tile->AddRessource = &add_ressource;
   tile->CountRessources = &count_ressources;
   tile->AddRessource = &add_ressource;
   tile->GetRessource = &get_ressource;
-  tile->PlayerExists = &is_refplayer;
-  tile->RemovePlayer = &remove_refplayer;
-  tile->Free = &free_maptile;
+  tile->DroneExist = &is_refplayer;
+  tile->RemoveDrone = &remove_refplayer;
+  tile->Free = &DestroyMapTile;
 
   return (tile);
 }
 
-void		free_maptile(t_maptile *map)
-{
-  //LinkedListDestroy(map->ressources);
-  //LinkedListDestroy(map->players);
-  free(map);
-}
+

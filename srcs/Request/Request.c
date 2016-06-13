@@ -18,9 +18,10 @@ Request *CreateRequest(string message, int socketFd) {
     Request *ret;
 
     ret = xmalloc(sizeof(Request));
-    ret->actionSubject = NULL;
     ret->message = message;
     ret->socketFd = socketFd;
+    ret->requestedAction = UNKNOWN;
+    ret->actionSubject = NULL;
     ret->Free = &DestroyRequest;
     //todo set Validate
     //todo set Parse

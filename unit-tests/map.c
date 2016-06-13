@@ -15,9 +15,9 @@
 #define WORLD_POS_X	2
 #define WORLD_POS_Y	3
 
-int		test_all_map(t_map *world)
+int		test_all_map(Map *world)
 {
-  t_maptile	*tile;
+  MapTile	*tile;
   int		passed;
   int		error;
   int		i_x;
@@ -57,8 +57,8 @@ int		test_all_map(t_map *world)
 
 int		main()
 {
-  t_map		*world;
-  t_maptile	*tile;
+  Map		*world;
+  MapTile	*tile;
 
   if ((world = CreateMap(WORLD_SIZE_X, WORLD_SIZE_Y)) == NULL)
     {
@@ -68,6 +68,7 @@ int		main()
     }
   printf("  ---> Creating map %ix%i : OK\n", WORLD_SIZE_X, WORLD_SIZE_Y);
   printf("\x1B[33m  ---> Testing all maptiles in 2 seconds...\n");
-  sleep(2);
   test_all_map(world);
+    world->Free(world);
+    return 0;
 }

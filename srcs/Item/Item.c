@@ -29,6 +29,21 @@ static string ToString(Item *item) {
     return "";
 }
 
+/*static Item *FromString(string item) {
+    int  	i;
+
+    i = 0;
+    while (i < 6)
+    {
+        if (toStringItem[i].type == item->type)
+            return toStringItem[i].str;
+        ++i;
+    }
+    Log(ERROR, "Called ToString on unknown item type.");
+    exit(EXIT_FAILURE);
+    return "";
+}*/
+
 void        DestroyItem(Item *item) {
     free(item);
 }

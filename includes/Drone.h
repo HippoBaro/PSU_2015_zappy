@@ -29,5 +29,6 @@ typedef struct e_Drone {
 }               Drone;
 
 Drone   *CreateDrone();
+void    DestroyDrone(Drone *drone);
 
 #endif //PSU_2015_ZAPPY_DRONE_H

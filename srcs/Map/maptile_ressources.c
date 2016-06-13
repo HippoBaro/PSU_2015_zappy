@@ -19,7 +19,7 @@ static bool        sorting_itemtype(void *elem, void *seeked_type)
     return (false);
 }
 
-bool		add_ressource(t_maptile *tile, ItemType type)
+bool		add_ressource(MapTile *tile, ItemType type)
 {
     Item        *item;
 
@@ -28,7 +28,7 @@ bool		add_ressource(t_maptile *tile, ItemType type)
     return (tile->ressources->addElemFront(tile->ressources, (void *)item));
 }
 
-ItemType	get_ressource(t_maptile *tile, ItemType type)
+ItemType	get_ressource(MapTile *tile, ItemType type)
 {
     t_list	    *elem;
 
@@ -41,7 +41,7 @@ ItemType	get_ressource(t_maptile *tile, ItemType type)
   return (-1);
 }
 
-int		count_ressources(t_maptile *tile)
+int		count_ressources(MapTile *tile)
 {
   return (tile->ressources->countLinkedList(tile->ressources));
 }

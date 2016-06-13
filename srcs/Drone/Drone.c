@@ -6,7 +6,7 @@
 #include <Response.h>
 #include "Drone.h"
 
-static void DestroyDrone(Drone *drone) {
+void DestroyDrone(Drone *drone) {
     if (drone->team != NULL)
         free(drone);
     drone->inventory->freeAll(drone->inventory, (void (*)(void *)) &DestroyItem); //Todo set item destructor

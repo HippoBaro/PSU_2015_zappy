@@ -20,6 +20,8 @@ set(SOURCE_FILES
         srcs/Map/maptile_players.c
         srcs/Map/maptile_ressources.c
 
+        includes/Map.h
+        includes/MapTile.h
         includes/Drone.h
         includes/Generic.h
         includes/LinkedList.h

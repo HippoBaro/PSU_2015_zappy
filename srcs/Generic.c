@@ -2,6 +2,7 @@
 // Created by barrauh on 6/11/16.
 //
 
+#include <ctype.h>
 #include "Generic.h"
 
 void Log(LogLevel level, const string log) {
@@ -44,4 +45,18 @@ string strappend(string dest, string source, Selection freeOption) {
     if ((freeOption == SECOND || freeOption == BOTH)  && source != NULL)
         free(source);
     return new_str;
+}
+
+string tolowers(string str)
+{
+    int i;
+    char c;
+
+    i = 0;
+    while(str[i])
+    {
+        putchar(tolower(str[i]));
+        i++;
+    }
+    return(str);
 }

@@ -30,6 +30,7 @@ typedef enum e_Destination {
 }           Destination;
 
 typedef enum e_Action {
+    UNKNOWN = -1,
     TAKE = 0,
     DROP = 1,
     FORK = 2,

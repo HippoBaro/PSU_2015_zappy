@@ -18,34 +18,34 @@ static bool        sorting_player(void *elem, void *player)
   return (false);
 }
 
-bool		  add_refplayer(t_maptile *tile, Drone *player)
+bool		  add_refplayer(MapTile *tile, Drone *player)
 {
-  return (tile->players->addElemFront(tile->players, (void *)player));
+  return (tile->drones->addElemFront(tile->drones, (void *)player));
 }
 
-bool		  is_refplayer(t_maptile *tile, Drone *player)
+bool		  is_refplayer(MapTile *tile, Drone *player)
 {
   t_list	    *elem;
 
-  elem = tile->players->firstElementFromPredicate(tile->players, &sorting_player, (void *) player);
+  elem = tile->drones->firstElementFromPredicate(tile->drones, &sorting_player, (void *) player);
   if (elem != NULL) {
     return (true);
   }
   return (false);
 }
 
-bool		  remove_refplayer(t_maptile *tile, Drone *player)
+bool		  remove_refplayer(MapTile *tile, Drone *player)
 {
   t_list	    *elem;
 
-  elem = tile->players->firstElementFromPredicate(tile->players, &sorting_player, (void *) player);
+  elem = tile->drones->firstElementFromPredicate(tile->drones, &sorting_player, (void *) player);
   if (elem != NULL) {
-    return (tile->players->removeThisElem(tile->players, elem) == true);
+    return (tile->drones->removeThisElem(tile->drones, elem) == true);
   }
   return (false);
 }
 
-int		    count_players(t_maptile *tile)
+int		    count_players(MapTile *tile)
 {
-  return (tile->players->countLinkedList(tile->players));
+  return (tile->drones->countLinkedList(tile->drones));
 }
