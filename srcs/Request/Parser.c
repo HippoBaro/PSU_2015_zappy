@@ -5,7 +5,7 @@
 ** Login   <antoine@epitech.net>
 **
 ** Started on  Mon Jun 13 14:37:03 2016 antoine
-** Last update Mon Jun 13 18:13:51 2016 antoine
+** Last update Mon Jun 13 19:45:20 2016 antoine
 */
 
 #include "Request.h"
@@ -13,24 +13,8 @@
 #include <stdio.h>
 #include <string.h>
 
-void	initRequestList(string *actions)
-{
-  actions[0] = "avance\n\0";
-  actions[1] = "droite\n\0";
-  actions[2] = "gauche\n\0";
-  actions[3] = "voir\n\0";
-  actions[4] = "inventaire\n\0";
-  actions[5] = "prend\n\0";
-  actions[6] = "pose\n\0";
-  actions[7] = "expulse\n\0";
-  actions[8] = "broadcast ";
-  actions[9] = "incantation\n\0";
-  actions[10] = "fork\n\0";
-  actions[11] = "connect nbr\n\0";
-  actions[12] = "-\n\0";
-}
 
-string		getSubject(string message)
+static string	getSubject(string message)
 {
   string	str;
   int		i;
@@ -45,7 +29,7 @@ string		getSubject(string message)
   return (str);
 }
 
-string		cutMessage(string message)
+static string	cutMessage(string message)
 {
   string	str;
   int		i;
@@ -67,108 +51,117 @@ string		cutMessage(string message)
   return (str);
 }
 
-void	reqMove(Request *req)
+static void	reqMove(Request *req)
 {
   req->requestedAction = MOVE;
   req->actionSubject = NULL;
 }
 
-void	reqRotateRight(Request *req)
+static void	reqRotateRight(Request *req)
 {
   req->requestedAction = ROTATE;
   req->actionSubject = xmalloc(sizeof(char) * 6);
   req->actionSubject = "droite";
 }
 
-void	reqRotateLeft(Request *req)
+static void	reqRotateLeft(Request *req)
 {
   req->requestedAction = ROTATE;
   req->actionSubject = xmalloc(sizeof(char) * 6);
   req->actionSubject = "gauche";
 }
 
-void	reqLook(Request *req)
+static void	reqLook(Request *req)
 {
   req->requestedAction = LOOK;
   req->actionSubject = NULL;
 }
 
-void	reqLookInventory(Request *req)
+static void	reqLookInventory(Request *req)
 {
   req->requestedAction = LOOK_INVENTORY;
   req->actionSubject = NULL;
 }
 
-void	reqExpulse(Request *req)
+static void	reqExpulse(Request *req)
 {
   req->requestedAction = EXPULSE;
   req->actionSubject = NULL;
 }
 
-void	reqIncant(Request *req)
+static void	reqIncant(Request *req)
 {
   req->requestedAction = INCANT;
   req->actionSubject = NULL;
 }
 
-void	reqFork(Request *req)
+static void	reqFork(Request *req)
 {
   req->requestedAction = FORK;
   req->actionSubject = NULL;
 }
 
-void	reqAskSlot(Request *req)
+static void	reqAskSlot(Request *req)
 {
   req->requestedAction = ASK_SLOT;
   req->actionSubject = NULL;
 }
 
-void		reqTake(Request *req)
+static void	reqTake(Request *req)
 {
   string	sub;
   req->requestedAction = TAKE;
   sub = getSubject(req->message);
+  req->actionSubject = sub;
 }
 
-void		reqDrop(Request *req)
+static void	reqDrop(Request *req)
 {
   string	sub;
   req->requestedAction = DROP;
   sub = getSubject(req->message);
-
+  req->actionSubject = sub;
 }
 
-void		reqBroadcast(Request *req)
+static void	reqBroadcast(Request *req)
 {
   string	sub;
   req->requestedAction = BROADCAST;
   sub = getSubject(req->message);
+  req->actionSubject = sub;
 }
+
+static void	reqDeath(Request *req)
+{
+  req->requestedAction = DIE;
+  req->actionSubject = NULL;
+}
+
+static const struct s_command_string toStringRequests[] =
+  {
+    { "avance\n\0", &reqMove},
+    { "droite\n\0", &reqRotateRight },
+    { "gauche\n\0", &reqRotateLeft },
+    { "voir\n\0", &reqLook },
+    { "inventaire\n\0", &reqLookInventory },
+    { "prend\n\0", &reqTake },
+    { "pose\n\0", &reqDrop },
+    { "expulse\n\0", &reqExpulse },
+    { "broadcast\n\0", &reqBroadcast },
+    { "incantation\n\0", &reqIncant },
+    { "fork\n\0", &reqFork },
+    { "connect nbr\n\0", &reqLook },
+    { "-\n\0", &reqDeath }
+  };
 
 void		Parse(Request *request)
 {
   int		i;
-  string	actions[13];
   string	cut;
-  void		(*doAction[13])(Request *);
 
   i = 0;
-  doAction[0] = &reqMove;
-  doAction[1] = &reqRotateRight;
-  doAction[2] = &reqRotateLeft;
-  doAction[3] = &reqLook;
-  doAction[4] = &reqLookInventory;
-  doAction[5] = &reqTake;
-  doAction[6] = &reqDrop;
-  doAction[7] = &reqExpulse;
-  doAction[8] = &reqBroadcast;
-  doAction[9] = &reqIncant;
-  doAction[10] = &reqFork;
-  doAction[11] = &reqAskSlot;
-  doAction[12] = &reqLook;
-  initRequestList(actions);
   cut = cutMessage(request->message);
   while (i++ < 12)
-    if (strcmp(cut, actions[i]) == 0)
-      doAction[i](request);
+    if (strcmp(cut, toStringRequests[i].str) == 0)
+      toStringRequests[i].doAction(request);
 }
