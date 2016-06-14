@@ -43,7 +43,7 @@ set(UNIT_TEST_SOURCE
 set(MAIN_SOURCE
         srcs/main.c)
 
-set(UNIT_TEST TRUE)
+#set(UNIT_TEST TRUE)
 
 if (UNIT_TEST)
     add_executable(PSU_2015_zappy ${SOURCE_FILES} ${UNIT_TEST_SOURCE})
