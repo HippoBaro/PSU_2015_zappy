@@ -5,7 +5,7 @@
 ** Login   <antoine@epitech.net>
 **
 ** Started on  Mon Jun 13 14:37:03 2016 antoine
-** Last update Mon Jun 13 19:52:03 2016 antoine
+** Last update Tue Jun 14 17:24:44 2016 antoine
 */
 
 #include "Request.h"
@@ -13,19 +13,27 @@
 #include <stdio.h>
 #include <string.h>
 
-
 static string getSubject(string message) {
-    string str;
-    int i;
-    int x;
+  string str;
+  int i;
+  int x;
+  int match;
 
-    i = 0;
-    x = 0;
+  i = 0;
+  x = 0;
+  match = 0;
+  while (message[i++])
+    if (message[i] == ' ')
+      match = 1;
+  i = 0;
+  if (match == 1) {
     while (message[i++] != ' ');
     str = xmalloc(sizeof(char) * strlen(message) - i);
     while (message[i])
-        str[x++] = message[i++];
+      str[x++] = message[i++];
     return (str);
+  }
+  return ("\0");
 }
 
 static string cutMessage(string message) {
@@ -44,7 +52,6 @@ static string cutMessage(string message) {
         i++;
     }
     str[i] = '\n';
-    //  str[i + 1] = '\0';
     return (str);
 }
 
