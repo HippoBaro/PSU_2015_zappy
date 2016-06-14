@@ -11,7 +11,7 @@
 #include "MapTile.h"
 
 #ifndef _ZAPPY_MAPTILE_H_
-# define _ZAPPY_MAPTILE_H_
+#define _ZAPPY_MAPTILE_H_
 
 typedef struct	        s_map
 {

@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 14:48:54 2016 Christian Diaconu
-** Last update Mon Jun 13 01:31:51 2016 Christian Diaconu
+** Last update Tue Jun 14 14:45:12 2016 Christian Diaconu
 */
 
 #include <stdlib.h>
@@ -29,12 +29,21 @@
 #ifndef _H_ZAPPY_MAPTILE_
 #define _H_ZAPPY_MAPTILE_
 
+struct s_map;
+
 typedef struct		s_maptile
 {
   LinkedList(Item)	*ressources;
   LinkedList(Drone) *drones;
   int			    X;
   int			    Y;
+
+    /* FX Ptr - Game Logic */
+    struct s_maptile         *(*GetTopTile)(struct s_map *world, struct s_maptile *tile);
+    struct s_maptile         *(*GetBottomTile)(struct s_map *world, struct s_maptile *tile);
+    struct s_maptile         *(*GetLeftTile)(struct s_map *world, struct s_maptile *tile);
+    struct s_maptile         *(*GetRightTile)(struct s_map *world, struct s_maptile *tile);
+
 
     /* FX Ptr - Players */
     bool		    (*AddDrone)(struct s_maptile *tile, Drone *drone);
@@ -66,5 +75,11 @@ bool		add_ressource(struct s_maptile *tile, ItemType type);
 ItemType	get_ressource(struct s_maptile *tile, ItemType type);
 int		    count_ressources(struct s_maptile *tile);
 void		free_maptile(struct s_maptile *map);
+
+/* FX Ptr - Tile Geographics tools */
+struct s_maptile         *GetTopTile(struct s_map *world, struct s_maptile *tile);
+struct s_maptile         *GetBottomTile(struct s_map *world, struct s_maptile *tile);
+struct s_maptile         *GetLeftTile(struct s_map *world, struct s_maptile *tile);
+struct s_maptile         *GetRightTile(struct s_map *world, struct s_maptile *tile);
 
 #endif

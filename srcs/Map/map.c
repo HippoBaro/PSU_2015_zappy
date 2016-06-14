@@ -31,7 +31,7 @@ Map *CreateMap(int width, int height) {
   world->X = width;
   world->Y = height;
   world->Free = &DestroyMap;
-    world->GetTile = &GetTile;
+  world->GetTile = &GetTile;
 
   world->mapTiles = CreateLinkedList();
   while (i != width * height)

@@ -5,7 +5,7 @@
 ## Login   <diacon_c@epitech.net>
 ## 
 ## Started on  Sun Jun 12 17:02:15 2016 Christian Diaconu
-## Last update Mon Jun 13 13:07:10 2016 Christian Diaconu
+## Last update Mon Jun 13 21:02:08 2016 Christian Diaconu
 ##
 
 INC	=	includes/
@@ -17,6 +17,7 @@ SRC	=	srcs/Generic.c \
 		srcs/Map/maptile_players.c \
 		srcs/Map/maptile.c \
 		srcs/Map/map.c \
+		srcs/Map/map_sight.c \
 		srcs/Request/Request.c \
 		srcs/Response/Response.c \
 		srcs/Item/Item.c
@@ -27,9 +28,9 @@ $(NAME):
 		gcc srcs/main.c $(SRC) -I $(INC) -o $(NAME)
 
 maptest:
-		gcc -g unit-tests/maptile_ressources.c  $(SRC) -I $(INC) -o "1"
-		gcc -g unit-tests/maptile_player.c  $(SRC) -I $(INC) -o "2"
-		gcc -g unit-tests/map.c  $(SRC) -I $(INC) -o "3"
+		gcc -g -w unit-tests/maptile_ressources.c  $(SRC) -I $(INC) -o "1"
+		gcc -g -w unit-tests/maptile_player.c  $(SRC) -I $(INC) -o "2"
+		gcc -g -w unit-tests/map.c  $(SRC) -I $(INC) -o "3"
 
 fclean:		
 		rm -rf $(NAME)
