@@ -18,13 +18,14 @@ Request *CreateRequest(string message, int socketFd) {
     Request *ret;
 
     ret = xmalloc(sizeof(Request));
+    ret->type = UNKNOWN_REQUESTTYPE;
     ret->message = message;
     ret->socketFd = socketFd;
-    ret->requestedAction = UNKNOWN;
+    ret->requestedAction = UNKNOWN_ACTION;
     ret->actionSubject = NULL;
     ret->Free = &DestroyRequest;
+    ret->Parse = &ParseRequest;
     //todo set Validate
-    //todo set Parse
 
     return ret;
 }

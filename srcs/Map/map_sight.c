@@ -46,10 +46,10 @@ MapTile		*GetLeftTile(Map *world, MapTile *tile)
 {
   int		Y;
 
-  if (tile->Y = 0)
+  if (tile->Y == 0)
     Y = world->Y;
   else
-    Y = Y - 1;
+    Y = tile->Y - 1;
   return (world->GetTile(world, tile->X, Y));
 }
 
@@ -60,6 +60,6 @@ MapTile		*GetRightTile(Map *world, MapTile *tile)
   if (tile->Y == world->Y)
     Y = 0;
   else
-    Y = Y + 1;
+    Y = tile->Y + 1;
   return (world->GetTile(world, tile->X, Y));
 }

@@ -5,7 +5,7 @@
 ## Login   <diacon_c@epitech.net>
 ## 
 ## Started on  Sun Jun 12 17:02:15 2016 Christian Diaconu
-## Last update Mon Jun 13 21:02:08 2016 Christian Diaconu
+## Last update Tue Jun 14 15:07:15 2016 Christian Diaconu
 ##
 
 INC	=	includes/
@@ -20,7 +20,10 @@ SRC	=	srcs/Generic.c \
 		srcs/Map/map_sight.c \
 		srcs/Request/Request.c \
 		srcs/Response/Response.c \
-		srcs/Item/Item.c
+		srcs/Item/Item.c \
+		srcs/Request/Parser.c\
+		srcs/ZappyServer/ZappyServer.c\
+		srcs/ZappyServer/Configuration.c
 
 NAME	=	zappy_server
 
@@ -29,9 +32,9 @@ $(NAME):
 
 maptest:
 		gcc -g -w unit-tests/maptile_ressources.c  $(SRC) -I $(INC) -o "1"
-		gcc -g -w unit-tests/maptile_player.c  $(SRC) -I $(INC) -o "2"
-		gcc -g -w unit-tests/map.c  $(SRC) -I $(INC) -o "3"
-
+		gcc -g -w unit-tests/maptile_player.c unit-tests/unit-main.c  $(SRC) -I $(INC) -o "2"
+		gcc -g -w unit-tests/map.c unit-tests/unit-main.c $(SRC) -I $(INC) -o "3"
+		gcc -g -w unit-tests/Drones.c unit-tests/unit-main.c $(SRC) -I $(INC) -o "4"
 fclean:		
 		rm -rf $(NAME)
 
