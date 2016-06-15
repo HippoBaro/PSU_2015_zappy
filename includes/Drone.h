@@ -12,6 +12,8 @@
 typedef struct e_Drone {
     string      team;
     LinkedList(Item)  *inventory;
+    int         life;
+    int         level;
     int         socketFd;
     Rotation    rotation;
     void        *mapTile;

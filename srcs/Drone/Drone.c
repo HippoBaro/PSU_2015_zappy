@@ -79,6 +79,8 @@ Drone   *CreateDrone() {
     ret->inventory = CreateLinkedList();
     ret->mapTile = NULL;
     ret->team = NULL;
+    ret->life = 10;
+    ret->level = 1;
 
     ret->Move = &Move;
     ret->Look = &Look;

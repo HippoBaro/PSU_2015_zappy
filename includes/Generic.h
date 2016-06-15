@@ -53,6 +53,13 @@ typedef enum e_Destination {
     SUBSET
 }           Destination;
 
+typedef enum e_ZappyServerStatus {
+    UNINITIALIZED,
+    CONFIGURED,
+    STARTED,
+    SHUTDOWN
+}           ZappyServerStatus;
+
 typedef enum e_Action {
     UNKNOWN_ACTION = -1,
     TAKE = 0,
