@@ -2,7 +2,6 @@
 // Created by barrauh on 6/11/16.
 //
 
-#include <math.h>
 #include "Generic.h"
 
 static unsigned long on_heap = 0;
@@ -15,6 +14,15 @@ void *xmalloc(size_t size) {
     }
     on_heap += size;
     return ret;
+}
+
+void *xcalloc(size_t nelem, size_t elsize)
+{
+    void *ret;
+
+    ret = xmalloc (nelem * elsize);
+    bzero (ret, nelem * elsize);
+    return (ret);
 }
 
 void xfree(void *ptr, size_t size) {
@@ -30,8 +38,7 @@ static string vasprintf(const char *fmt, va_list ap)
     va_copy(apcpy, ap);
     size = (size_t) (vsnprintf(NULL, 0, fmt, apcpy) + 1);
     va_end(apcpy);
-    if (!(ret = calloc(1, size)))
-        return NULL;
+    ret = xcalloc(1, size);
     if (vsnprintf(ret, size, fmt, ap) == -1)
         return NULL;
     return ret;
@@ -61,7 +68,7 @@ static inline string GetCurrentUsage() {
 
     sizeInByte = (int)((double)(on_heap * CHAR_BIT) / 8);
     if (sizeInByte < 1)
-        return asprintf("MEM : %d b", abs((int) (on_heap * CHAR_BIT)));
+        return asprintf("MEM : %d b", (int) (on_heap * CHAR_BIT));
     if (sizeInByte < 1024)
         return asprintf("MEM : %d B", sizeInByte);
     else if (sizeInByte > 1024 && sizeInByte < 1048576)
@@ -115,7 +122,7 @@ string strappend(string dest, string source, Selection freeOption) {
     return new_str;
 }
 
-string tolowers(string str)
+string strtolower(string str)
 {
     int i;
 
