@@ -3,7 +3,6 @@
 //
 
 #include <zconf.h>
-
 #include "ZappyServer.h"
 
 static ZappyServer *Configure(ZappyServer *self, Configuration *config) {
@@ -24,6 +23,25 @@ void DestroyZappyServer(ZappyServer *self) {
     Log(INFORMATION, "Server was successfully destroyed.");
 }
 
+static ZappyServer *Start(ZappyServer *server) {
+    int i;
+
+    i = 1;
+    Log(SUCCESS, "Zappy server started.");
+    while (i <= 31) {
+        if (i != SIGKILL && i != SIGSTOP)
+            signal(i, lambda(void, (int sig), {
+                Log(WARNING, "Received signal. Interrupting server. Singal was : %s (SIG = %d)", strsignal(sig), sig);
+                server->ShutDown(server);
+                server->Free(server);
+                exit(EXIT_SUCCESS);
+            }));
+        ++i;
+    }
+    sleep(10);
+    return server->ShutDown(server);
+}
+
 ZappyServer *CreateZappyServer() {
     ZappyServer *ret;
 
@@ -31,9 +49,9 @@ ZappyServer *CreateZappyServer() {
     ret->world = NULL;
     ret->teams = CreateLinkedList();
     ret->Configure = &Configure;
-    ret->Start = lambda(ZappyServer *, (ZappyServer *server), {
-        Log(SUCCESS, "Zappy server started.");
-        sleep(10);
+    ret->Start = &Start;
+    ret->ShutDown = lambda(ZappyServer *, (ZappyServer *server), {
+        Log(WARNING, "Shutting down ZappyServer");
         return server;
     });
     ret->Free = &DestroyZappyServer;

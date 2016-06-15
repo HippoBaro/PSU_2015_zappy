@@ -14,6 +14,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <limits.h>
+#include <signal.h>
 
 #define lambda(ret, args, body) ({ ret l_anonymous_functions_name args body &l_anonymous_functions_name; })
 #define atomicdup(type, value) lambda(void *, (void), {type *tmp = xmalloc(sizeof(type));*tmp=value;return tmp;})

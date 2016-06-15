@@ -25,6 +25,7 @@ typedef struct              s_ZappyServer {
     int                     temporalDelay;
     struct s_ZappyServer    *(*Configure)(struct s_ZappyServer *self, Configuration *config);
     struct s_ZappyServer    *(*Start)(struct s_ZappyServer *self);
+    struct s_ZappyServer    *(*ShutDown)(struct s_ZappyServer *self);
     void                    (*Free)(struct s_ZappyServer *self);
 }                           ZappyServer;
 
