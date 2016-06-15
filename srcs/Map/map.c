@@ -36,19 +36,35 @@ static MapTile *GetTile(Map *world, int X, int Y) {
     return ret->data;
 }
 
+static Map  *SeedLoot(Map *self) {
+    long totalItems;
+
+    totalItems = 0;
+    self->mapTiles->forEachElements(self->mapTiles, lambda(void, (void *tile, void *data), {
+        if ((bool)randMinMax(0, 1) == true)
+            ((MapTile *)tile)->SeedLoot(tile);
+        totalItems += ((MapTile *)tile)->CountRessources(tile);
+        printf("ITEMS(%d,%d) : %s\n", ((MapTile *)tile)->X, ((MapTile *)tile)->Y, ((MapTile *)tile)->ListContent(tile));
+    }), NULL);
+    Log(INFORMATION, "The map was successfully populated with %ld items", totalItems);
+
+    return self;
+}
+
 Map *CreateMap(int width, int height) {
     Map *world;
     int i;
     int x;
     int y;
 
-    Log(INFORMATION, "Creating map of size %d x %d...", width, height);
+    Log(INFORMATION, "Creating map of size %d x %d and populating it with random resources...", width, height);
     i = x = y = 0;
     world = xmalloc(sizeof(Map));
     world->X = width;
     world->Y = height;
     world->Free = &DestroyMap;
     world->GetTile = &GetTile;
+    world->SeedLoot = &SeedLoot;
 
     world->mapTiles = CreateLinkedList();
     while (i != width * height) {
@@ -60,7 +76,7 @@ Map *CreateMap(int width, int height) {
             ++y;
         }
     }
-
+    world->SeedLoot(world);
     return (world);
 }
 

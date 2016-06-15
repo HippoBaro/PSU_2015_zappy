@@ -20,5 +20,6 @@ typedef struct s_Item {
 
 void        DestroyItem(Item *item);
 Item        *CreateItemFrom(ItemType type);
+Item        *CreateRandomItem();
 
 #endif //PSU_2015_ZAPPY_ITEM_H

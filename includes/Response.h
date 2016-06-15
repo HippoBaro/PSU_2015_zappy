@@ -9,7 +9,10 @@
 #include "Request.h"
 #include "LinkedList.h"
 
+typedef struct          s_ZappyServer ZappyServer;
+
 typedef struct e_Response {
+    ZappyServer         *server;
     Destination         destination;
     string              message;
     LinkedList(int)     *destFd;

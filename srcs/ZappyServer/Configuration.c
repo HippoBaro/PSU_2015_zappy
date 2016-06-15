@@ -11,7 +11,7 @@ static Configuration *ParseFrom(Configuration *config, int ac, char **av) {
 
     opterr = 0;
     Log(INFORMATION, "Parsing configuration...");
-    while ((c = getopt (ac, av, "p:x:y:c:t:n:")) != -1) {
+    while ((c = getopt (ac, av, "p:x:y:c:t:n:s:")) != -1) {
         if (c == 'p')
             config->port = atoi(optarg);
         else if (c == 'x')
@@ -22,6 +22,8 @@ static Configuration *ParseFrom(Configuration *config, int ac, char **av) {
             config->initialClientPerTeam = atoi(optarg);
         else if (c == 't')
             config->temporalDelay = atoi(optarg);
+        else if (c == 's')
+            config->seed = atomicdup(int, atoi(optarg));
         //todo handle teams
     }
 
@@ -49,6 +51,8 @@ void DestroyConfiguration(Configuration *config) {
     config->teamNames->freeAll(config->teamNames, lambda(void, (void *elem), {
         xfree(elem, strlen(elem));
     }));
+    if (config->seed != NULL)
+        xfree(config->seed, sizeof(int));
     config->teamNames->Free(config->teamNames);
     xfree(config, sizeof(Configuration));
 }
@@ -57,6 +61,11 @@ Configuration *CreateConfiguration() {
     Configuration *ret;
 
     ret = xmalloc(sizeof(Configuration));
+    ret->port = 0;
+    ret->seed = NULL;
+    ret->temporalDelay = 0;
+    ret->worldHeight = 0;
+    ret->worldWidth = 0;
     ret->teamNames = CreateLinkedList();
     ret->Validate = &Validate;
     ret->ParseFrom = &ParseFrom;

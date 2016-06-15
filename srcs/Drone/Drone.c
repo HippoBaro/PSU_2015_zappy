@@ -29,7 +29,7 @@ static void Rotate(struct e_Drone *self, Rotation rotation) {
     self->rotation = rotation;
 }
 
-static string ListInventory(struct e_Drone *self) {
+static string ListInventory(struct e_Drone *self) { //todo refactor to tak into account quantity
     string ret = NULL;
     bool isFirst;
 

@@ -14,6 +14,7 @@ typedef struct              s_Configuration {
     LinkedList(string)      *teamNames;
     int                     initialClientPerTeam;
     int                     temporalDelay;
+    int                     *seed;
     struct s_Configuration  *(*Validate)(struct s_Configuration *self);
     struct s_Configuration  *(*ParseFrom)(struct s_Configuration *self, int ac, char **av);
     void                    (*Free)(struct s_Configuration *self);

@@ -8,10 +8,6 @@
 ** Last update Tue Jun 14 14:45:12 2016 Christian Diaconu
 */
 
-#include <stdlib.h>
-#include "LinkedList.h"
-#include "Drone.h"
-
 /*	Map Scheme
 **
 **	Y <-------------|
@@ -29,14 +25,18 @@
 #ifndef _H_ZAPPY_MAPTILE_
 #define _H_ZAPPY_MAPTILE_
 
-struct s_map;
+#include "LinkedList.h"
+#include "Drone.h"
+
+typedef struct	    s_map Map;
 
 typedef struct		s_maptile
 {
-  LinkedList(Item)	*ressources;
-  LinkedList(Drone) *drones;
-  int			    X;
-  int			    Y;
+    Map             *map;
+    LinkedList(Item)	*ressources;
+    LinkedList(Drone) *drones;
+    int			    X;
+    int			    Y;
 
     /* FX Ptr - Game Logic */
     struct s_maptile         *(*GetTopTile)(Drone *drone, struct s_map *map);
@@ -52,9 +52,11 @@ typedef struct		s_maptile
     int		        (*CountDrones)(struct s_maptile *tile);
 
     /* FX Ptr - Ressources */
-    bool		    (*AddRessource)(struct s_maptile *tile, ItemType type);
+    bool		    (*AddRessource)(struct s_maptile *tile, Item *item);
     ItemType	    (*GetRessource)(struct s_maptile *tile, ItemType type);
     int		        (*CountRessources)(struct s_maptile *tile);
+    struct s_maptile *(*SeedLoot)( struct s_maptile *self);
+    string		    (*ListContent)(struct s_maptile *tile);
 
     /* FX Ptr - Generic */
     void            (*Free)(struct s_maptile *tile);
@@ -71,7 +73,7 @@ bool		remove_refplayer(struct s_maptile *tile, Drone *player);
 int		    count_players(struct s_maptile *tile);
 
 /* FX Ptr - Ressources */
-bool		add_ressource(struct s_maptile *tile, ItemType type);
+bool		add_ressource(MapTile *tile, Item *item);
 ItemType	get_ressource(struct s_maptile *tile, ItemType type);
 int		    count_ressources(struct s_maptile *tile);
 void		free_maptile(struct s_maptile *map);

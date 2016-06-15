@@ -7,7 +7,10 @@
 
 #include "Generic.h"
 
+typedef struct          s_ZappyServer ZappyServer;
+
 typedef struct          t_Request {
+    ZappyServer         *server;
     RequestType         type;
     string              message;
     int                 socketFd;

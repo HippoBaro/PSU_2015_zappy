@@ -11,21 +11,21 @@ static const struct s_item_string toStringItem[] =
         { SIBUR, "sibur" },
         { MENDIANE, "mendiane" },
         { PHIRAS, "phiras" },
-        { THYSTAME, "thystame" }
+        { THYSTAME, "thystame" },
+        { NOURRITURE, "nourriture" }
 };
 
 static string ToString(Item *item) {
     int  	i;
 
     i = 0;
-    while (i < 6)
+    while (i < 7)
     {
         if (toStringItem[i].type == item->type)
             return toStringItem[i].str;
         ++i;
     }
     Log(ERROR, "Called ToString on unknown item type.");
-    exit(EXIT_FAILURE);
     return "";
 }
 
@@ -46,6 +46,10 @@ static string ToString(Item *item) {
 
 void        DestroyItem(Item *item) {
     xfree(item, sizeof(Item));
+}
+
+Item        *CreateRandomItem() {
+    return CreateItemFrom((ItemType) randMinMax(0, 6));
 }
 
 Item        *CreateItemFrom(ItemType type) {

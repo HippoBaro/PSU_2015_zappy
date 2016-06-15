@@ -19,12 +19,8 @@ static bool        sorting_itemtype(void *elem, void *seeked_type)
     return (false);
 }
 
-bool		add_ressource(MapTile *tile, ItemType type)
+bool		add_ressource(MapTile *tile, Item *item)
 {
-    Item        *item;
-
-    item = CreateItemFrom(type);
-    // Log(INFORMATION, "Creating a new ressource");
     return (tile->ressources->addElemFront(tile->ressources, (void *)item));
 }
 

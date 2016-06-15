@@ -44,7 +44,7 @@ static string vasprintf(const char *fmt, va_list ap)
     return ret;
 }
 
-static string asprintf(const char *fmt, ...)
+string asprintf(const char *fmt, ...)
 {
     string ret;
     va_list ap;
@@ -133,4 +133,14 @@ string strtolower(string str)
         i++;
     }
     return(str);
+}
+
+int asymetricRandMinMax (int rolls, int min, int max) {
+    int i = -1;
+    int tmp, ret = max;
+    while (++i < rolls) {
+        tmp = randMinMax(min, max);
+        ret = tmp < ret ? tmp : ret;
+    }
+    return ret;
 }

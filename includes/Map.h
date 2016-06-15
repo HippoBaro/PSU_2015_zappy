@@ -8,18 +8,23 @@
 ** Last update Mon Jun 13 01:23:29 2016 Christian Diaconu
 */
 
+#ifndef _ZAPPY_MAP_H_
+#define _ZAPPY_MAP_H_
+
+#include "LinkedList.h"
 #include "MapTile.h"
 
-#ifndef _ZAPPY_MAPTILE_H_
-#define _ZAPPY_MAPTILE_H_
+typedef struct          s_ZappyServer ZappyServer;
 
 typedef struct	        s_map
 {
     int		            X;
     int		            Y;
+    ZappyServer         *server;
     LinkedList(MapTile) *mapTiles;
 
     /* Ptr FX */
+    Map                 *(*SeedLoot)(struct s_map *self);
     MapTile             *(*GetTile)(struct s_map *world, int X, int Y);
     void                (*Free)(struct s_map *map);
 }		                Map;

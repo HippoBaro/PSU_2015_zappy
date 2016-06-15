@@ -17,7 +17,8 @@
 #include <signal.h>
 
 #define lambda(ret, args, body) ({ ret l_anonymous_functions_name args body &l_anonymous_functions_name; })
-#define atomicdup(type, value) lambda(void *, (void), {type *tmp = xmalloc(sizeof(type));*tmp=value;return tmp;})
+#define atomicdup(type, value) lambda(type *, (void), {type *tmp = xmalloc(sizeof(type));*tmp=value;return tmp;})()
+#define randMinMax(low, high) (rand() % (high - low + 1) + low)
 
 #define COLOR_RED   "\x1B[31m"
 #define COLOR_GRN   "\x1B[32m"
@@ -89,7 +90,8 @@ typedef enum e_ItemType {
     SIBUR = 2,
     MENDIANE = 3,
     PHIRAS = 4,
-    THYSTAME = 5
+    THYSTAME = 5,
+    NOURRITURE = 6
 }           ItemType;
 
 typedef enum e_Rotation {
@@ -103,5 +105,7 @@ void Log(LogLevel level, const string log, ...);
 void *xmalloc(size_t size);
 void xfree(void *ptr, size_t size);
 string strappend(string dest, string source, Selection freeOption);
+int asymetricRandMinMax (int rolls, int min, int max);
+string asprintf(const char *fmt, ...);
 
 #endif //PSU_2015_ZAPPY_GENERIC_H
