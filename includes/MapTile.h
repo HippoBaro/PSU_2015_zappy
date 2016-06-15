@@ -39,10 +39,10 @@ typedef struct		s_maptile
   int			    Y;
 
     /* FX Ptr - Game Logic */
-    struct s_maptile         *(*GetTopTile)(struct s_map *world, struct s_maptile *tile);
-    struct s_maptile         *(*GetBottomTile)(struct s_map *world, struct s_maptile *tile);
-    struct s_maptile         *(*GetLeftTile)(struct s_map *world, struct s_maptile *tile);
-    struct s_maptile         *(*GetRightTile)(struct s_map *world, struct s_maptile *tile);
+    struct s_maptile         *(*GetTopTile)(Drone *drone, struct s_map *map);
+    struct s_maptile         *(*GetBottomTile)(Drone*drone, struct s_map *map);
+    struct s_maptile         *(*GetLeftTile)(Drone *drone, struct s_map *map);
+    struct s_maptile         *(*GetRightTile)(Drone *drone, struct s_map *map);
 
 
     /* FX Ptr - Players */
@@ -77,9 +77,9 @@ int		    count_ressources(struct s_maptile *tile);
 void		free_maptile(struct s_maptile *map);
 
 /* FX Ptr - Tile Geographics tools */
-struct s_maptile         *GetTopTile(struct s_map *world, struct s_maptile *tile);
-struct s_maptile         *GetBottomTile(struct s_map *world, struct s_maptile *tile);
-struct s_maptile         *GetLeftTile(struct s_map *world, struct s_maptile *tile);
-struct s_maptile         *GetRightTile(struct s_map *world, struct s_maptile *tile);
+struct s_maptile         *GetTopTile(Drone *drone, struct s_map *map);
+struct s_maptile         *GetBottomTile(Drone *drone, struct s_map *map);
+struct s_maptile         *GetLeftTile(Drone *drone, struct s_map *map);
+struct s_maptile         *GetRightTile(Drone *drone, struct s_map *map);
 
 #endif

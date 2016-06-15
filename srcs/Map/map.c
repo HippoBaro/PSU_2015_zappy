@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include <bits/stdio2.h>
 
+static bool        sorting_maptile(void *maptile_list, void *maptile_test)
+{
+    if (((MapTile *) maptile_list)->X == ((MapTile *) maptile_test)->X &&
+        ((MapTile *) maptile_list)->Y == ((MapTile *) maptile_test)->Y)
+        return (true);
+    return (false);
+}
+
 void DestroyMap(Map *map) {
     map->mapTiles->freeAll(map->mapTiles, (void (*)(void *)) &DestroyMapTile);
     map->mapTiles->Free(map->mapTiles);
@@ -11,14 +19,20 @@ void DestroyMap(Map *map) {
 }
 
 static MapTile *GetTile(Map *world, int X, int Y) {
-    t_list *ret;
+    MapTile *fake;
+    t_list  *ret;
 
+    fake = xmalloc(sizeof(MapTile));
+    fake->X = X;
+    fake->Y = Y;
     if (world == NULL)
         return (NULL);
     if (X > world->X || Y > world->Y)
         return (NULL);
-    if ((ret = world->mapTiles->getElementAtPos(world->mapTiles, X * Y)) == NULL)
+    ret = world->mapTiles->firstElementFromPredicate(world->mapTiles, &sorting_maptile, (void *) fake);
+    if (ret == NULL)
         return NULL;
+    xfree(fake, sizeof(MapTile));
     return ret->data;
 }
 

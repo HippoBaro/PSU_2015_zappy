@@ -5,7 +5,7 @@
 ## Login   <diacon_c@epitech.net>
 ## 
 ## Started on  Sun Jun 12 17:02:15 2016 Christian Diaconu
-## Last update Tue Jun 14 15:07:15 2016 Christian Diaconu
+## Last update Wed Jun 15 16:12:38 2016 Christian Diaconu
 ##
 
 INC	=	includes/
@@ -14,6 +14,7 @@ SRC	=	srcs/Generic.c \
 		srcs/Drone/Drone.c \
 		srcs/LinkedList/LinkedList.c \
 		srcs/Map/maptile_ressources.c \
+		srcs/Map/maptile_player_directions.c \
 		srcs/Map/maptile_players.c \
 		srcs/Map/maptile.c \
 		srcs/Map/map.c \
@@ -31,6 +32,7 @@ $(NAME):
 		gcc srcs/main.c $(SRC) -I $(INC) -o $(NAME)
 
 maptest:
+		gcc -g -w unit-tests/drone_directions.c  $(SRC) -I $(INC) -o "5"
 		gcc -g -w unit-tests/maptile_ressources.c  $(SRC) -I $(INC) -o "1"
 		gcc -g -w unit-tests/maptile_player.c unit-tests/unit-main.c  $(SRC) -I $(INC) -o "2"
 		gcc -g -w unit-tests/map.c unit-tests/unit-main.c $(SRC) -I $(INC) -o "3"

@@ -9,14 +9,19 @@
 #include "Item.h"
 #include "Response.h"
 
+/* No include of Map.h --> declare to gcc that the type exists elsewhere */
+struct s_map;
+
 typedef struct e_Drone {
     string      team;
     LinkedList(Item)  *inventory;
     int         socketFd;
     Rotation    rotation;
-    void        *mapTile;
-    void        (*Move)(struct e_Drone *self);
+    struct s_maptile        *mapTile;
+    void        (*Move)(struct e_Drone *self, struct s_map *map);
     void        (*Look)(struct e_Drone *self);
+    void        (*Turn90DegreesLeft)(struct e_Drone *self);
+    void        (*Turn90DegreesRight)(struct e_Drone *self);
     void        (*Rotate)(struct e_Drone *self, Rotation rotation);
     string      (*ListInventory)(struct e_Drone *self);
     void        (*Take)(struct e_Drone *self, Item *item);
@@ -28,7 +33,7 @@ typedef struct e_Drone {
     void        (*Free)(struct e_Drone *self);
 }               Drone;
 
-Drone   *CreateDrone();
+Drone   *CreateDrone(struct s_map *world, int StartX, int StartY);
 void    DestroyDrone(Drone *drone);
 
 #endif //PSU_2015_ZAPPY_DRONE_H

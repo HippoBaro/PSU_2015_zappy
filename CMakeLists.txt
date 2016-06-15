@@ -16,6 +16,7 @@ set(SOURCE_FILES
         srcs/Map/map.c
         srcs/Map/map_sight.c
         srcs/Map/maptile.c
+        srcs/Map/maptile_player_directions.c
         srcs/Map/maptile_players.c
         srcs/Map/maptile_ressources.c
         srcs/Request/Parser.c
@@ -41,7 +42,7 @@ set(UNIT_TEST_SOURCE
         unit-tests/main.c)
 
 set(MAIN_SOURCE
-        srcs/main.c)
+        srcs/main.c includes/MapSight.h)
 
 #set(UNIT_TEST TRUE)
 

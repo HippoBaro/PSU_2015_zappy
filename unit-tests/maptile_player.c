@@ -5,34 +5,36 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 18:37:28 2016 Christian Diaconu
-** Last update Tue Jun 14 15:00:51 2016 Christian Diaconu
+** Last update Wed Jun 15 15:23:14 2016 Christian Diaconu
 */
 
 #include "LinkedList.h"
-#include "MapTile.h"
+#include "Map.h"
 #include "Drone.h"
 
 #define    META_X            24
 #define META_Y            42
 #define RESSOURCES_TO_CREATE    5
 
-void create_players(MapTile *tile) {
+void create_players(Map *world, MapTile *tile) {
   int i;
 
   i = 0;
   while (i != RESSOURCES_TO_CREATE) {
     printf("  ---> Player (null) +1\n");
-    tile->AddDrone(tile, CreateDrone());
+    tile->AddDrone(tile, CreateDrone(world, 0, 0));
     i++;
   }
 }
 
 void testMapTileDrone() {
+  Map     *world;
   MapTile *maptile;
   Drone *player;
 
+  world = CreateMap(5, 5);
   maptile = CreateMapTile(META_X, META_Y);
-  player = CreateDrone();
+  player = CreateDrone(world, 0, 0);
   if (maptile == NULL) {
     printf("---> Creating a maptile : KO\n");
     return;

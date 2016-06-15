@@ -4,6 +4,8 @@
 
 #include <string.h>
 #include <Response.h>
+#include <MapTile.h>
+#include <Map.h>
 #include "Drone.h"
 
 void DestroyDrone(Drone *drone) {
@@ -14,8 +16,9 @@ void DestroyDrone(Drone *drone) {
     xfree(drone, sizeof(Drone));
 }
 
-static void Move(struct e_Drone *self) {
-    //todo Move Drone
+static void Move(struct e_Drone *self, struct s_map *map) {
+    //todo <--> Communication with server
+    self->mapTile = self->mapTile->GetTopTile(self, map);
 }
 
 static void Look(struct e_Drone *self) {
@@ -63,6 +66,22 @@ static void Die (struct e_Drone *self) {
     //todo remove self from mapTile & Free self
 }
 
+static void Turn90DegreesLeft (struct e_Drone *self) {
+    //todo <--> Communication with server
+    if (self->rotation - 90 == 0)
+        self->rotation = 270;
+    else
+        self->rotation -= 90;
+}
+
+static void Turn90DegreesRight (struct e_Drone *self) {
+    //todo <--> Communication with server
+    if (self->rotation + 90 == 360)
+        self->rotation = 0;
+    else
+        self->rotation += 90;
+}
+
 static Response *Broadcast(struct e_Drone *self, string message) {
     Response    *ret;
 
@@ -72,7 +91,7 @@ static Response *Broadcast(struct e_Drone *self, string message) {
     return ret;
 }
 
-Drone   *CreateDrone() {
+Drone   *CreateDrone(struct s_map *world, int StartX, int StartY) {
     Drone   *ret;
 
     ret = xmalloc(sizeof(Drone));
@@ -83,6 +102,8 @@ Drone   *CreateDrone() {
     ret->Move = &Move;
     ret->Look = &Look;
     ret->Rotate = &Rotate;
+    ret->Turn90DegreesLeft = &Turn90DegreesLeft;
+    ret->Turn90DegreesRight = &Turn90DegreesRight;
     ret->ListInventory = &ListInventory;
     ret->Take = &Take;
     ret->Drop = &Drop;
@@ -90,6 +111,9 @@ Drone   *CreateDrone() {
     ret->Fork = &Fork;
     ret->Die = &Die;
     ret->Free = &DestroyDrone;
+
+    ret->mapTile = world->GetTile(world, StartX, StartY);
+    ret->rotation = TOP;
 
     return ret;
 }

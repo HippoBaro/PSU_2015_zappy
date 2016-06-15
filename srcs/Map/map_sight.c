@@ -16,48 +16,48 @@
 ** There all based on the map it-self :
 **
 **				 TOP
-**	LEFT			  X			RIGHT
+**	LEFT		  X			RIGHT
 **				BOTTOM
 */
 
-MapTile		*GetTopTile(Map *world, MapTile *tile)
+MapTile *Math_GetTopTile(Map *world, MapTile *tile)
 {
-  int		X;
+  int X;
 
   if (tile->X == 0)
-    X = world->X;
-  else
-    X = tile->X + 1;
-  return (world->GetTile(world, X, tile->Y));
-}
-
-MapTile		*GetBottomTile(Map *world, MapTile *tile)
-{
-  int		X;
-
-  if (tile->X == world->X)
-    X = 0;
+    X = world->X - 1;
   else
     X = tile->X - 1;
   return (world->GetTile(world, X, tile->Y));
 }
 
-MapTile		*GetLeftTile(Map *world, MapTile *tile)
+MapTile *Math_GetBottomTile(Map *world, MapTile *tile)
 {
-  int		Y;
+  int X;
+
+  if (tile->X == (world->X - 1))
+    X = 0;
+  else
+    X = tile->X + 1;
+  return (world->GetTile(world, X, tile->Y));
+}
+
+MapTile *Math_GetLeftTile(Map *world, MapTile *tile)
+{
+  int Y;
 
   if (tile->Y == 0)
-    Y = world->Y;
+    Y = world->Y - 1;
   else
     Y = tile->Y - 1;
   return (world->GetTile(world, tile->X, Y));
 }
 
-MapTile		*GetRightTile(Map *world, MapTile *tile)
+MapTile *Math_GetRightTile(Map *world, MapTile *tile)
 {
-  int		Y;
+  int Y;
 
-  if (tile->Y == world->Y)
+  if (tile->Y == (world->Y -1))
     Y = 0;
   else
     Y = tile->Y + 1;

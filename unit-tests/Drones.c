@@ -4,9 +4,11 @@
 
 #include <Drone.h>
 #include <assert.h>
+#include "Map.h"
 
 void TestDrone() {
-    Drone   *drone = CreateDrone();
+    Map     *world = CreateMap(5, 5);
+    Drone   *drone = CreateDrone(world, 0, 0);
     string  inventory;
 
     printf("List inventory : %s\n", inventory = drone->ListInventory(drone));

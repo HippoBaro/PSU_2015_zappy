@@ -86,8 +86,10 @@ typedef enum e_ItemType {
 }           ItemType;
 
 typedef enum e_Rotation {
-    LEFT = 0,
-    RIGHT = 1
+    TOP = 0,
+    RIGHT = 90,
+    BOTTOM = 180,
+    LEFT = 270
 }               Rotation;
 
 void Log(LogLevel level, const string log, ...);
