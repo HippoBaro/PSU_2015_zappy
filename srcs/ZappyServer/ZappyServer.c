@@ -31,7 +31,7 @@ static ZappyServer *Start(ZappyServer *server) {
     while (i <= 31) {
         if (i != SIGKILL && i != SIGSTOP)
             signal(i, lambda(void, (int sig), {
-                Log(WARNING, "Received signal. Interrupting server. Singal was : %s (SIG = %d)", strsignal(sig), sig);
+                Log(WARNING, "Received signal. Interrupting server. Signal was : %s (SIG = %d)", strsignal(sig), sig);
                 server->ShutDown(server);
                 server->Free(server);
                 exit(EXIT_SUCCESS);
