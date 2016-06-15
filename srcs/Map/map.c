@@ -42,6 +42,7 @@ Map *CreateMap(int width, int height) {
     int x;
     int y;
 
+    Log(INFORMATION, "Creating map of size %d x %d...", width, height);
     i = x = y = 0;
     world = xmalloc(sizeof(Map));
     world->X = width;
@@ -60,7 +61,6 @@ Map *CreateMap(int width, int height) {
         }
     }
 
-    Log(INFORMATION, "Created map of size WIDTH : %d and HEIGHT : %d", width, height);
     return (world);
 }
 

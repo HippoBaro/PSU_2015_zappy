@@ -20,6 +20,8 @@ typedef struct              s_Configuration {
 }                           Configuration;
 
 typedef struct              s_ZappyServer {
+    ZappyServerStatus       status;
+    Configuration           *configuration;
     Map                     *world;
     LinkedList(string)      *teams;
     int                     temporalDelay;

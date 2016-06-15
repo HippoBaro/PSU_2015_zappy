@@ -98,6 +98,8 @@ Drone   *CreateDrone(struct s_map *world, int StartX, int StartY) {
     ret->inventory = CreateLinkedList();
     ret->mapTile = NULL;
     ret->team = NULL;
+    ret->life = 10;
+    ret->level = 1;
 
     ret->Move = &Move;
     ret->Look = &Look;
