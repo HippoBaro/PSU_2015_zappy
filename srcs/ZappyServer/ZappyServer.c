@@ -51,7 +51,7 @@ ZappyServer *CreateZappyServer() {
     ret->Configure = &Configure;
     ret->Start = &Start;
     ret->ShutDown = lambda(ZappyServer *, (ZappyServer *server), {
-        Log(WARNING, "Shutting down ZappyServer");
+        Log(WARNING, "Shutting down Zappy Server");
         return server;
     });
     ret->Free = &DestroyZappyServer;
