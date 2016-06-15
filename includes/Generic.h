@@ -16,12 +16,7 @@
 #include <limits.h>
 
 #define lambda(ret, args, body) ({ ret l_anonymous_functions_name args body &l_anonymous_functions_name; })
-
-#define atomicdup(type, value) lambda(void *, (void), { \
-    type *tmp = xmalloc(sizeof(type));                  \
-    *tmp = value;   \
-    return tmp; \
-})
+#define atomicdup(type, value) lambda(void *, (void), {type *tmp = xmalloc(sizeof(type));*tmp=value;return tmp;})
 
 #define COLOR_RED   "\x1B[31m"
 #define COLOR_GRN   "\x1B[32m"
