@@ -69,5 +69,5 @@ int		main()
     }
   else
     printf("  ---> Ressource count : OK\n");
-  DestroyMapTile(maptile);
+  maptile->Free(maptile);
 }

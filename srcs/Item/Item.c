@@ -45,7 +45,7 @@ static string ToString(Item *item) {
 }*/
 
 void        DestroyItem(Item *item) {
-    free(item);
+    xfree(item, sizeof(Item));
 }
 
 Item        *CreateItemFrom(ItemType type) {

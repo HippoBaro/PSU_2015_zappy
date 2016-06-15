@@ -8,6 +8,12 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <ctype.h>
+#include <time.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <limits.h>
 
 #define lambda(ret, args, body) ({ ret l_anonymous_functions_name args body &l_anonymous_functions_name; })
 
@@ -16,6 +22,15 @@
     *tmp = value;   \
     return tmp; \
 })
+
+#define COLOR_RED   "\x1B[31m"
+#define COLOR_GRN   "\x1B[32m"
+#define COLOR_YEL   "\x1B[33m"
+#define COLOR_BLU   "\x1B[34m"
+#define COLOR_MAG   "\x1B[35m"
+#define COLOR_CYN   "\x1B[36m"
+#define COLOR_WHT   "\x1B[37m"
+#define COLOR_RESET "\x1B[0m"
 
 typedef char * string;
 
@@ -26,6 +41,7 @@ typedef enum e_bool {
 
 typedef enum e_LogLevel {
     INFORMATION,
+    SUCCESS,
     WARNING,
     ERROR
 }           LogLevel;
@@ -78,8 +94,9 @@ typedef enum e_Rotation {
     RIGHT = 1
 }               Rotation;
 
-void Log(LogLevel level, const string log);
+void Log(LogLevel level, const string log, ...);
 void *xmalloc(size_t size);
+void xfree(void *ptr, size_t size);
 string strappend(string dest, string source, Selection freeOption);
 
 #endif //PSU_2015_ZAPPY_GENERIC_H

@@ -8,12 +8,12 @@
 
 void        DestroyResponse(Response *response) {
     response->destFd->freeAll(response->destFd, lambda(void, (void *elem), {
-        free(elem);
+        xfree(elem, sizeof(int));
     }));
     response->destFd->Free(response->destFd);
     if (response->message != NULL)
-        free(response->message);
-    free(response);
+        xfree(response->message, strlen(response->message));
+    xfree(response, sizeof(Response));
 }
 
 //Create a response and populate the destination file descriptor with the one that the request came from.

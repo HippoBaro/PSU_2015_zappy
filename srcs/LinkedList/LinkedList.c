@@ -86,9 +86,9 @@ LinkedList *CreateLinkedList() {
 static void LinkedListDestroy(LinkedList *this) {
     if (countLinkedList(this) > 0)
         Log(WARNING, "You're freeing a non-empty linkedList !");
-    free(this->myList);
+    xfree(this->myList, sizeof(t_list));
     this->myList = NULL;
-    free(this);
+    xfree(this, sizeof(LinkedList));
 }
 
 static int countLinkedList(LinkedList *this) {
@@ -217,7 +217,7 @@ static bool freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list 
             it->next->prev = it->prev;
             if (freeFunc != NULL)
                 freeFunc(it->data);
-            free(it);
+            xfree(it, sizeof(t_list));
             return (true);
         }
         it = it->next;
@@ -234,7 +234,7 @@ static bool freeElemFront(LinkedList *this, void (*freeFunc)(void *elem)) {
         it->next->prev = it->prev;
         if (freeFunc != NULL)
             freeFunc(it->data);
-        free(it);
+        xfree(it, sizeof(t_list));
         return (true);
     }
     return (false);
@@ -249,7 +249,7 @@ static bool freeElemEnd(LinkedList *this, void (*freeFunc)(void *elem)) {
         it->next->prev = it->prev;
         if (freeFunc != NULL)
             freeFunc(it->data);
-        free(it);
+        xfree(it, sizeof(t_list));
         return (true);
     }
     return (false);
@@ -266,7 +266,7 @@ static bool freeElemAtPos(LinkedList *this, int pos, void (*freeFunc)(void *elem
             it->prev->next = it->next;
             it->next->prev = it->prev;
             freeFunc(it->data);
-            free(it);
+            xfree(it, sizeof(t_list));
             return (true);
         }
         it = it->next;
@@ -286,7 +286,7 @@ static bool freeAll(LinkedList *this, void (*freeFunc)(void *elem)) {
         tmp = it->next;
         if (freeFunc != NULL && it->data != NULL)
             freeFunc(it->data);
-        free(it);
+        xfree(it, sizeof(t_list));
         it = tmp;
     }
     return (true);

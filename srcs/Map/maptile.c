@@ -12,20 +12,19 @@
 #include "LinkedList.h"
 #include "Drone.h"
 
-void        DestroyMapTile(MapTile *map) {
-    map->drones->freeAll(map->drones, (void (*)(void *)) &DestroyDrone);
-    map->drones->Free(map->drones);
-    map->ressources->freeAll(map->ressources, (void (*)(void *)) &DestroyItem);
-    map->ressources->Free(map->ressources);
-    free(map);
+void        DestroyMapTile(MapTile *mapTile) {
+    mapTile->drones->freeAll(mapTile->drones, (void (*)(void *)) &DestroyDrone);
+    mapTile->drones->Free(mapTile->drones);
+    mapTile->ressources->freeAll(mapTile->ressources, (void (*)(void *)) &DestroyItem);
+    mapTile->ressources->Free(mapTile->ressources);
+    xfree(mapTile, sizeof(MapTile));
 }
 
 MapTile	    *CreateMapTile(int X, int Y)
 {
   MapTile	*tile;
 
-  if ((tile = malloc(sizeof(MapTile))) == NULL)
-    return (NULL);
+  tile = xmalloc(sizeof(MapTile));
 
   tile->X = X;
   tile->Y = Y;

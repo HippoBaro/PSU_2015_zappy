@@ -10,6 +10,7 @@ static Configuration *ParseFrom(Configuration *config, int ac, char **av) {
     int index;
 
     opterr = 0;
+    Log(INFORMATION, "Parsing configuration...");
     while ((c = getopt (ac, av, "p:x:y:c:t:n:")) != -1) {
         if (c == 'p')
             config->port = atoi(optarg);
@@ -40,15 +41,16 @@ static Configuration   *Validate(Configuration *config) {
         Log(ERROR, "Illegal port number.");
     //todo validate team names
     //todo validate timeDelay
+    Log(INFORMATION, "Configuration was successfully validated.");
     return config;
 }
 
 void DestroyConfiguration(Configuration *config) {
     config->teamNames->freeAll(config->teamNames, lambda(void, (void *elem), {
-        free(elem);
+        xfree(elem, strlen(elem));
     }));
     config->teamNames->Free(config->teamNames);
-    free(config);
+    xfree(config, sizeof(Configuration));
 }
 
 Configuration *CreateConfiguration() {

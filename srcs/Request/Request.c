@@ -6,12 +6,12 @@
 
 static void    DestroyRequest(Request *request) {
     if (request->message != NULL) {
-        free(request->message);
+        xfree(request->message, strlen(request->message));
     }
     if (request->actionSubject != NULL) {
-        free(request->actionSubject);
+        xfree(request->actionSubject, strlen(request->actionSubject));
     }
-    free(request);
+    xfree(request, sizeof(Request));
 }
 
 Request *CreateRequest(string message, int socketFd) {

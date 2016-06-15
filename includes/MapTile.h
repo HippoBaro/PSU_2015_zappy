@@ -62,7 +62,7 @@ typedef struct		s_maptile
 
 /* init_map in maptile.c */
 MapTile       *CreateMapTile(int X, int Y);
-void        DestroyMapTile(MapTile *map);
+void        DestroyMapTile(MapTile *mapTile);
 
 /* FX Ptr - Players */
 bool		add_refplayer(struct s_maptile *tile, Drone *player);

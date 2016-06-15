@@ -8,10 +8,10 @@
 
 void DestroyDrone(Drone *drone) {
     if (drone->team != NULL)
-        free(drone);
+        xfree(drone->team, strlen(drone->team));
     drone->inventory->freeAll(drone->inventory, (void (*)(void *)) &DestroyItem); //Todo set item destructor
     drone->inventory->Free(drone->inventory);
-    free(drone);
+    xfree(drone, sizeof(Drone));
 }
 
 static void Move(struct e_Drone *self) {
