@@ -44,9 +44,6 @@ static Map  *SeedLoot(Map *self) {
         if ((bool)randMinMax(0, 1) == true)
             ((MapTile *)tile)->SeedLoot(tile);
         totalItems += ((MapTile *)tile)->CountRessources(tile);
-        string str = ((MapTile *)tile)->ListContent(tile);
-        printf("ITEMS(%d,%d) : %s\n", ((MapTile *)tile)->X, ((MapTile *)tile)->Y, str);
-        xfree(str, strlen(str));
     }), NULL);
     Log(INFORMATION, "The map was successfully populated with %ld items", totalItems);
 
