@@ -21,6 +21,18 @@ static void Move(struct e_Drone *self, struct s_map *map) {
     self->mapTile = self->mapTile->GetTopTile(self, map);
 }
 
+static void GoLeft(struct e_Drone *self, struct s_map *map) {
+    self->mapTile = self->mapTile->GetLeftTile(self, map);
+}
+
+static void GoRight(struct e_Drone *self, struct s_map *map) {
+    self->mapTile = self->mapTile->GetRightTile(self, map);
+}
+
+static void GoBackwards(struct e_Drone *self, struct s_map *map) {
+    self->mapTile = self->mapTile->GetBottomTile(self, map);
+}
+
 static void Look(struct e_Drone *self) {
     //todo Look around
 }
@@ -102,10 +114,14 @@ Drone   *CreateDrone(struct s_map *world, int StartX, int StartY) {
     ret->level = 1;
 
     ret->Move = &Move;
+    ret->GoRight = &GoRight;
+    ret->GoBackwards = &GoBackwards;
+    ret->GoLeft = &GoLeft;
     ret->Look = &Look;
     ret->Rotate = &Rotate;
     ret->Turn90DegreesLeft = &Turn90DegreesLeft;
     ret->Turn90DegreesRight = &Turn90DegreesRight;
+    ret->GetDroneSight = &GetDroneSight;
     ret->ListInventory = &ListInventory;
     ret->Take = &Take;
     ret->Drop = &Drop;

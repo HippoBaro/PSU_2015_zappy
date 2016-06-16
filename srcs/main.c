@@ -12,5 +12,6 @@ int main(int ac, char **av) {
                     ->Validate(server->configuration))
             ->Start(server)
             ->Free(server);
+
     return 0;
 }

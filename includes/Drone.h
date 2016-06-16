@@ -20,7 +20,12 @@ typedef struct e_Drone {
     int         socketFd;
     Rotation    rotation;
     struct s_maptile        *mapTile;
+
     void        (*Move)(struct e_Drone *self, struct s_map *map);
+    void        (*GoRight)(struct e_Drone *self, struct s_map *map);
+    void        (*GoLeft)(struct e_Drone *self, struct s_map *map);
+    string      (*GetDroneSight)(struct e_Drone *self, struct s_map *map);
+    void        (*GoBackwards)(struct e_Drone *self, struct s_map *map);
     void        (*Look)(struct e_Drone *self);
     void        (*Turn90DegreesLeft)(struct e_Drone *self);
     void        (*Turn90DegreesRight)(struct e_Drone *self);
@@ -33,9 +38,14 @@ typedef struct e_Drone {
     void        (*Die)(struct e_Drone *self);
     Response    *(*Broadcast)(struct e_Drone *self, string message);
     void        (*Free)(struct e_Drone *self);
+
+    /* Unfair functions that WILL NOT be use by the clients, for server only [internal purposes] */
+
+
 }               Drone;
 
-Drone   *CreateDrone(struct s_map *world, int StartX, int StartY);
-void    DestroyDrone(Drone *drone);
+string      GetDroneSight(Drone *self, struct s_map *map);
+Drone       *CreateDrone(struct s_map *world, int StartX, int StartY);
+void        DestroyDrone(Drone *drone);
 
 #endif //PSU_2015_ZAPPY_DRONE_H

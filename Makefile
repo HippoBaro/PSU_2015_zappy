@@ -5,7 +5,7 @@
 ## Login   <diacon_c@epitech.net>
 ## 
 ## Started on  Sun Jun 12 17:02:15 2016 Christian Diaconu
-## Last update Wed Jun 15 16:12:38 2016 Christian Diaconu
+## Last update Thu Jun 16 21:09:26 2016 Christian Diaconu
 ##
 
 INC	=	includes/
@@ -15,6 +15,7 @@ SRC	=	srcs/Generic.c \
 		srcs/LinkedList/LinkedList.c \
 		srcs/Map/maptile_ressources.c \
 		srcs/Map/maptile_player_directions.c \
+		srcs/Map/maptile_player_sight.c \
 		srcs/Map/maptile_players.c \
 		srcs/Map/maptile.c \
 		srcs/Map/map.c \

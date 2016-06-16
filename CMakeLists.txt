@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(PSU_2015_zappy)
 
-set(CMAKE_C_FLAGS "-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-function")
+set(CMAKE_C_FLAGS " -g -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-function")
 
 include_directories("includes/")
 
@@ -17,6 +17,7 @@ set(SOURCE_FILES
         srcs/Map/map_sight.c
         srcs/Map/maptile.c
         srcs/Map/maptile_player_directions.c
+        srcs/Map/maptile_player_sight.c
         srcs/Map/maptile_players.c
         srcs/Map/maptile_ressources.c
         srcs/Request/Parser.c
