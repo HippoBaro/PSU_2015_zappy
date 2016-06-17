@@ -117,7 +117,7 @@ static bool checkServerConnectionAndMessage(void *elem, void *userData) {
     sd = ((t_client *) elem)->_sock;
     if (FD_ISSET(sd, &someData->rfds)) {
         if ((valread = read(sd, buffer, 1024)) == 0) {
-            someData->req = CreateRequest("-", sd);
+            someData->req = CreateRequest(strdup("-"), sd);
             Log(INFORMATION, "Host disconnected , ip %s , port %d \n",
                 inet_ntoa(((t_client *) elem)->_adressage.sin_addr),
                 ntohs(((t_client *) elem)->_adressage.sin_port));
@@ -174,9 +174,10 @@ static Request *Receive(struct Network *this, int timeout) {
         }
         tmp = this->_clientSock->firstElementFromPredicate(this->_clientSock, &checkServerConnectionAndMessage, someData);
         if (tmp != NULL) {
-            this->_clientSock->freeThisElem(this->_clientSock, lambda(void, (void *data), {
-                free((t_client *) data);
-            }), tmp);
+            if (someData->req->message != NULL && someData->req->message[0] == '-')
+                this->_clientSock->freeThisElem(this->_clientSock, lambda(void, (void *data), {
+                    free((t_client *) data);
+                }), tmp);
             req = CreateRequest(someData->req->message, someData->req->socketFd);
             xfree(someData, sizeof(t_dataServer));
             return (req);
@@ -222,11 +223,11 @@ int main(int ac, char **av) {
     Request *req;
 
     if (strcmp(av[1], "server") == 0) {
-        net = CreateNetwork(SERVER, 8080, NULL);
+        net = CreateNetwork(SERVER, 1024, NULL);
         toto = malloc(sizeof(Response));
         toto->destFd = 4;
         toto->message = "Coucou\n";
-        while (net->_clientSock->countLinkedList(net->_clientSock) < 5) {
+        while (net->_clientSock->countLinkedList(net->_clientSock) < 3) {
             req = net->Receive(net, 1);
             if (req != NULL) {
                 req->Free(req);
