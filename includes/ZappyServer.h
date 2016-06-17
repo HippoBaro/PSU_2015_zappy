@@ -6,6 +6,7 @@
 #define PSU_2015_ZAPPY_ZAPPYSERVER_H
 
 #include <Map.h>
+#include "Network.h"
 
 typedef struct              s_Configuration {
     int                     port;
@@ -26,6 +27,7 @@ typedef struct              s_ZappyServer {
     Map                     *world;
     LinkedList(string)      *teams;
     int                     temporalDelay;
+    Network                 *network;
     struct s_ZappyServer    *(*Configure)(struct s_ZappyServer *self, Configuration *config);
     struct s_ZappyServer    *(*Start)(struct s_ZappyServer *self);
     struct s_ZappyServer    *(*ShutDown)(struct s_ZappyServer *self);

@@ -50,7 +50,7 @@ typedef struct Network {
     Request *(*Receive)(struct Network *this, int timeout);
     bool (*Send)(struct e_Response *rep);
     void (*DeleteNetwork)(struct Network *this);
-} Network;
+}               Network;
 
 Network *CreateNetwork(NetworkType type, uint16_t port, char *addr);
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 2.8)
 project(PSU_2015_zappy)
 
 set(CMAKE_C_FLAGS " -g -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-function")
@@ -26,6 +26,7 @@ set(SOURCE_FILES
 
         includes/Map.h
         includes/MapTile.h
+        includes/MapSight.h
         includes/Drone.h
         includes/Generic.h
         includes/LinkedList.h
@@ -43,9 +44,8 @@ set(UNIT_TEST_SOURCE
         unit-tests/main.c)
 
 set(MAIN_SOURCE
-        srcs/Network/Network.c
-        #srcs/main.c includes/MapSight.h
-        )
+        srcs/Network/Network.c)
+        #srcs/main.c)
 
 #set(UNIT_TEST TRUE)
 

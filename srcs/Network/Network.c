@@ -206,12 +206,12 @@ static Request *Receive(struct Network *this, int timeout) {
 }
 
 static bool Send(struct e_Response *rep) {
-    if (send(rep->fd, rep->message, strlen(rep->message), 0) != (ssize_t) strlen(rep->message)) {
-        Log(WARNING, "Message to socket: %d could not be sent", rep->fd);
+    if (send(rep->destFd, rep->message, strlen(rep->message), 0) != (ssize_t) strlen(rep->message)) {
+        Log(WARNING, "Message to socket: %d could not be sent", rep->destFd);
         return (false);
     }
     else {
-        Log(SUCCESS, "Message to socket: %d have been sent successfully", rep->fd);
+        Log(SUCCESS, "Message to socket: %d have been sent successfully", rep->destFd);
         return (true);
     }
 }
@@ -224,7 +224,7 @@ int main(int ac, char **av) {
     if (strcmp(av[1], "server") == 0) {
         net = CreateNetwork(SERVER, 8080, NULL);
         toto = malloc(sizeof(Response));
-        toto->fd = 4;
+        toto->destFd = 4;
         toto->message = "Coucou\n";
         while (net->_clientSock->countLinkedList(net->_clientSock) < 5) {
             req = net->Receive(net, 1);
@@ -237,12 +237,13 @@ int main(int ac, char **av) {
         net->DeleteNetwork(net);
     }
     else if (strcmp(av[1], "client") == 0) {
-        net = CreateNetwork(CLIENT, 8080, "127.0.0.1");
+        net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
         while (1) {
-            req = net->Receive(net, 1);
-            if (req != NULL) {
-                req->Free(req);
-            }
+            Response *tmp = CreateEmptyResponse();
+            tmp->destFd = net->_sock;
+            tmp->message = strdup("Test !!!");
+            net->Send(tmp);
+            sleep(1);
         }
         net->DeleteNetwork(net);
     }
