@@ -7,7 +7,7 @@ include_directories("includes/")
 
 set(SOURCE_FILES
         srcs/LinkedList/LinkedList.c
-        #srcs/Network/Network.c
+        srcs/Network/Network.c
         srcs/Request/Request.c
         srcs/Generic.c
         srcs/Drone/Drone.c
@@ -43,7 +43,9 @@ set(UNIT_TEST_SOURCE
         unit-tests/main.c)
 
 set(MAIN_SOURCE
-        srcs/main.c includes/MapSight.h)
+        srcs/Network/Network.c
+        #srcs/main.c includes/MapSight.h
+        )
 
 #set(UNIT_TEST TRUE)
 

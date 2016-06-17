@@ -49,7 +49,9 @@ typedef struct LinkedList {
     bool        (*removeElemAtPos)(struct LinkedList *this, int pos);
 
     // Remove and free the element passed as parameter from the list
-    bool        (*freeThisElem)(struct LinkedList *this, void (*freeFunc)(void *elem), t_list *elem);
+    bool        (*freeThisElem)(struct LinkedList *this, void (*freeFunc)(void *data), t_list *elem);
+
+    bool        (*freeThisElemWithData)(struct LinkedList *this, void (*freeFunc)(void *elem), t_list *elem);
 
     // Remove and free the element at the top of the list
     bool        (*freeElemFront)(struct LinkedList *this, void (*freeFunc)(void *elem));
@@ -80,6 +82,10 @@ typedef struct LinkedList {
     void        (*forEachElements)(struct LinkedList *this, void (*forEachFunc)(void *element, void *userData),
                                    void *someData);
 
+    void (*forEachElementsReloadIterator)(struct LinkedList *this, bool (*forEachFunc)(void *element, void *userData),
+                                          void *someData);
+
+    /// Destroy and free the racine linkedlist element itself
     void        (*Free)(struct LinkedList *this);
 } LinkedList;
 
