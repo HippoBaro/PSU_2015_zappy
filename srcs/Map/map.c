@@ -4,14 +4,6 @@
 #include <stdio.h>
 #include <bits/stdio2.h>
 
-static bool        sorting_maptile(void *maptile_list, void *maptile_test)
-{
-    if (((MapTile *) maptile_list)->X == ((MapTile *) maptile_test)->X &&
-        ((MapTile *) maptile_list)->Y == ((MapTile *) maptile_test)->Y)
-        return (true);
-    return (false);
-}
-
 void DestroyMap(Map *map) {
     map->mapTiles->freeAll(map->mapTiles, (void (*)(void *)) &DestroyMapTile);
     map->mapTiles->Free(map->mapTiles);
@@ -19,20 +11,20 @@ void DestroyMap(Map *map) {
 }
 
 static MapTile *GetTile(Map *world, int X, int Y) {
-    MapTile *fake;
     t_list  *ret;
 
-    fake = xmalloc(sizeof(MapTile));
-    fake->X = X;
-    fake->Y = Y;
     if (world == NULL)
         return (NULL);
     if (X > world->X || Y > world->Y)
         return (NULL);
-    ret = world->mapTiles->firstElementFromPredicate(world->mapTiles, &sorting_maptile, (void *) fake);
+    ret = world->mapTiles->firstElementFromPredicate(world->mapTiles, lambda(bool, (void *elem, void *dat), {
+        if (((MapTile *) elem)->X == X &&
+            ((MapTile *) elem)->Y == Y)
+            return (true);
+        return (false);
+    }), NULL);
     if (ret == NULL)
         return NULL;
-    xfree(fake, sizeof(MapTile));
     return ret->data;
 }
 
@@ -50,6 +42,42 @@ static Map  *SeedLoot(Map *self) {
     return self;
 }
 
+Map *AddDrone(MapTile *tile, Drone *drone) {
+    tile->map->drones->addElemFront(tile->map->drones, drone);
+    tile->drones->addElemFront(tile->drones, drone);
+    return tile->map;
+}
+
+Map *RemoveDrone(Map *map, Drone *drone) {
+    t_list *element;
+
+    element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
+        if (elem == drone)
+            return true;
+        return false;
+    }), NULL);
+    drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
+    return map;
+}
+
+Map *DeleteDrone(Map *map, Drone *drone) {
+    t_list *element;
+
+    element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
+        if (elem == drone)
+            return true;
+        return false;
+    }), NULL);
+    drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
+    element = map->drones->firstElementFromPredicate(map->drones, lambda(bool, (void *elem, void*data), {
+        if (elem == drone)
+            return true;
+        return false;
+    }), NULL);
+    map->drones->freeThisElem(map->drones, (void (*)(void *)) &DestroyDrone, element);
+    return map;
+}
+
 Map *CreateMap(int width, int height) {
     Map *world;
     int i;
@@ -64,8 +92,8 @@ Map *CreateMap(int width, int height) {
     world->Free = &DestroyMap;
     world->GetTile = &GetTile;
     world->SeedLoot = &SeedLoot;
-
     world->mapTiles = CreateLinkedList();
+    world->drones = CreateLinkedList();
     while (i != width * height) {
         world->mapTiles->addElemEnd(world->mapTiles, CreateMapTile(x, y));
         ++i;

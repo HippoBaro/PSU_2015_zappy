@@ -7,10 +7,6 @@
 #include "LinkedList.h"
 
 void        DestroyResponse(Response *response) {
-    response->destFd->freeAll(response->destFd, lambda(void, (void *elem), {
-        xfree(elem, sizeof(int));
-    }));
-    response->destFd->Free(response->destFd);
     if (response->message != NULL)
         xfree(response->message, strlen(response->message));
     xfree(response, sizeof(Response));
@@ -22,9 +18,7 @@ Response    *CreateResponseFrom(Request *request) {
 
     ret = xmalloc(sizeof(Response));
     ret->message = NULL;
-    ret->destFd = CreateLinkedList();
-    ret->destFd->addElemFront(ret->destFd, atomicdup(int, request->socketFd));
-    ret->destination = SUBSET;
+    ret->destFd = request->socketFd;
     ret->Free = &DestroyResponse;
     return ret;
 }
@@ -34,7 +28,7 @@ Response    *CreateEmptyResponse() {
 
     ret = xmalloc(sizeof(Response));
     ret->message = NULL;
-    ret->destFd = CreateLinkedList();
+    ret->destFd = -1;
     ret->Free = &DestroyResponse;
     return ret;
 }

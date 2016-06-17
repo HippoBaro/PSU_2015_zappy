@@ -14,7 +14,9 @@ struct s_map;
 
 typedef struct e_Drone {
     string      team;
-    LinkedList(Item)  *inventory;
+    LinkedList(Item)    *inventory;
+    LinkedList(Request) *pendingRequests;
+    Request     *currentPendingRequest;
     int         life;
     int         level;
     int         socketFd;
@@ -45,7 +47,7 @@ typedef struct e_Drone {
 }               Drone;
 
 string      GetDroneSight(Drone *self, struct s_map *map);
-Drone       *CreateDrone(struct s_map *world, int StartX, int StartY);
+Drone       *CreateDrone();
 void        DestroyDrone(Drone *drone);
 
 #endif //PSU_2015_ZAPPY_DRONE_H

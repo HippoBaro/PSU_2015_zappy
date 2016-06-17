@@ -22,10 +22,13 @@ typedef struct	        s_map
     int		            Y;
     ZappyServer         *server;
     LinkedList(MapTile) *mapTiles;
+    LinkedList(Drone)   *drones;
 
     /* Ptr FX */
     Map                 *(*SeedLoot)(struct s_map *self);
     MapTile             *(*GetTile)(struct s_map *world, int X, int Y);
+    Map                 *(*AddDrone)(MapTile *tile, Drone *drone);
+    Map                 *(*RemoveDrone)(struct s_map *world, Drone *drone);
     void                (*Free)(struct s_map *map);
 }		                Map;
 

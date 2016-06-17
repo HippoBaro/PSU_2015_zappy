@@ -13,5 +13,5 @@ int main(int ac, char **av) {
             ->Start(server)
             ->Free(server);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

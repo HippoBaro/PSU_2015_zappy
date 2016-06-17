@@ -13,6 +13,9 @@ void DestroyDrone(Drone *drone) {
         xfree(drone->team, strlen(drone->team));
     drone->inventory->freeAll(drone->inventory, (void (*)(void *)) &DestroyItem); //Todo set item destructor
     drone->inventory->Free(drone->inventory);
+    drone->pendingRequests->freeAll(drone->pendingRequests, (void (*)(void *)) &DestroyRequest);
+    if (drone->currentPendingRequest != NULL)
+        drone->currentPendingRequest->Free(drone->currentPendingRequest);
     xfree(drone, sizeof(Drone));
 }
 
@@ -76,10 +79,11 @@ static void Fork (struct e_Drone *self) {
 
 static void Die (struct e_Drone *self) {
     //todo remove self from mapTile & Free self
+    //self->
 }
 
 static void Turn90DegreesLeft (struct e_Drone *self) {
-    //todo <--> Communication with server
+    //todo <--> Communication with server.
     if (self->rotation - 90 == 0)
         self->rotation = 270;
     else
@@ -87,7 +91,7 @@ static void Turn90DegreesLeft (struct e_Drone *self) {
 }
 
 static void Turn90DegreesRight (struct e_Drone *self) {
-    //todo <--> Communication with server
+    //todo <--> Communication with server.
     if (self->rotation + 90 == 360)
         self->rotation = 0;
     else
@@ -98,12 +102,38 @@ static Response *Broadcast(struct e_Drone *self, string message) {
     Response    *ret;
 
     ret = CreateEmptyResponse();
-    ret->destination = EVERYBODY;
     ret->message = message;
+    //todo foreach drones, send message with correct tileNumber.
     return ret;
 }
 
-Drone   *CreateDrone(struct s_map *world, int StartX, int StartY) {
+static Drone *CommitRequest(Drone *drone, Request *request) {
+    if (drone->currentPendingRequest != NULL)
+    {
+        if (drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
+            drone->pendingRequests->addElemFront(drone->pendingRequests, request);
+        else{}
+            //todo correctly ignore request (queue full).
+    }
+    else
+        drone->currentPendingRequest = request;
+    return drone;
+}
+
+static Drone *ExecutePendingRequest(Drone *drone) {
+    if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) == 0)
+        return drone;
+    else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
+        drone->currentPendingRequest = drone->pendingRequests->getElementFirst(drone->pendingRequests)->data;
+        //todo start countDown
+    }
+    else if (drone->currentPendingRequest != NULL) {
+        //todo if request can be executed, execute it.
+    }
+    return drone;
+}
+
+Drone   *CreateDrone() {
     Drone   *ret;
 
     ret = xmalloc(sizeof(Drone));
@@ -114,9 +144,9 @@ Drone   *CreateDrone(struct s_map *world, int StartX, int StartY) {
     ret->level = 1;
 
     ret->Move = &Move;
-    ret->GoRight = &GoRight;
-    ret->GoBackwards = &GoBackwards;
-    ret->GoLeft = &GoLeft;
+    ret->GoRight = &GoRight; // useless
+    ret->GoBackwards = &GoBackwards; // useless
+    ret->GoLeft = &GoLeft; // useless
     ret->Look = &Look;
     ret->Rotate = &Rotate;
     ret->Turn90DegreesLeft = &Turn90DegreesLeft;
@@ -129,8 +159,6 @@ Drone   *CreateDrone(struct s_map *world, int StartX, int StartY) {
     ret->Fork = &Fork;
     ret->Die = &Die;
     ret->Free = &DestroyDrone;
-
-    ret->mapTile = world->GetTile(world, StartX, StartY);
     ret->rotation = TOP;
 
     return ret;

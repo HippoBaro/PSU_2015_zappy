@@ -13,9 +13,8 @@ typedef struct          s_ZappyServer ZappyServer;
 
 typedef struct e_Response {
     ZappyServer         *server;
-    Destination         destination;
     string              message;
-    LinkedList(int)     *destFd;
+    int                 destFd;
     void                (*Send)(struct e_Response *self);
     void                (*Free)(struct e_Response *self);
 }           Response;

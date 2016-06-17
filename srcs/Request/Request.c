@@ -4,7 +4,7 @@
 
 #include "Request.h"
 
-static void    DestroyRequest(Request *request) {
+void    DestroyRequest(Request *request) {
     if (request->message != NULL) {
         xfree(request->message, strlen(request->message));
     }

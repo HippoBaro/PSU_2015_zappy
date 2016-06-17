@@ -28,5 +28,6 @@ struct s_command_string {
 
 Request *CreateRequest(string message, int socketFd);
 Request *ParseRequest(Request *request);
+void    DestroyRequest(Request *request);
 
 #endif //PSU_2015_ZAPPY_REQUEST_H
