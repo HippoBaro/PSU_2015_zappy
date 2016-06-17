@@ -29,6 +29,8 @@ static bool removeElemAtPos(LinkedList *this, int pos);
 
 static bool freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list *elem);
 
+static bool freeThisElemWithData(LinkedList *this, void (*freeFunc)(void *elem), t_list *elem);
+
 static bool freeElemFront(LinkedList *this, void (*freeFunc)(void *elem));
 
 static bool freeElemEnd(LinkedList *this, void (*freeFunc)(void *elem));
@@ -48,7 +50,9 @@ static t_list *firstElementFromPredicate(LinkedList *this, bool (*predicate)(voi
 
 static void forEachElements(LinkedList *this, void (*forEachFunc)(void *element, void *userData), void *someData);
 
-static void LinkedListDestroy(LinkedList *this);
+static void forEachElementsReloadIterator(LinkedList *this, bool (*forEachFunc)(void *element, void *userData), void *someData);
+
+static void Free(LinkedList *this);
 
 static void initPtrFunc(LinkedList *this) {
     this->countLinkedList = &countLinkedList;
@@ -60,6 +64,7 @@ static void initPtrFunc(LinkedList *this) {
     this->removeElemEnd = &removeElemEnd;
     this->removeElemAtPos = &removeElemAtPos;
     this->freeThisElem = &freeThisElem;
+    this->freeThisElemWithData = &freeThisElemWithData;
     this->freeElemFront = &freeElemFront;
     this->freeElemEnd = &freeElemEnd;
     this->freeElemAtPos = &freeElemAtPos;
@@ -69,7 +74,8 @@ static void initPtrFunc(LinkedList *this) {
     this->getElementAtPos = &getElementAtPos;
     this->firstElementFromPredicate = &firstElementFromPredicate;
     this->forEachElements = &forEachElements;
-    this->Free = &LinkedListDestroy;
+    this->forEachElementsReloadIterator = &forEachElementsReloadIterator;
+    this->Free = &Free;
 }
 
 LinkedList *CreateLinkedList() {
@@ -83,7 +89,7 @@ LinkedList *CreateLinkedList() {
     return (this);
 }
 
-static void LinkedListDestroy(LinkedList *this) {
+static void Free(LinkedList *this) {
     if (countLinkedList(this) > 0)
         Log(WARNING, "You're freeing a non-empty linkedList !");
     xfree(this->myList, sizeof(t_list));
@@ -207,12 +213,30 @@ static bool removeElemAtPos(LinkedList *this, int pos) {
     return (false);
 }
 
-static bool freeThisElem(LinkedList *this, void (*freeFunc)(void *elem), t_list *elem) {
+static bool freeThisElem(LinkedList *this, void (*freeFunc)(void *data), t_list *elem) {
     t_list *it;
 
     it = this->myList->next;
     while (it != this->myList) {
         if (it == elem) {
+            it->prev->next = it->next;
+            it->next->prev = it->prev;
+            if (freeFunc != NULL)
+                freeFunc(it->data);
+            xfree(it, sizeof(t_list));
+            return (true);
+        }
+        it = it->next;
+    }
+    return (false);
+}
+
+static bool freeThisElemWithData(LinkedList *this, void (*freeFunc)(void *data), t_list *elem) {
+    t_list *it;
+
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (it->data == elem) {
             it->prev->next = it->next;
             it->next->prev = it->prev;
             if (freeFunc != NULL)
@@ -265,7 +289,8 @@ static bool freeElemAtPos(LinkedList *this, int pos, void (*freeFunc)(void *elem
         if (i == pos) {
             it->prev->next = it->next;
             it->next->prev = it->prev;
-            freeFunc(it->data);
+            if (freeFunc != NULL)
+                freeFunc(it->data);
             xfree(it, sizeof(t_list));
             return (true);
         }
@@ -343,6 +368,22 @@ static void forEachElements(LinkedList *this, void (*forEachFunc)(void *element,
     it = this->myList->next;
     while (it != this->myList) {
         forEachFunc(it->data, someData);
+        it = it->next;
+    }
+}
+
+static void forEachElementsReloadIterator(LinkedList *this, bool (*forEachFunc)(void *element, void *userData), void *someData) {
+    t_list *it;
+
+    if (forEachFunc == NULL) {
+        Log(WARNING, "Trying to foreach with a NULL-function pointers.");
+        return;
+    }
+    it = this->myList->next;
+    while (it != this->myList) {
+        if (forEachFunc(it->data, someData) == true) {
+            it = this->myList;
+        }
         it = it->next;
     }
 }
