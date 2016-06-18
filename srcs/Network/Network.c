@@ -22,9 +22,16 @@ static void initPtrFunc(Network *this) {
     this->DeleteNetwork = &DeleteNetwork;
 }
 
+void  INThandler(int sig) {
+    shutdown(masterSocket, 2);
+    close(masterSocket);
+    Log(ERROR, "User interupt ! Be careful some data were not destroyed !");
+}
+
 Network *CreateNetwork(NetworkType type, uint16_t port, char *addr) {
     Network *this;
 
+    signal(SIGINT, INThandler);
     this = xmalloc(sizeof(Network));
     initPtrFunc(this);
     this->_type = type;
@@ -37,6 +44,7 @@ Network *CreateNetwork(NetworkType type, uint16_t port, char *addr) {
 static void DeleteNetwork(struct Network *this) {
     if (this->_type == SERVER) {
         this->_clientSock->forEachElements(this->_clientSock, lambda(void, (void *elem, void *userData), {
+            shutdown(((t_client *) elem)->_sock, 2);
             close(((t_client *) elem)->_sock);
         }), NULL);
         this->_clientSock->freeAll(this->_clientSock, lambda(void, (void *elem), {
@@ -44,6 +52,7 @@ static void DeleteNetwork(struct Network *this) {
         }));
         this->_clientSock->Free(this->_clientSock);
     }
+    shutdown(this->_sock, 2);
     close(this->_sock);
     free(this);
 }
@@ -51,6 +60,7 @@ static void DeleteNetwork(struct Network *this) {
 static void createSocket(struct Network *this) {
     this->_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (this->_sock != -1) {
+        masterSocket = this->_sock;
         this->_adressage.sin_addr.s_addr = (this->_type == SERVER ? htonl(INADDR_ANY) : inet_addr(this->_addr));
         this->_adressage.sin_family = AF_INET;
         this->_adressage.sin_port = htons(this->_port);
@@ -178,21 +188,20 @@ static Request *Receive(struct Network *this, int timeout) {
                 this->_clientSock->freeThisElem(this->_clientSock, lambda(void, (void *data), {
                     free((t_client *) data);
                 }), tmp);
-            req = CreateRequest(someData->req->message, someData->req->socketFd);
+            req = CreateRequest(strdup(someData->req->message), someData->req->socketFd);
+            someData->req->Free(someData->req);
             xfree(someData, sizeof(t_dataServer));
             return (req);
         }
     }
     else if (this->_type == CLIENT) {
         if (FD_ISSET(this->_sock, &someData->rfds)) {
-            int n;
-            unsigned int m = sizeof(n);
-            getsockopt(this->_sock, SOL_SOCKET, SO_RCVBUF, (void *) &n, &m);
-            printf("Buffer size: %d\n", n);
             if ((valread = read(this->_sock, buffer, 1024)) == 0) {
                 Log(WARNING, "Server disconnected");
                 close(this->_sock);
-            }
+                xfree(someData, sizeof(t_dataServer));
+                req = CreateRequest(strdup("-"), this->_sock);
+                return (req);            }
             else {
                 buffer[valread] = '\0';
                 Log(INFORMATION, "MSG From server: %s\n", buffer);
@@ -232,18 +241,34 @@ int main(int ac, char **av) {
             if (req != NULL) {
                 req->Free(req);
             }
-            net->Send(toto);
+            if (net->_clientSock->firstElementFromPredicate(net->_clientSock, lambda(bool, (void *param, void *userData), {
+                if (((t_client *) param)->_sock == 4)
+                    return true;
+                else
+                    return false;
+            }), NULL) != NULL)
+                net->Send(toto);
         }
         xfree(toto, sizeof(Response));
         net->DeleteNetwork(net);
     }
     else if (strcmp(av[1], "client") == 0) {
         net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
-        while (1) {
+        int i = -1;
+        while (++i < 5) {
+            req = net->Receive(net, 1);
+            if (req != NULL) {
+                if (req->message && req->message[0] == '-') {
+                    req->Free(req);
+                    break;
+                }
+                req->Free(req);
+            }
             Response *tmp = CreateEmptyResponse();
             tmp->destFd = net->_sock;
             tmp->message = strdup("Test !!!");
             net->Send(tmp);
+            tmp->Free(tmp);
             sleep(1);
         }
         net->DeleteNetwork(net);

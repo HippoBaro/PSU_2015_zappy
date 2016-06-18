@@ -21,6 +21,8 @@
 
 #define PORT 8080
 
+int masterSocket; //variable to pass to sigint handler in cause of Ctrl+C to close the connection
+
 typedef enum {
     SERVER,
     CLIENT
