@@ -121,7 +121,7 @@ static bool checkServerConnectionAndMessage(void *elem, void *userData) {
     t_dataServer *someData;
     int sd;
     ssize_t valread;
-    char buffer[1025];
+    char buffer[BUFF_SIZE];
 
     someData = (t_dataServer *) userData;
     sd = ((t_client *) elem)->_sock;
@@ -150,7 +150,7 @@ static Request *Receive(struct Network *this, int timeout) {
     struct timeval tv;
     int sd;
     ssize_t valread;
-    char buffer[1025];
+    char buffer[BUFF_SIZE];
     int maxfd;
     t_list *tmp;
 

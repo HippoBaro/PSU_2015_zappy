@@ -19,8 +19,7 @@
 # include "Response.h"
 # include "Request.h"
 
-#define PORT 8080
-
+# define BUFF_SIZE 1025
 int masterSocket; //variable to pass to sigint handler in cause of Ctrl+C to close the connection
 
 typedef enum {
