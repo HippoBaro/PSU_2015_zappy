@@ -5,12 +5,10 @@
 #include "Request.h"
 
 void    DestroyRequest(Request *request) {
-    if (request->message != NULL) {
+    if (request->message != NULL)
         xfree(request->message, strlen(request->message));
-    }
-    if (request->actionSubject != NULL) {
+    if (request->actionSubject != NULL)
         xfree(request->actionSubject, strlen(request->actionSubject));
-    }
     xfree(request, sizeof(Request));
 }
 
@@ -23,9 +21,10 @@ Request *CreateRequest(string message, int socketFd) {
     ret->socketFd = socketFd;
     ret->requestedAction = UNKNOWN_ACTION;
     ret->actionSubject = NULL;
+    ret->timer = NULL;
     ret->Free = &DestroyRequest;
     ret->Parse = &ParseRequest;
     //todo set Validate
-
+    //todo create function to get associated drone from Request
     return ret;
 }

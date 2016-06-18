@@ -235,7 +235,7 @@ static bool Send(struct e_Response *rep) {
     }
 }
 
-int main(int ac, char **av) {
+/*int main(int ac, char **av) {
     Network *net;
     Response *toto;
     Request *req;
@@ -263,7 +263,7 @@ int main(int ac, char **av) {
     }
     else if (strcmp(av[1], "client") == 0) {
         net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
-        while (1) {
+        while (true) {
             char *buffer = NULL;
             int read;
             size_t len;
@@ -297,4 +297,4 @@ int main(int ac, char **av) {
         net->DeleteNetwork(net);
     }
     return (0);
-}
+}*/

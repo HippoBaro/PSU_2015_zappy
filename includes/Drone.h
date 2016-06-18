@@ -17,6 +17,7 @@ typedef struct e_Drone {
     LinkedList(Item)    *inventory;
     LinkedList(Request) *pendingRequests;
     Request     *currentPendingRequest;
+    DroneStatus status;
     int         life;
     int         level;
     int         socketFd;

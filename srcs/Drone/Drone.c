@@ -113,7 +113,7 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
         if (drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
             drone->pendingRequests->addElemFront(drone->pendingRequests, request);
         else{}
-            //todo correctly ignore request (queue full).
+            //todo correctly ignore request (queue is full).
     }
     else
         drone->currentPendingRequest = request;
@@ -125,10 +125,14 @@ static Drone *ExecutePendingRequest(Drone *drone) {
         return drone;
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
         drone->currentPendingRequest = drone->pendingRequests->getElementFirst(drone->pendingRequests)->data;
-        //todo start countDown
+        drone->currentPendingRequest->timer = CreateAndStartTimer(10000000); //10 secondes
+        //todo set timer correctly
     }
     else if (drone->currentPendingRequest != NULL) {
-        //todo if request can be executed, execute it.
+        if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
+            Log(WARNING, "Executing action on drone %d. Action number is : %d", drone->socketFd, drone->currentPendingRequest->requestedAction);
+            //todo execute action
+        }
     }
     return drone;
 }
@@ -142,6 +146,7 @@ Drone   *CreateDrone() {
     ret->team = NULL;
     ret->life = 10;
     ret->level = 1;
+    ret->status = NEW;
 
     ret->Move = &Move;
     ret->GoRight = &GoRight; // useless

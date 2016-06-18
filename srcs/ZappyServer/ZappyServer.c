@@ -48,10 +48,8 @@ static ZappyServer *Start(ZappyServer *server) {
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
-        request = server->network->Receive(server->network, 10);
-        if (request == NULL)
-            Log(INFORMATION, "Received has timeout");
-        else
+        request = server->network->Receive(server->network, 1); //set timeout in function of next action timing
+        if (request != NULL)
             Log(INFORMATION, "Message is %s", request->message);
     }
     return server->ShutDown(server);

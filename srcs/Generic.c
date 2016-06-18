@@ -89,13 +89,13 @@ void Log(LogLevel level, const string log, ...) {
     if (content == NULL)
         return;
     if (level == ERROR) {
-        fprintf(stderr, COLOR_RED "[%s | %s] ERROR : %s\n" COLOR_RESET, time, usage, content);
+        fprintf(stderr, COLOR_RED "[%s | %s] ERROR : %s" COLOR_RESET "\n", time, usage, content);
         exit(EXIT_FAILURE);
     }
     else if (level == SUCCESS)
-        fprintf(stdout, COLOR_GRN "[%s | %s] SUCCESS : %s\n" COLOR_RESET, time, usage, content);
+        fprintf(stdout, COLOR_GRN "[%s | %s] SUCCESS : %s" COLOR_RESET "\n", time, usage, content);
     else if (level == WARNING)
-        fprintf(stdout, COLOR_YEL "[%s | %s] WARNING : %s\n" COLOR_RESET, time, usage, content);
+        fprintf(stdout, COLOR_YEL "[%s | %s] WARNING : %s" COLOR_RESET "\n", time, usage, content);
     else if (level == INFORMATION)
         fprintf(stdout, "[%s | %s] INFORMATION : %s\n", time, usage, content);
     else
