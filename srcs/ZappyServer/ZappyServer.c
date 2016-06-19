@@ -23,9 +23,7 @@ static ZappyServer *Configure(ZappyServer *self, Configuration *config) {
         ++i;
     }
     srand((unsigned int) (config->seed != NULL ? *config->seed : time(NULL)));
-    self->world = CreateMap(config->worldWidth, config->worldHeight);
-    self->temporalDelay = config->temporalDelay;
-    self->temporalDelay = config->temporalDelay;
+    self->world = CreateMap(self, config->worldWidth, config->worldHeight);
     //todo create teams
     self->configuration = config;
     self->status = CONFIGURED;

@@ -2,6 +2,7 @@
 // Created by barrauh on 6/11/16.
 //
 
+#include <ZappyServer.h>
 #include "Request.h"
 #include "Drone.h"
 
@@ -36,7 +37,11 @@ static Response *Execute(Request *request, Drone *drone) { //todo refactor. THIS
 }
 
 static uint64_t GetCompletionTime(Request *self, ZappyServer *server) {
+    double delayAsSeconds;
 
+    delayAsSeconds = (double)self->absoluteActionTime / server->configuration->temporalDelay;
+    Log(INFORMATION, "Request time is %lu", delayAsSeconds * 1000000);
+    return (uint64_t) delayAsSeconds * 1000000;
 }
 
 void    DestroyRequest(Request *request) {
@@ -61,6 +66,7 @@ Request *CreateRequest(string message, int socketFd) {
     ret->Execute = (void *(*)(struct t_Request *, void *)) &Execute;
     ret->Free = &DestroyRequest;
     ret->Parse = &ParseRequest;
+    ret->GetCompletionTime = &GetCompletionTime;
     //todo set Validate
     return ret;
 }

@@ -21,7 +21,7 @@ static Configuration *ParseFrom(Configuration *config, int ac, char **av) {
         else if (c == 'c')
             config->initialClientPerTeam = atoi(optarg);
         else if (c == 't')
-            config->temporalDelay = atoi(optarg);
+            config->temporalDelay = atof(optarg);
         else if (c == 's')
             config->seed = atomicdup(int, atoi(optarg));
         //todo handle teams

@@ -14,7 +14,7 @@ typedef struct              s_Configuration {
     int                     worldWidth;
     LinkedList(string)      *teamNames;
     int                     initialClientPerTeam;
-    int                     temporalDelay;
+    double                  temporalDelay;
     int                     *seed;
     struct s_Configuration  *(*Validate)(struct s_Configuration *self);
     struct s_Configuration  *(*ParseFrom)(struct s_Configuration *self, int ac, char **av);
@@ -26,7 +26,6 @@ typedef struct              s_ZappyServer {
     Configuration           *configuration;
     Map                     *world;
     LinkedList(string)      *teams;
-    int                     temporalDelay;
     Network                 *network;
     struct s_ZappyServer    *(*Configure)(struct s_ZappyServer *self, Configuration *config);
     struct s_ZappyServer    *(*Start)(struct s_ZappyServer *self);

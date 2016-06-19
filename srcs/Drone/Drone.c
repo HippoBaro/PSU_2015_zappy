@@ -132,8 +132,7 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
     else
     {
         drone->currentPendingRequest = request;
-        drone->currentPendingRequest->timer = CreateAndStartTimer(10000000); //10 secondes
-        //todo set timer correctly
+        drone->currentPendingRequest->timer = CreateAndStartTimer(request->GetCompletionTime(request, drone->mapTile->map->server));
     }
     return drone;
 }
@@ -146,9 +145,9 @@ static Drone *ExecutePendingRequest(Drone *drone) {
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
         elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
         drone->currentPendingRequest = elem->data;
-        drone->currentPendingRequest->timer = CreateAndStartTimer(10000000); //10 secondes
+        drone->currentPendingRequest->timer = CreateAndStartTimer(drone->
+                currentPendingRequest->GetCompletionTime(drone->currentPendingRequest, drone->mapTile->map->server));
         drone->pendingRequests->removeThisElem(drone->pendingRequests, elem);
-        //todo set timer correctly
     }
     else if (drone->currentPendingRequest != NULL) {
         if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
@@ -157,7 +156,6 @@ static Drone *ExecutePendingRequest(Drone *drone) {
             drone->currentPendingRequest->Execute(drone->currentPendingRequest, drone);
             drone->currentPendingRequest->Free(drone->currentPendingRequest);
             drone->currentPendingRequest = NULL;
-            //todo execute request, delete it and put the next one in currentPendingRequest
         }
     }
     return drone;
