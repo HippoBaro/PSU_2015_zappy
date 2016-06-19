@@ -241,11 +241,10 @@ bool Send(struct e_Response *rep) {
     Network *net;
     Response *toto;
     Request *req;
-    struct timeval *tv;
+    struct timeval tv;
 
-    tv = xmalloc(sizeof(struct timeval));
-    tv->tv_sec = 1;
-    tv->tv_usec = 0;
+    tv.tv_sec = 1;
+    tv.tv_usec = 0;
 
     if (strcmp(av[1], "server") == 0) {
         net = CreateNetwork(SERVER, 1024, NULL);
@@ -253,7 +252,7 @@ bool Send(struct e_Response *rep) {
         toto->destFd = 4;
         toto->message = "Coucou\n";
         while (net->_clientSock->countLinkedList(net->_clientSock) < 3) {
-            req = net->Receive(net, tv);
+            req = net->Receive(net, &tv);
             if (req != NULL) {
                 req->Free(req);
             }
@@ -266,10 +265,9 @@ bool Send(struct e_Response *rep) {
 //                net->Send(toto);
         }
         xfree(toto, sizeof(Response));
-        xfree(tv, sizeof(struct timeval));
         net->DeleteNetwork(net);
     }
-    else if (strcmp(av[1], "client_send") == 0) {
+    else if (strcmp(av[1], "client") == 0) {
         net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
         while (true) {
             char *buffer = NULL;
@@ -282,17 +280,17 @@ bool Send(struct e_Response *rep) {
                 tmp->destFd = net->_sock;
                 tmp->message = buffer;
                 net->Send(tmp);
+                req = net->Receive(net, &tv);
+                if (req != NULL) {
+                    if (req->message && req->message[0] == '-') {
+                        req->Free(req);
+                        break;
+                    }
+                    req->Free(req);
+                }
             }
         }
-    }
-    else if (strcmp(av[1], "client_listen") == 0) {
-        net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
-        while (1) {
-            req = net->Receive(net, tv);
-            if (req != NULL) {
-                req->Free(req);
-            }
-        }
+        net->DeleteNetwork(net);
     }
 //        int i = -1;
 //        while (++i < 5) {
@@ -311,7 +309,8 @@ bool Send(struct e_Response *rep) {
 //            tmp->Free(tmp);
 //            sleep(1);
 //        }
-//        xfree(tv, sizeof(struct timeval));
 //        net->DeleteNetwork(net);
     return (0);
-}*/
+}
+
+*/
