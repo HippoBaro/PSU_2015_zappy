@@ -47,7 +47,7 @@ typedef enum e_LogLevel {
 typedef enum e_RequestType {
     UNKNOWN_REQUESTTYPE = 0,
     NEW_CLIENT = 1,
-    EXISTING_CLIENT = 0
+    EXISTING_CLIENT = 2
 }               RequestType;
 
 typedef enum e_Destination {

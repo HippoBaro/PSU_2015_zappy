@@ -11,8 +11,6 @@ void DestroyDrone(Drone *drone) {
     drone->inventory->freeAll(drone->inventory, (void (*)(void *)) &DestroyItem);
     drone->inventory->Free(drone->inventory);
     drone->pendingRequests->freeAll(drone->pendingRequests, (void (*)(void *)) &DestroyRequest);
-    if (drone->currentPendingRequest != NULL)
-        drone->currentPendingRequest->Free(drone->currentPendingRequest);
     xfree(drone, sizeof(Drone));
 }
 
@@ -143,19 +141,20 @@ static Drone *ExecutePendingRequest(Drone *drone) {
     if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) == 0)
         return drone;
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
-        elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
+        elem = drone->pendingRequests->getElementEnd(drone->pendingRequests);
         drone->currentPendingRequest = elem->data;
         drone->currentPendingRequest->timer = CreateAndStartTimer(drone->
                 currentPendingRequest->GetCompletionTime(drone->currentPendingRequest, drone->mapTile->map->server));
         drone->pendingRequests->removeThisElem(drone->pendingRequests, elem);
     }
-    else if (drone->currentPendingRequest != NULL) {
+    if (drone->currentPendingRequest != NULL) {
         if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
             Log(WARNING, "Executing action on drone %d. Action number is : %d", drone->socketFd,
                 drone->currentPendingRequest->requestedAction);
             drone->currentPendingRequest->Execute(drone->currentPendingRequest, drone);
             drone->currentPendingRequest->Free(drone->currentPendingRequest);
             drone->currentPendingRequest = NULL;
+            drone->ExecutePendingRequest(drone);
         }
     }
     return drone;

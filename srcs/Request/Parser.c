@@ -63,13 +63,13 @@ static void reqMove(Request *req) {
 static void reqRotateRight(Request *req) {
     req->requestedAction = ROTATE;
     req->actionSubject = xmalloc(sizeof(char) * 6);
-    req->actionSubject = "droite";
+    req->actionSubject = strdup("droite");
 }
 
 static void reqRotateLeft(Request *req) {
     req->requestedAction = ROTATE;
     req->actionSubject = xmalloc(sizeof(char) * 6);
-    req->actionSubject = "gauche";
+    req->actionSubject = strdup("gauche");
 }
 
 static void reqLook(Request *req) {
@@ -151,11 +151,14 @@ Request *ParseRequest(Request *request) {
 
     i = 0;
     cut = cutMessage(request->message);
-    while (i++ < 12)
-        if (strcmp(cut, requestsArray[i].str) == 0)
-        {
+    while (i <= 12)
+    {
+        if (strcmp(cut, requestsArray[i].str) == 0) {
             request->absoluteActionTime = requestsArray[i].absoluteTime;
             requestsArray[i].doAction(request);
         }
+        ++i;
+    }
+
     return request;
 }
