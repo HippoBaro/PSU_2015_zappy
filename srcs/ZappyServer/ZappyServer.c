@@ -90,15 +90,12 @@ static void ExecuteRequests(ZappyServer *server) {
 
 static ZappyServer *Start(ZappyServer *server) {
     Request *request;
-    struct timeval tv;
 
-    tv.tv_sec = 1;
-    tv.tv_usec = 0;
     server->network = CreateNetwork(SERVER, (uint16_t) server->configuration->port, NULL);
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
-        request = server->network->Receive(server->network, &tv); //set timeout in function of next action timing
+        request = server->network->Receive(server->network, server->GetNextRequestDelay(server)); //set timeout in function of next action timing
         if (request != NULL)
         {
             if (request->type == NEW_CLIENT) {
@@ -125,6 +122,28 @@ static Drone    *GetAssociatedDrone(Request *request, Map *map) {
     return elem->data;
 }
 
+static struct timeval *GetNextRequestDelay(ZappyServer *server) {
+    uint64_t next = UINT64_MAX;
+    struct timeval nextTimeval;
+    struct timeval current;
+    struct timeval *ret;
+
+    ret = xmalloc(sizeof(struct timeval));
+    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
+        if (((Drone *)drone)->currentPendingRequest != NULL &&
+                ((Drone *)drone)->currentPendingRequest->timer->target < next)
+            next = ((Drone *)drone)->currentPendingRequest->timer->target;
+    }), NULL);
+
+    if (next == UINT64_MAX)
+        return NULL;
+    nextTimeval.tv_sec = next / 1000000;
+    nextTimeval.tv_usec = next % 1000000;
+    gettimeofday(&current, NULL);
+    timersub(&nextTimeval, &current, ret);
+    return ret;
+}
+
 ZappyServer *CreateZappyServer() {
     ZappyServer *ret;
 
@@ -136,6 +155,8 @@ ZappyServer *CreateZappyServer() {
     ret->Configure = &Configure;
     ret->Start = &Start;
     ret->GetAssociatedDrone = &GetAssociatedDrone;
+    ret->GetNextRequestDelay = &GetNextRequestDelay;
+    //todo create function to get next Request timestamp to modulate receive timeout
     ret->ShutDown = lambda(ZappyServer *, (ZappyServer *server), {
         if (server->status != STARTED)
             Log(WARNING, "Trying to shutdown an non-started server !");

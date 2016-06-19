@@ -182,6 +182,8 @@ static Request *Receive(struct Network *this, struct timeval *tv) {
         Log(ERROR, "Select error.");
         exit(0);
     }
+    if (tv != NULL)
+        free(tv);
 
     if (this->_type == SERVER) {
         if (FD_ISSET(this->_sock, &someData->rfds)) {

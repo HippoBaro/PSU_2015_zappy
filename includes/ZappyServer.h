@@ -32,6 +32,7 @@ typedef struct              s_ZappyServer {
     struct s_ZappyServer    *(*Start)(struct s_ZappyServer *self);
     struct s_ZappyServer    *(*ShutDown)(struct s_ZappyServer *self);
     Drone                   *(*GetAssociatedDrone)(Request *self, Map *map);
+    struct timeval          *(*GetNextRequestDelay)(struct s_ZappyServer *self);
     void                    (*Free)(struct s_ZappyServer *self);
 }                           ZappyServer;
 
