@@ -23,6 +23,7 @@ set(SOURCE_FILES
         srcs/Request/Parser.c
         srcs/ZappyServer/ZappyServer.c
         srcs/ZappyServer/Configuration.c
+        srcs/Request/Timer.c
 
         includes/Map.h
         includes/MapTile.h
@@ -34,7 +35,8 @@ set(SOURCE_FILES
         includes/Request.h
         includes/Response.h
         includes/Item.h
-        includes/ZappyServer.h)
+        includes/ZappyServer.h
+        includes/Timer.h)
 
 set(UNIT_TEST_SOURCE
         unit-tests/linked_list.c
@@ -44,8 +46,9 @@ set(UNIT_TEST_SOURCE
         unit-tests/main.c)
 
 set(MAIN_SOURCE
-        srcs/Network/Network.c)
-        #srcs/main.c)
+        srcs/Network/Network.c
+        srcs/main.c
+        )
 
 #set(UNIT_TEST TRUE)
 

@@ -6,16 +6,18 @@
 #define PSU_2015_ZAPPY_REQUEST_H
 
 #include "Generic.h"
+#include "Timer.h"
+#include "LinkedList.h"
 
 typedef struct          s_ZappyServer ZappyServer;
 
 typedef struct          t_Request {
-    ZappyServer         *server;
     RequestType         type;
     string              message;
     int                 socketFd;
     Action              requestedAction;
     string              actionSubject;
+    Timer               *timer;
     bool                (*Validate)(struct t_Request *self);
     struct t_Request    *(*Parse)(struct t_Request *self);
     void                (*Free)(struct t_Request *self);

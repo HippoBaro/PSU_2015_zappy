@@ -15,6 +15,7 @@
 #include "MapTile.h"
 
 typedef struct          s_ZappyServer ZappyServer;
+typedef struct          e_Drone Drone;
 
 typedef struct	        s_map
 {
@@ -25,10 +26,11 @@ typedef struct	        s_map
     LinkedList(Drone)   *drones;
 
     /* Ptr FX */
-    Map                 *(*SeedLoot)(struct s_map *self);
+    struct s_map        *(*SeedLoot)(struct s_map *self);
     MapTile             *(*GetTile)(struct s_map *world, int X, int Y);
-    Map                 *(*AddDrone)(MapTile *tile, Drone *drone);
-    Map                 *(*RemoveDrone)(struct s_map *world, Drone *drone);
+    MapTile             *(*GetRandomTile)(struct s_map *world);
+    struct s_map        *(*AddDrone)(MapTile *tile, Drone *drone);
+    struct s_map        *(*RemoveDrone)(struct s_map *world, Drone *drone);
     void                (*Free)(struct s_map *map);
 }		                Map;
 

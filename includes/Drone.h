@@ -8,22 +8,21 @@
 #include "LinkedList.h"
 #include "Item.h"
 #include "Response.h"
-
-/* No include of Map.h --> declare to gcc that the type exists elsewhere */
-struct s_map;
+#include "Map.h"
 
 typedef struct e_Drone {
     string      team;
     LinkedList(Item)    *inventory;
     LinkedList(Request) *pendingRequests;
     Request     *currentPendingRequest;
+    DroneStatus status;
     int         life;
     int         level;
     int         socketFd;
     Rotation    rotation;
     struct s_maptile        *mapTile;
 
-    void        (*Move)(struct e_Drone *self, struct s_map *map);
+    void        (*Move)(struct e_Drone *self, Map *map);
     void        (*GoRight)(struct e_Drone *self, struct s_map *map);
     void        (*GoLeft)(struct e_Drone *self, struct s_map *map);
     string      (*GetDroneSight)(struct e_Drone *self, struct s_map *map);
@@ -39,10 +38,11 @@ typedef struct e_Drone {
     void        (*Fork)(struct e_Drone *self);
     void        (*Die)(struct e_Drone *self);
     Response    *(*Broadcast)(struct e_Drone *self, string message);
+    struct e_Drone *(*CommitRequest)(struct e_Drone *drone, Request *request);
+    struct e_Drone *(*ExecutePendingRequest)(struct e_Drone *drone);
     void        (*Free)(struct e_Drone *self);
 
     /* Unfair functions that WILL NOT be use by the clients, for server only [internal purposes] */
-
 
 }               Drone;
 

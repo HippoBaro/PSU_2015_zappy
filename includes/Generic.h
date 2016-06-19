@@ -61,6 +61,13 @@ typedef enum e_ZappyServerStatus {
     SHUTDOWN
 }           ZappyServerStatus;
 
+typedef enum e_DroneStatus {
+    NEW,
+    WELCOME_SENT,
+    NUM_CLIENT_SENT,
+    READY
+}           DroneStatus;
+
 typedef enum e_Action {
     UNKNOWN_ACTION = -1,
     TAKE = 0,

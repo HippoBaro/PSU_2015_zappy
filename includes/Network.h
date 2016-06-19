@@ -55,5 +55,6 @@ typedef struct Network {
 }               Network;
 
 Network *CreateNetwork(NetworkType type, uint16_t port, char *addr);
+bool    Send(Response *rep);
 
 #endif //PSU_2015_ZAPPY_NETWORK_H
