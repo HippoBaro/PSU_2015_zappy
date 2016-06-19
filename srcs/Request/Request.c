@@ -25,6 +25,5 @@ Request *CreateRequest(string message, int socketFd) {
     ret->Free = &DestroyRequest;
     ret->Parse = &ParseRequest;
     //todo set Validate
-    //todo create function to get associated drone from Request
     return ret;
 }

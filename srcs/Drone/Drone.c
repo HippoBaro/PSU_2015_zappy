@@ -3,9 +3,6 @@
 //
 
 #include <string.h>
-#include <Response.h>
-#include <MapTile.h>
-#include <Map.h>
 #include "Drone.h"
 
 void DestroyDrone(Drone *drone) {
@@ -111,27 +108,50 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
     if (drone->currentPendingRequest != NULL)
     {
         if (drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
+        {
+            Log(INFORMATION, "Adding request to pendingRequests list");
             drone->pendingRequests->addElemFront(drone->pendingRequests, request);
-        else{}
+        }
+        else
+        {
+            Log(INFORMATION, "Queue is full");
             //todo correctly ignore request (queue is full).
+        }
+
     }
     else
+    {
+        Log(INFORMATION, "First request");
         drone->currentPendingRequest = request;
+        drone->currentPendingRequest->timer = CreateAndStartTimer(10000000); //10 secondes
+        //todo set timer correctly
+    }
     return drone;
 }
 
 static Drone *ExecutePendingRequest(Drone *drone) {
+    t_list *elem;
+
     if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) == 0)
+    {
+        Log(INFORMATION, "Nothing to execute");
         return drone;
+    }
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
-        drone->currentPendingRequest = drone->pendingRequests->getElementFirst(drone->pendingRequests)->data;
+        Log(INFORMATION, "Pulling request from pendingRequests list");
+        elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
+        drone->currentPendingRequest = elem->data;
         drone->currentPendingRequest->timer = CreateAndStartTimer(10000000); //10 secondes
+        drone->pendingRequests->removeThisElem(drone->pendingRequests, elem);
         //todo set timer correctly
     }
     else if (drone->currentPendingRequest != NULL) {
         if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
-            Log(WARNING, "Executing action on drone %d. Action number is : %d", drone->socketFd, drone->currentPendingRequest->requestedAction);
-            //todo execute action
+            Log(WARNING, "Executing action on drone %d. Action number is : %d", drone->socketFd,
+                drone->currentPendingRequest->requestedAction);
+            drone->currentPendingRequest->Free(drone->currentPendingRequest);
+            drone->currentPendingRequest = NULL;
+            //todo execute request, delete it and put the next one in currentPendingRequest
         }
     }
     return drone;
@@ -142,6 +162,7 @@ Drone   *CreateDrone() {
 
     ret = xmalloc(sizeof(Drone));
     ret->inventory = CreateLinkedList();
+    ret->pendingRequests = CreateLinkedList();
     ret->mapTile = NULL;
     ret->team = NULL;
     ret->life = 10;
@@ -164,6 +185,8 @@ Drone   *CreateDrone() {
     ret->Fork = &Fork;
     ret->Die = &Die;
     ret->Free = &DestroyDrone;
+    ret->CommitRequest = &CommitRequest;
+    ret->ExecutePendingRequest = &ExecutePendingRequest;
     ret->rotation = TOP;
 
     return ret;

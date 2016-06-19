@@ -9,7 +9,7 @@
 */
 
 #include <Map.h>
-#include "Generic.h"
+#include <Drone.h>
 
 void        DestroyMapTile(MapTile *mapTile) {
     mapTile->drones->freeAll(mapTile->drones, (void (*)(void *)) &DestroyDrone);
@@ -73,7 +73,7 @@ static string ListContent(MapTile *self) { //todo refactor
     return ret;
 }
 
-MapTile	    *CreateMapTile(int X, int Y)
+MapTile	    *CreateMapTile(Map *map, int X, int Y)
 {
     MapTile	*tile;
 
@@ -81,6 +81,7 @@ MapTile	    *CreateMapTile(int X, int Y)
 
     tile->X = X;
     tile->Y = Y;
+    tile->map = map;
     tile->drones = CreateLinkedList();
     tile->ressources = CreateLinkedList();
     tile->AddDrone = &add_refplayer;

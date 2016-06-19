@@ -3,6 +3,7 @@
 #include <Map.h>
 #include <stdio.h>
 #include <bits/stdio2.h>
+#include <Drone.h>
 
 void DestroyMap(Map *map) {
     map->mapTiles->freeAll(map->mapTiles, (void (*)(void *)) &DestroyMapTile);
@@ -43,6 +44,7 @@ static Map  *SeedLoot(Map *self) {
 }
 
 Map *AddDrone(MapTile *tile, Drone *drone) {
+    drone->mapTile = tile;
     tile->map->drones->addElemFront(tile->map->drones, drone);
     tile->drones->addElemFront(tile->drones, drone);
     return tile->map;
@@ -78,6 +80,23 @@ Map *DeleteDrone(Map *map, Drone *drone) {
     return map;
 }
 
+static MapTile *GetRandomTile(Map *self) {
+    t_list *elem;
+    int x;
+    int y;
+
+    x = randMinMax(0, self->X - 1);
+    y = randMinMax(0, self->Y - 1);
+    elem = self->mapTiles->firstElementFromPredicate(self->mapTiles, lambda(bool, (void *tile, void *dat), {
+        if (((MapTile *)tile)->X == x && ((MapTile *)tile)->Y == y)
+            return true;
+        return false;
+    }), NULL);
+    if (elem == NULL || elem->data == NULL)
+        Log(ERROR, "Unable to select random MapTile. Response was NULL for coordinates %d, %d", x, y);
+    return elem->data;
+}
+
 Map *CreateMap(int width, int height) {
     Map *world;
     int i;
@@ -92,10 +111,13 @@ Map *CreateMap(int width, int height) {
     world->Free = &DestroyMap;
     world->GetTile = &GetTile;
     world->SeedLoot = &SeedLoot;
+    world->GetRandomTile = &GetRandomTile;
+    world->AddDrone = &AddDrone;
+    world->RemoveDrone = & RemoveDrone;
     world->mapTiles = CreateLinkedList();
     world->drones = CreateLinkedList();
     while (i != width * height) {
-        world->mapTiles->addElemEnd(world->mapTiles, CreateMapTile(x, y));
+        world->mapTiles->addElemEnd(world->mapTiles, CreateMapTile(world, x, y));
         ++i;
         ++x;
         if (x >= width) {

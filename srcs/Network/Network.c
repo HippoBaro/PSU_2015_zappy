@@ -14,8 +14,6 @@ static Request *Receive(struct Network *this, int timeout);
 
 static void DeleteNetwork(struct Network *this);
 
-static bool Send(struct e_Response *rep);
-
 static void initPtrFunc(Network *this) {
     this->Receive = &Receive;
     this->Send = &Send;
@@ -100,7 +98,7 @@ static void serverMode(struct Network *this) {
 
 static void clientMode(struct Network *this) {
     if (connect(this->_sock, (struct sockaddr *) &this->_adressage, sizeof(this->_adressage)) != -1) {
-        Log(SUCCESS, "Connexion à %s sur le port %d\n", inet_ntoa(this->_adressage.sin_addr),
+        Log(SUCCESS, "Connexion à %s sur le port %d", inet_ntoa(this->_adressage.sin_addr),
             htons(this->_adressage.sin_port));
     }
     else
@@ -117,7 +115,7 @@ static void addClientToList(struct Network *this, Request **req) {
     if (newClient->_sock == -1)
         Log(ERROR, "Accept socket client error");
     else {
-        Log(SUCCESS, "Un client se connecte avec la socket %d de %s:%d\n", newClient->_sock,
+        Log(SUCCESS, "Un client se connecte avec la socket %d de %s:%d.", newClient->_sock,
             inet_ntoa(newClient->_adressage.sin_addr), htons(newClient->_adressage.sin_port));
         this->_clientSock->addElemFront(this->_clientSock, (void *) newClient);
         *req = CreateRequest(NULL, newClient->_sock);
@@ -136,7 +134,7 @@ static bool checkServerConnectionAndMessage(void *elem, void *userData) {
     if (FD_ISSET(sd, &someData->rfds)) {
         if ((valread = read(sd, buffer, 1024)) == 0) {
             someData->req = CreateRequest(strdup("-"), sd);
-            Log(INFORMATION, "Host disconnected , ip %s , port %d \n",
+            Log(INFORMATION, "Host disconnected , ip %s , port %d.",
                 inet_ntoa(((t_client *) elem)->_adressage.sin_addr),
                 ntohs(((t_client *) elem)->_adressage.sin_port));
             close(sd);
@@ -144,7 +142,7 @@ static bool checkServerConnectionAndMessage(void *elem, void *userData) {
         }
         else {
             buffer[valread] = '\0';
-            Log(INFORMATION, "MSG from client with socket : %d -> %s\n", sd, buffer);
+            Log(INFORMATION, "MSG from client with socket : %d -> %s.", sd, buffer);
             someData->req = CreateRequest(strdup(buffer), sd);
             return (true);
         }
@@ -180,7 +178,7 @@ static Request *Receive(struct Network *this, int timeout) {
         }), NULL);
 
     if (select(maxfd + 1, &someData->rfds, NULL, NULL, &tv) == -1) {
-        Log(ERROR, "Select error\n");
+        Log(ERROR, "Select error.");
         exit(0);
     }
 
@@ -213,7 +211,7 @@ static Request *Receive(struct Network *this, int timeout) {
             }
             else {
                 buffer[valread] = '\0';
-                Log(INFORMATION, "MSG From server: %s\n", buffer);
+                Log(INFORMATION, "MSG From server: %s.", buffer);
                 xfree(someData, sizeof(t_dataServer));
                 req = CreateRequest(strdup(buffer), this->_sock);
                 return (req);
@@ -224,13 +222,13 @@ static Request *Receive(struct Network *this, int timeout) {
     return (NULL);
 }
 
-static bool Send(struct e_Response *rep) {
+bool Send(struct e_Response *rep) {
     if (send(rep->destFd, rep->message, strlen(rep->message), 0) != (ssize_t) strlen(rep->message)) {
         Log(WARNING, "Message to socket: %d could not be sent", rep->destFd);
         return (false);
     }
     else {
-        Log(SUCCESS, "Message to socket: %d have been sent successfully", rep->destFd);
+        Log(SUCCESS, "Message to socket: %d has been sent successfully", rep->destFd);
         return (true);
     }
 }

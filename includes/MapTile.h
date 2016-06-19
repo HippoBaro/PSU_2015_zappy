@@ -26,9 +26,10 @@
 #define _H_ZAPPY_MAPTILE_
 
 #include "LinkedList.h"
-#include "Drone.h"
+#include "Item.h"
 
 typedef struct	    s_map Map;
+typedef struct      e_Drone Drone;
 
 typedef struct		s_maptile
 {
@@ -63,7 +64,7 @@ typedef struct		s_maptile
 }			        MapTile;
 
 /* init_map in maptile.c */
-MapTile       *CreateMapTile(int X, int Y);
+MapTile	    *CreateMapTile(Map *map, int X, int Y);
 void        DestroyMapTile(MapTile *mapTile);
 
 /* FX Ptr - Players */

@@ -2,9 +2,9 @@
 // Created by barrauh on 6/12/16.
 //
 
-#include "Request.h"
+
 #include "Response.h"
-#include "LinkedList.h"
+#include <Network.h>
 
 void        DestroyResponse(Response *response) {
     if (response->message != NULL)
@@ -16,10 +16,16 @@ void        DestroyResponse(Response *response) {
 Response    *CreateResponseFrom(Request *request) {
     Response    *ret;
 
-    ret = xmalloc(sizeof(Response));
-    ret->message = NULL;
+    ret = CreateEmptyResponse();
     ret->destFd = request->socketFd;
-    ret->Free = &DestroyResponse;
+    return ret;
+}
+
+Response    *CreateKoResponseFrom(Request *request) {
+    Response    *ret;
+
+    ret = CreateResponseFrom(request);
+    ret->message = strdup("ko");
     return ret;
 }
 
@@ -29,6 +35,7 @@ Response    *CreateEmptyResponse() {
     ret = xmalloc(sizeof(Response));
     ret->message = NULL;
     ret->destFd = -1;
+    ret->Send = &Send;
     ret->Free = &DestroyResponse;
     return ret;
 }

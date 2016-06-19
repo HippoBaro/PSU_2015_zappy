@@ -9,8 +9,7 @@
 #define PSU_2015_ZAPPY_TIMER_H
 
 typedef struct              s_Timer {
-    struct timeval          *start;
-    suseconds_t             timer;
+    u_int64_t               target;
     bool                    (*isElapsed)(struct s_Timer *self);
 }                           Timer;
 
