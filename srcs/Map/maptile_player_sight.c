@@ -18,11 +18,15 @@ static Drone    *DuplicateDrone(Drone *existing_drone, Map *world)
 {
     Drone       *fake;
 
-    fake = CreateDrone(world, 0, 0);
+    fake = CreateDrone();
     fake->rotation = existing_drone->rotation;
     fake->mapTile = existing_drone->mapTile;
     fake->team = existing_drone->team;
     fake->level = existing_drone->level;
+
+    /* if at creation this duplicated drone is referenced on tile, removing it. */
+    fake->mapTile->RemoveDrone(fake->mapTile, fake);
+
     return (fake);
 }
 
@@ -100,7 +104,7 @@ string         GetDroneSight(Drone *player, Map *world)
     }
     while (i != height)
     {
-        new_drone->Move(new_drone, world);
+        new_drone->GoTop(new_drone, world);
         answer = asprintf(" %s, %s ", answer, GetRessourceOnSightAtLevel(new_drone, world, i + 1));
         i++;
     }

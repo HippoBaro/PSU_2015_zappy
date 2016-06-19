@@ -18,6 +18,12 @@ void DestroyDrone(Drone *drone) {
 
 static void Move(struct e_Drone *self, struct s_map *map) {
     //todo <--> Communication with server
+    self->mapTile->RemoveDrone(self->mapTile, self);
+    self->mapTile = self->mapTile->GetTopTile(self, map);
+    self->mapTile->AddDrone(self->mapTile, self);
+}
+
+static void GoTop(struct e_Drone *self, struct s_map *map) {
     self->mapTile = self->mapTile->GetTopTile(self, map);
 }
 
@@ -170,6 +176,7 @@ Drone   *CreateDrone() {
     ret->status = NEW;
 
     ret->Move = &Move;
+    ret->GoTop = &GoTop;
     ret->GoRight = &GoRight; // useless
     ret->GoBackwards = &GoBackwards; // useless
     ret->GoLeft = &GoLeft; // useless

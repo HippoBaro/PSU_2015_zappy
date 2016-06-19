@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Wed Jun 15 15:41:09 2016 Christian Diaconu
-** Last update Wed Jun 15 16:19:58 2016 Christian Diaconu
+** Last update Sun Jun 19 14:43:49 2016 Christian Diaconu
 */
 
 #define		MAP_XY			5
@@ -58,9 +58,11 @@ int		main()
   Drone		*player;
 
   world = CreateMap(MAP_XY, MAP_XY);
-  player = CreateDrone(world, DRONE_START_POS_X, DRONE_START_POS_Y);
+  player = CreateDrone();
+  world->AddDrone(world->GetTile(world, 0, 0), player);
   test_circual_map_move(world, player, TOP);
   test_circual_map_move(world, player, LEFT);
   test_circual_map_move(world, player, BOTTOM);
   test_circual_map_move(world, player, RIGHT);
+  printf("Sight Works ? : %s\n", player->GetDroneSight(player, world));
 }
