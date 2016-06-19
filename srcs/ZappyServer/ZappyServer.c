@@ -90,12 +90,15 @@ static void ExecuteRequests(ZappyServer *server) {
 
 static ZappyServer *Start(ZappyServer *server) {
     Request *request;
+    struct timeval tv;
 
+    tv.tv_sec = 1;
+    tv.tv_usec = 0;
     server->network = CreateNetwork(SERVER, (uint16_t) server->configuration->port, NULL);
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
-        request = server->network->Receive(server->network, 1); //set timeout in function of next action timing
+        request = server->network->Receive(server->network, &tv); //set timeout in function of next action timing
         if (request != NULL)
         {
             if (request->type == NEW_CLIENT) {

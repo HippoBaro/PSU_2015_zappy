@@ -178,7 +178,7 @@ static Request *Receive(struct Network *this, struct timeval *tv) {
                 maxfd = sd;
         }), NULL);
 
-    if (select(maxfd + 1, &someData->rfds, NULL, NULL, &tv) == -1) {
+    if (select(maxfd + 1, &someData->rfds, NULL, NULL, tv) == -1) {
         Log(ERROR, "Select error.");
         exit(0);
     }
