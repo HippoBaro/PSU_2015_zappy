@@ -43,12 +43,15 @@ void DestroyZappyServer(ZappyServer *self) {
 
 static ZappyServer *Start(ZappyServer *server) {
     Request *request;
+    struct timeval tv;
 
+    tv.tv_sec = 10;
+    tv.tv_usec = 0;
     server->network = CreateNetwork(SERVER, (uint16_t) server->configuration->port, NULL);
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
-        request = server->network->Receive(server->network, 10);
+        request = server->network->Receive(server->network, &tv);
         if (request == NULL)
             Log(INFORMATION, "Received has timeout");
         else

@@ -49,7 +49,7 @@ typedef struct Network {
     NetworkType _type;
     LinkedList *_clientSock;
 
-    Request *(*Receive)(struct Network *this, int timeout);
+    Request *(*Receive)(struct Network *this, struct timeval *tv);
     bool (*Send)(struct e_Response *rep);
     void (*DeleteNetwork)(struct Network *this);
 }               Network;

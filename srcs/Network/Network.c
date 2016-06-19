@@ -10,7 +10,7 @@ static void serverMode(struct Network *this);
 
 static void clientMode(struct Network *this);
 
-static Request *Receive(struct Network *this, int timeout);
+static Request *Receive(struct Network *this, struct timeval *tv);
 
 static void DeleteNetwork(struct Network *this);
 
@@ -136,6 +136,7 @@ static bool checkServerConnectionAndMessage(void *elem, void *userData) {
     if (FD_ISSET(sd, &someData->rfds)) {
         if ((valread = read(sd, buffer, 1024)) == 0) {
             someData->req = CreateRequest(strdup("-"), sd);
+            someData->req->type = EXISTING_CLIENT;
             Log(INFORMATION, "Host disconnected , ip %s , port %d \n",
                 inet_ntoa(((t_client *) elem)->_adressage.sin_addr),
                 ntohs(((t_client *) elem)->_adressage.sin_port));
@@ -146,16 +147,16 @@ static bool checkServerConnectionAndMessage(void *elem, void *userData) {
             buffer[valread] = '\0';
             Log(INFORMATION, "MSG from client with socket : %d -> %s\n", sd, buffer);
             someData->req = CreateRequest(strdup(buffer), sd);
+            someData->req->type = EXISTING_CLIENT;
             return (true);
         }
     }
     return (false);
 }
 
-static Request *Receive(struct Network *this, int timeout) {
+static Request *Receive(struct Network *this, struct timeval *tv) {
     t_dataServer *someData;
     Request *req;
-    struct timeval tv;
     int sd;
     ssize_t valread;
     char buffer[BUFFSIZE];
@@ -165,8 +166,6 @@ static Request *Receive(struct Network *this, int timeout) {
     someData = xmalloc(sizeof(t_dataServer));
     someData->net = this;
     someData->req = NULL;
-    tv.tv_sec = timeout;
-    tv.tv_usec = 0;
     FD_ZERO(&someData->rfds);
     FD_SET(this->_sock, &someData->rfds);
     maxfd = this->_sock;
@@ -179,7 +178,7 @@ static Request *Receive(struct Network *this, int timeout) {
                 maxfd = sd;
         }), NULL);
 
-    if (select(maxfd + 1, &someData->rfds, NULL, NULL, &tv) == -1) {
+    if (select(maxfd + 1, &someData->rfds, NULL, NULL, tv) == -1) {
         Log(ERROR, "Select error\n");
         exit(0);
     }
@@ -197,6 +196,7 @@ static Request *Receive(struct Network *this, int timeout) {
                     free((t_client *) data);
                 }), tmp);
             req = CreateRequest(strdup(someData->req->message), someData->req->socketFd);
+            req->type = someData->req->type;
             someData->req->Free(someData->req);
             xfree(someData, sizeof(t_dataServer));
             return (req);
@@ -227,10 +227,12 @@ static Request *Receive(struct Network *this, int timeout) {
 static bool Send(struct e_Response *rep) {
     if (send(rep->destFd, rep->message, strlen(rep->message), 0) != (ssize_t) strlen(rep->message)) {
         Log(WARNING, "Message to socket: %d could not be sent", rep->destFd);
+        rep->Free(rep);
         return (false);
     }
     else {
         Log(SUCCESS, "Message to socket: %d have been sent successfully", rep->destFd);
+        rep->Free(rep);
         return (true);
     }
 }
@@ -239,6 +241,11 @@ int main(int ac, char **av) {
     Network *net;
     Response *toto;
     Request *req;
+    struct timeval *tv;
+
+    tv = xmalloc(sizeof(struct timeval));
+    tv->tv_sec = 1;
+    tv->tv_usec = 0;
 
     if (strcmp(av[1], "server") == 0) {
         net = CreateNetwork(SERVER, 1024, NULL);
@@ -246,7 +253,7 @@ int main(int ac, char **av) {
         toto->destFd = 4;
         toto->message = "Coucou\n";
         while (net->_clientSock->countLinkedList(net->_clientSock) < 3) {
-            req = net->Receive(net, 1);
+            req = net->Receive(net, tv);
             if (req != NULL) {
                 req->Free(req);
             }
@@ -259,9 +266,10 @@ int main(int ac, char **av) {
 //                net->Send(toto);
         }
         xfree(toto, sizeof(Response));
+        xfree(tv, sizeof(struct timeval));
         net->DeleteNetwork(net);
     }
-    else if (strcmp(av[1], "client") == 0) {
+    else if (strcmp(av[1], "client_send") == 0) {
         net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
         while (1) {
             char *buffer = NULL;
@@ -274,9 +282,18 @@ int main(int ac, char **av) {
                 tmp->destFd = net->_sock;
                 tmp->message = buffer;
                 net->Send(tmp);
-                tmp->Free(tmp);
             }
         }
+    }
+    else if (strcmp(av[1], "client_listen") == 0) {
+        net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
+        while (1) {
+            req = net->Receive(net, tv);
+            if (req != NULL) {
+                req->Free(req);
+            }
+        }
+    }
 //        int i = -1;
 //        while (++i < 5) {
 //            req = net->Receive(net, 1);
@@ -294,7 +311,7 @@ int main(int ac, char **av) {
 //            tmp->Free(tmp);
 //            sleep(1);
 //        }
-        net->DeleteNetwork(net);
-    }
+//        xfree(tv, sizeof(struct timeval));
+//        net->DeleteNetwork(net);
     return (0);
 }
