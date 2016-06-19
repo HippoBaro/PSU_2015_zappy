@@ -141,7 +141,7 @@ static Drone *ExecutePendingRequest(Drone *drone) {
     if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) == 0)
         return drone;
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
-        elem = drone->pendingRequests->getElementEnd(drone->pendingRequests);
+        elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
         drone->currentPendingRequest = elem->data;
         drone->currentPendingRequest->timer = CreateAndStartTimer(drone->
                 currentPendingRequest->GetCompletionTime(drone->currentPendingRequest, drone->mapTile->map->server));
