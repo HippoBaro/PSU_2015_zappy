@@ -95,12 +95,11 @@ static ZappyServer *Start(ZappyServer *server) {
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
-        request = server->network->Receive(server->network, server->GetNextRequestDelay(server)); //set timeout in function of next action timing
+        request = server->network->Receive(server->network, server->GetNextRequestDelay(server));
         if (request != NULL)
         {
-            if (request->type == NEW_CLIENT) {
+            if (request->type == NEW_CLIENT)
                 NewClient(server, request);
-            }
             else
                 ExistingClient(server, request);
         }
@@ -129,7 +128,8 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
     struct timeval *ret;
 
     ret = xmalloc(sizeof(struct timeval));
-    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
+    server->world->drones->forEachElements(
+            server->world->drones, lambda(void, (void *drone, void *data), {
         if (((Drone *)drone)->currentPendingRequest != NULL &&
                 ((Drone *)drone)->currentPendingRequest->timer->target < next)
             next = ((Drone *)drone)->currentPendingRequest->timer->target;
@@ -156,7 +156,6 @@ ZappyServer *CreateZappyServer() {
     ret->Start = &Start;
     ret->GetAssociatedDrone = &GetAssociatedDrone;
     ret->GetNextRequestDelay = &GetNextRequestDelay;
-    //todo create function to get next Request timestamp to modulate receive timeout
     ret->ShutDown = lambda(ZappyServer *, (ZappyServer *server), {
         if (server->status != STARTED)
             Log(WARNING, "Trying to shutdown an non-started server !");

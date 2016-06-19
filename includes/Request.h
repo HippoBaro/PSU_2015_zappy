@@ -17,15 +17,19 @@ typedef struct          t_Request {
     int                 socketFd;
     Action              requestedAction;
     string              actionSubject;
+    int                 absoluteActionTime;
     Timer               *timer;
+    uint64_t            (*GetCompletionTime)(struct t_Request *self, ZappyServer *server);
     bool                (*Validate)(struct t_Request *self);
+    void                *(*Execute)(struct t_Request *self, void *drone);
     struct t_Request    *(*Parse)(struct t_Request *self);
     void                (*Free)(struct t_Request *self);
 }                       Request;
 
 struct s_command_string {
-  string	str;
-  void		(*doAction)(Request *);
+    string	str;
+    void		(*doAction)(Request *);
+    int     absoluteTime;
 };
 
 Request *CreateRequest(string message, int socketFd);

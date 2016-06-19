@@ -42,7 +42,8 @@ static Configuration   *Validate(Configuration *config) {
     if (config->port > 65535)
         Log(ERROR, "Illegal port number.");
     //todo validate team names
-    //todo validate timeDelay
+    if (config->temporalDelay < 0)
+        Log(ERROR, "Temporal factor must be > 0.");
     Log(INFORMATION, "Configuration was successfully validated.");
     return config;
 }
@@ -63,7 +64,7 @@ Configuration *CreateConfiguration() {
     ret = xmalloc(sizeof(Configuration));
     ret->port = 0;
     ret->seed = NULL;
-    ret->temporalDelay = 0;
+    ret->temporalDelay = 100;
     ret->worldHeight = 0;
     ret->worldWidth = 0;
     ret->teamNames = CreateLinkedList();

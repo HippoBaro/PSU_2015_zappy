@@ -8,7 +8,7 @@
 void DestroyDrone(Drone *drone) {
     if (drone->team != NULL)
         xfree(drone->team, strlen(drone->team));
-    drone->inventory->freeAll(drone->inventory, (void (*)(void *)) &DestroyItem); //Todo set item destructor
+    drone->inventory->freeAll(drone->inventory, (void (*)(void *)) &DestroyItem);
     drone->inventory->Free(drone->inventory);
     drone->pendingRequests->freeAll(drone->pendingRequests, (void (*)(void *)) &DestroyRequest);
     if (drone->currentPendingRequest != NULL)
@@ -81,8 +81,23 @@ static void Fork (struct e_Drone *self) {
 }
 
 static void Die (struct e_Drone *self) {
-    //todo remove self from mapTile & Free self
-    //self->
+    LinkedList(Drones) *drones;
+    t_list *elem;
+
+    drones = self->mapTile->map->drones;
+    elem = drones->firstElementFromPredicate(drones, lambda(bool, (void *drone, void *dat), {
+        return (bool)(self->socketFd == ((Drone *)drone)->socketFd);
+    }), NULL);
+    if (elem == NULL || elem->data == NULL)
+        Log(ERROR, "Unable to find Drone in map (Die)");
+    drones->removeThisElem(drones, elem);
+    drones = self->mapTile->drones;
+    elem = drones->firstElementFromPredicate(drones, lambda(bool, (void *drone, void *dat), {
+        return (bool)(self->socketFd == ((Drone *)drone)->socketFd);
+    }), NULL);
+    if (elem == NULL || elem->data == NULL)
+        Log(ERROR, "Unable to find Drone in mapTile (Die)");
+    drones->freeThisElem(drones, (void (*)(void *)) &DestroyDrone, elem);
 }
 
 static void Turn90DegreesLeft (struct e_Drone *self) {
@@ -111,23 +126,11 @@ static Response *Broadcast(struct e_Drone *self, string message) {
 }
 
 static Drone *CommitRequest(Drone *drone, Request *request) {
-    if (drone->currentPendingRequest != NULL)
-    {
-        if (drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
-        {
-            Log(INFORMATION, "Adding request to pendingRequests list");
+    if (drone->currentPendingRequest != NULL &&
+        drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
             drone->pendingRequests->addElemFront(drone->pendingRequests, request);
-        }
-        else
-        {
-            Log(INFORMATION, "Queue is full");
-            //todo correctly ignore request (queue is full).
-        }
-
-    }
     else
     {
-        Log(INFORMATION, "First request");
         drone->currentPendingRequest = request;
         drone->currentPendingRequest->timer = CreateAndStartTimer(10000000); //10 secondes
         //todo set timer correctly
@@ -139,12 +142,8 @@ static Drone *ExecutePendingRequest(Drone *drone) {
     t_list *elem;
 
     if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) == 0)
-    {
-        Log(INFORMATION, "Nothing to execute");
         return drone;
-    }
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
-        Log(INFORMATION, "Pulling request from pendingRequests list");
         elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
         drone->currentPendingRequest = elem->data;
         drone->currentPendingRequest->timer = CreateAndStartTimer(10000000); //10 secondes
@@ -155,6 +154,7 @@ static Drone *ExecutePendingRequest(Drone *drone) {
         if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
             Log(WARNING, "Executing action on drone %d. Action number is : %d", drone->socketFd,
                 drone->currentPendingRequest->requestedAction);
+            drone->currentPendingRequest->Execute(drone->currentPendingRequest, drone);
             drone->currentPendingRequest->Free(drone->currentPendingRequest);
             drone->currentPendingRequest = NULL;
             //todo execute request, delete it and put the next one in currentPendingRequest

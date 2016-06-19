@@ -129,21 +129,21 @@ static void reqDeath(Request *req) {
 }
 
 static const struct s_command_string requestsArray[] =
-        {
-                {"avance\n\0",      &reqMove},
-                {"droite\n\0",      &reqRotateRight},
-                {"gauche\n\0",      &reqRotateLeft},
-                {"voir\n\0",        &reqLook},
-                {"inventaire\n\0",  &reqLookInventory},
-                {"prend\n\0",       &reqTake},
-                {"pose\n\0",        &reqDrop},
-                {"expulse\n\0",     &reqExpulse},
-                {"broadcast\n\0",   &reqBroadcast},
-                {"incantation\n\0", &reqIncant},
-                {"fork\n\0",        &reqFork},
-                {"connect nbr\n\0", &reqLook},
-                {"-\n\0",           &reqDeath}
-        };
+    {
+        {"avance\n\0",      &reqMove,           7},
+        {"droite\n\0",      &reqRotateRight,    7},
+        {"gauche\n\0",      &reqRotateLeft,     7},
+        {"voir\n\0",        &reqLook,           7},
+        {"inventaire\n\0",  &reqLookInventory,  1},
+        {"prend\n\0",       &reqTake,           7},
+        {"pose\n\0",        &reqDrop,           7},
+        {"expulse\n\0",     &reqExpulse,        7},
+        {"broadcast\n\0",   &reqBroadcast,      7},
+        {"incantation\n\0", &reqIncant,         300},
+        {"fork\n\0",        &reqFork,           42},
+        {"connect nbr\n\0", &reqLook,           0},
+        {"-\n\0",           &reqDeath,          0}
+    };
 
 Request *ParseRequest(Request *request) {
     int i;
@@ -153,6 +153,9 @@ Request *ParseRequest(Request *request) {
     cut = cutMessage(request->message);
     while (i++ < 12)
         if (strcmp(cut, requestsArray[i].str) == 0)
+        {
+            request->absoluteActionTime = requestsArray[i].absoluteTime;
             requestsArray[i].doAction(request);
+        }
     return request;
 }
