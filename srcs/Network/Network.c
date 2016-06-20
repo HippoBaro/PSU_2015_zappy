@@ -2,6 +2,7 @@
 // Created by pasteu_e on 12/06/16.
 //
 
+#include <errno.h>
 #include "Network.h"
 
 static void createSocket(struct Network *this);
@@ -179,8 +180,7 @@ static Request *Receive(struct Network *this, struct timeval *tv) {
         }), NULL);
 
     if (select(maxfd + 1, &someData->rfds, NULL, NULL, tv) == -1) {
-        Log(ERROR, "Select error.");
-        exit(0);
+        Log(ERROR, "Select error : errno is %d", errno);
     }
     if (tv != NULL)
         free(tv);

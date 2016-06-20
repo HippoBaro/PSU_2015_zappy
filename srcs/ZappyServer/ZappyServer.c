@@ -54,6 +54,12 @@ static void     NewClient(ZappyServer *server, Request *request) {
     newDrone->status = WELCOME_SENT;
 }
 
+static void ExecuteRequests(ZappyServer *server) {
+    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
+        ((Drone *)drone)->ExecutePendingRequest(drone);
+    }), NULL);
+}
+
 static void     ExistingClient(ZappyServer *server, Request *request) {
     Drone       *drone;
     Response    *response;
@@ -78,12 +84,7 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
         else
             drone->CommitRequest(drone, request);
     }
-}
-
-static void ExecuteRequests(ZappyServer *server) {
-    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
-        ((Drone *)drone)->ExecutePendingRequest(drone);
-    }), NULL);
+    ExecuteRequests(server);
 }
 
 static ZappyServer *Start(ZappyServer *server) {
@@ -101,7 +102,6 @@ static ZappyServer *Start(ZappyServer *server) {
             else
                 ExistingClient(server, request);
         }
-        ExecuteRequests(server);
     }
     return server->ShutDown(server);
 }
@@ -121,24 +121,31 @@ static Drone    *GetAssociatedDrone(Request *request, Map *map) {
 
 static struct timeval *GetNextRequestDelay(ZappyServer *server) {
     uint64_t next = UINT64_MAX;
+    uint64_t droneT;
     struct timeval nextTimeval;
     struct timeval current;
     struct timeval *ret;
 
     ret = xmalloc(sizeof(struct timeval));
-    server->world->drones->forEachElements(
-            server->world->drones, lambda(void, (void *drone, void *data), {
-        if (((Drone *)drone)->currentPendingRequest != NULL &&
-                ((Drone *)drone)->currentPendingRequest->timer->target < next)
+    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
+        if (((Drone *)drone)->currentPendingRequest != NULL && ((Drone *)drone)->currentPendingRequest->timer->target < next)
             next = ((Drone *)drone)->currentPendingRequest->timer->target;
+        if (((Drone *)drone)->status != READY)
+            return;
+        droneT = ((Drone *)drone)->GetLifeTimeLeft(drone);
+        if (droneT < next)
+            next = droneT;
     }), NULL);
 
+    struct timeval t;
+    uint64_t now = (uint64_t)(1000000 * t.tv_sec + t.tv_usec);
     if (next == UINT64_MAX)
         return NULL;
     nextTimeval.tv_sec = next / 1000000;
     nextTimeval.tv_usec = next % 1000000;
     gettimeofday(&current, NULL);
     timersub(&nextTimeval, &current, ret);
+    (void)now;
     return ret;
 }
 

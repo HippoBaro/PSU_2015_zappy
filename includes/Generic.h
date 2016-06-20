@@ -20,6 +20,8 @@
 #define lambda(ret, args, body) ({ ret l_anonymous_functions_name args body &l_anonymous_functions_name; })
 #define atomicdup(type, value) lambda(type *, (void), {type *tmp = xmalloc(sizeof(type));*tmp=value;return tmp;})()
 #define randMinMax(low, high) (rand() % (high - low + 1) + low)
+#define TimeNowAsUSec() lambda(uint64_t, (), { struct timeval t; return 1000000 * t.tv_sec + t.tv_usec; })()
+#define SecToUSec(sec) (sec * 1000000)
 
 #define COLOR_RED   "\x1B[31m"
 #define COLOR_GRN   "\x1B[32m"

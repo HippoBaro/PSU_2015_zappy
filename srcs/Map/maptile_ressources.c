@@ -24,17 +24,16 @@ bool		add_ressource(MapTile *tile, Item *item)
     return (tile->ressources->addElemFront(tile->ressources, (void *)item));
 }
 
-ItemType	get_ressource(MapTile *tile, ItemType type)
+Item	*get_ressource(MapTile *tile, ItemType type)
 {
     t_list	    *elem;
 
     elem = tile->ressources->firstElementFromPredicate(tile->ressources, &sorting_itemtype, (void *) type);
     if (elem != NULL) {
-        // Log(INFORMATION, "Picking up a ressource");
         tile->ressources->removeThisElem(tile->ressources, elem);
-        return (type);
+        return elem->data;
     }
-  return (-1);
+  return NULL;
 }
 
 int		count_ressources(MapTile *tile)
