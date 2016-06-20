@@ -54,7 +54,7 @@ typedef struct		s_maptile
 
     /* FX Ptr - Ressources */
     bool		    (*AddRessource)(struct s_maptile *tile, Item *item);
-    ItemType	    (*GetRessource)(struct s_maptile *tile, ItemType type);
+    Item	        *(*GetRessource)(struct s_maptile *tile, ItemType type);
     int		        (*CountRessources)(struct s_maptile *tile);
     struct s_maptile *(*SeedLoot)( struct s_maptile *self);
     string		    (*ListContent)(struct s_maptile *tile);
@@ -75,7 +75,7 @@ int		    count_players(struct s_maptile *tile);
 
 /* FX Ptr - Ressources */
 bool		add_ressource(MapTile *tile, Item *item);
-ItemType	get_ressource(struct s_maptile *tile, ItemType type);
+Item	    *get_ressource(MapTile *tile, ItemType type);
 int		    count_ressources(struct s_maptile *tile);
 void		free_maptile(struct s_maptile *map);
 

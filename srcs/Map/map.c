@@ -97,7 +97,7 @@ static MapTile *GetRandomTile(Map *self) {
     return elem->data;
 }
 
-Map *CreateMap(int width, int height) {
+Map *CreateMap(ZappyServer *server, int width, int height) {
     Map *world;
     int i;
     int x;
@@ -108,6 +108,7 @@ Map *CreateMap(int width, int height) {
     world = xmalloc(sizeof(Map));
     world->X = width;
     world->Y = height;
+    world->server = server;
     world->Free = &DestroyMap;
     world->GetTile = &GetTile;
     world->SeedLoot = &SeedLoot;

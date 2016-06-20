@@ -16,12 +16,14 @@ typedef struct e_Drone {
     LinkedList(Request) *pendingRequests;
     Request     *currentPendingRequest;
     DroneStatus status;
-    int         life;
     int         level;
     int         socketFd;
     Rotation    rotation;
     struct s_maptile        *mapTile;
+    uint64_t    lastUpdate;
 
+    bool        (*UpdateLifeTime)(struct e_Drone *self);
+    uint64_t    (*GetLifeTimeLeft)(struct e_Drone *self);
     void        (*Move)(struct e_Drone *self, Map *map);
     void        (*Look)(struct e_Drone *self);
     string      (*GetDroneSight)(struct e_Drone *self, struct s_map *map);
@@ -29,8 +31,8 @@ typedef struct e_Drone {
     void        (*Turn90DegreesRight)(struct e_Drone *self);
     void        (*Rotate)(struct e_Drone *self, Rotation rotation);
     string      (*ListInventory)(struct e_Drone *self);
-    void        (*Take)(struct e_Drone *self, Item *item);
-    void        (*Drop)(struct e_Drone *self, Item *item);
+    void        (*Take)(struct e_Drone *self, ItemType item);
+    void        (*Drop)(struct e_Drone *self, ItemType item);
     void        (*Expulse)(struct e_Drone *self);
     void        (*Fork)(struct e_Drone *self);
     void        (*Die)(struct e_Drone *self);

@@ -52,11 +52,20 @@ Item        *CreateRandomItem() {
     return CreateItemFrom((ItemType) randMinMax(0, 6));
 }
 
+Item        *CreateItemWithQuantity(ItemType type, int quantity) {
+    Item *ret;
+
+    ret = CreateItemFrom(type);
+    ret->quantity = quantity;
+    return ret;
+}
+
 Item        *CreateItemFrom(ItemType type) {
     Item    *ret;
 
     ret = xmalloc(sizeof(Item));
     ret->type = type;
+    ret->quantity = 1;
     ret->ToString = &ToString;
     ret->Free = &DestroyItem;
     return ret;

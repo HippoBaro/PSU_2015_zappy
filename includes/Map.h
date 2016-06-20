@@ -35,7 +35,7 @@ typedef struct	        s_map
 }		                Map;
 
 
-Map     *CreateMap(int width, int height);
+Map *CreateMap(ZappyServer *server, int width, int height);
 void    DestroyMap(Map *map);
 
 #endif

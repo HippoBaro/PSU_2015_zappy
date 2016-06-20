@@ -14,12 +14,14 @@ struct s_item_string {
 
 typedef struct s_Item {
     ItemType    type;
+    int         quantity;
     string      (*ToString)(struct s_Item *self);
     void        (*Free)(struct s_Item *self);
 }               Item;
 
 void        DestroyItem(Item *item);
 Item        *CreateItemFrom(ItemType type);
+Item        *CreateItemWithQuantity(ItemType type, int quantity);
 Item        *CreateRandomItem();
 
 #endif //PSU_2015_ZAPPY_ITEM_H

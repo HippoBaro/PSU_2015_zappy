@@ -23,9 +23,7 @@ static ZappyServer *Configure(ZappyServer *self, Configuration *config) {
         ++i;
     }
     srand((unsigned int) (config->seed != NULL ? *config->seed : time(NULL)));
-    self->world = CreateMap(config->worldWidth, config->worldHeight);
-    self->temporalDelay = config->temporalDelay;
-    self->temporalDelay = config->temporalDelay;
+    self->world = CreateMap(self, config->worldWidth, config->worldHeight);
     //todo create teams
     self->configuration = config;
     self->status = CONFIGURED;
@@ -56,6 +54,12 @@ static void     NewClient(ZappyServer *server, Request *request) {
     newDrone->status = WELCOME_SENT;
 }
 
+static void ExecuteRequests(ZappyServer *server) {
+    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
+        ((Drone *)drone)->ExecutePendingRequest(drone);
+    }), NULL);
+}
+
 static void     ExistingClient(ZappyServer *server, Request *request) {
     Drone       *drone;
     Response    *response;
@@ -80,34 +84,24 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
         else
             drone->CommitRequest(drone, request);
     }
-}
-
-static void ExecuteRequests(ZappyServer *server) {
-    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
-        ((Drone *)drone)->ExecutePendingRequest(drone);
-    }), NULL);
+    ExecuteRequests(server);
 }
 
 static ZappyServer *Start(ZappyServer *server) {
     Request *request;
-    struct timeval tv;
 
-    tv.tv_sec = 1;
-    tv.tv_usec = 0;
     server->network = CreateNetwork(SERVER, (uint16_t) server->configuration->port, NULL);
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
-        request = server->network->Receive(server->network, &tv); //set timeout in function of next action timing
+        request = server->network->Receive(server->network, server->GetNextRequestDelay(server));
         if (request != NULL)
         {
-            if (request->type == NEW_CLIENT) {
+            if (request->type == NEW_CLIENT)
                 NewClient(server, request);
-            }
             else
                 ExistingClient(server, request);
         }
-        ExecuteRequests(server);
     }
     return server->ShutDown(server);
 }
@@ -125,6 +119,36 @@ static Drone    *GetAssociatedDrone(Request *request, Map *map) {
     return elem->data;
 }
 
+static struct timeval *GetNextRequestDelay(ZappyServer *server) {
+    uint64_t next = UINT64_MAX;
+    uint64_t droneT;
+    struct timeval nextTimeval;
+    struct timeval current;
+    struct timeval *ret;
+
+    ret = xmalloc(sizeof(struct timeval));
+    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
+        if (((Drone *)drone)->currentPendingRequest != NULL && ((Drone *)drone)->currentPendingRequest->timer->target < next)
+            next = ((Drone *)drone)->currentPendingRequest->timer->target;
+        if (((Drone *)drone)->status != READY)
+            return;
+        droneT = ((Drone *)drone)->GetLifeTimeLeft(drone);
+        if (droneT < next)
+            next = droneT;
+    }), NULL);
+
+    struct timeval t;
+    uint64_t now = (uint64_t)(1000000 * t.tv_sec + t.tv_usec);
+    if (next == UINT64_MAX)
+        return NULL;
+    nextTimeval.tv_sec = next / 1000000;
+    nextTimeval.tv_usec = next % 1000000;
+    gettimeofday(&current, NULL);
+    timersub(&nextTimeval, &current, ret);
+    (void)now;
+    return ret;
+}
+
 ZappyServer *CreateZappyServer() {
     ZappyServer *ret;
 
@@ -136,6 +160,7 @@ ZappyServer *CreateZappyServer() {
     ret->Configure = &Configure;
     ret->Start = &Start;
     ret->GetAssociatedDrone = &GetAssociatedDrone;
+    ret->GetNextRequestDelay = &GetNextRequestDelay;
     ret->ShutDown = lambda(ZappyServer *, (ZappyServer *server), {
         if (server->status != STARTED)
             Log(WARNING, "Trying to shutdown an non-started server !");
