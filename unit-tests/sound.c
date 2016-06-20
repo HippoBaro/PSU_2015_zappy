@@ -9,8 +9,8 @@
 */
 
 #define	MAP_XY			        10
-#define	DRONE1_START_POS_X		0
-#define	DRONE1_START_POS_Y		0
+#define	DRONE1_START_POS_X		5
+#define	DRONE1_START_POS_Y		5
 #define DRONE2_START_POS_X		9
 #define DRONE2_START_POS_Y		0
 
@@ -126,7 +126,7 @@ static void		sound_compile_results(Sound *metrics)
   return (0);
 }
 
-static Sound	evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
+static MapTile	*evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
 {
   Sound			sound;
 
@@ -153,21 +153,6 @@ static Sound	evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
   sound_compile_results(&sound);
   sound_vector_compute_1(emitter, receiver, &sound, world);
   sound_vector_compute_2(emitter, receiver, &sound, world);
-}
-
-int		main()
-{
-  Map		*world;
-  Drone		*emitter;
-  Drone		*receiver;
-  MapTile   *tile;
-
-  world = CreateMap(MAP_XY, MAP_XY);
-  emitter = CreateDrone();
-  receiver = CreateDrone();
-  world->AddDrone(world->GetTile(world, DRONE1_START_POS_X, DRONE1_START_POS_Y), emitter);
-  world->AddDrone(world->GetTile(world, DRONE2_START_POS_X, DRONE2_START_POS_Y), receiver);
-  tile = evaluate_sound_path(emitter, receiver, world);
 
   printf("[Drone 1] X@%i || Y@%i\n", emitter->mapTile->X, emitter->mapTile->Y);
   printf("[Drone 2] X@%i || Y@%i\n", receiver->mapTile->X, receiver->mapTile->Y);
@@ -197,4 +182,23 @@ int		main()
     printf(" ---> [Y] path finding conclude going BOTTOM\n");
   if (sound.y_direction == GO_LEFT)
     printf(" ---> [Y] path finding conclude going LEFT\n");
+
+
+  return (sound_get_targed_tile(receiver, world, &sound));
+}
+
+int		main()
+{
+  Map		*world;
+  Drone		*emitter;
+  Drone		*receiver;
+  MapTile   *tile;
+
+  world = CreateMap(NULL, MAP_XY, MAP_XY);
+  emitter = CreateDrone();
+  receiver = CreateDrone();
+  world->AddDrone(world->GetTile(world, DRONE1_START_POS_X, DRONE1_START_POS_Y), emitter);
+  world->AddDrone(world->GetTile(world, DRONE2_START_POS_X, DRONE2_START_POS_Y), receiver);
+  tile = evaluate_sound_path(emitter, receiver, world);
+  printf("Sound will be recieved form the tile positioned at X: [%i] && Y: [%i]\n", tile->X, tile->Y);
 }
