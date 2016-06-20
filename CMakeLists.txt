@@ -48,7 +48,7 @@ set(UNIT_TEST_SOURCE
 set(MAIN_SOURCE
         srcs/Network/Network.c
         srcs/main.c
-        )
+        includes/Sound.h)
 
 #set(UNIT_TEST TRUE)
 

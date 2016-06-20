@@ -5,7 +5,7 @@
 ## Login   <diacon_c@epitech.net>
 ## 
 ## Started on  Sun Jun 12 17:02:15 2016 Christian Diaconu
-## Last update Sun Jun 19 13:39:36 2016 Christian Diaconu
+## Last update Sun Jun 19 19:53:51 2016 Christian Diaconu
 ##
 
 INC	=	includes/
@@ -35,6 +35,7 @@ $(NAME):
 		gcc srcs/main.c $(SRC) -I $(INC) -o $(NAME)
 
 maptest:
+		gcc -g -w unit-tests/sound.c $(SRC) -I $(INC) -o "6"
 		gcc -g -w unit-tests/drone_directions.c  $(SRC) -I $(INC) -o "5"
 		gcc -g -w unit-tests/maptile_ressources.c  $(SRC) -I $(INC) -o "1"
 		gcc -g -w unit-tests/maptile_player.c unit-tests/unit-main.c  $(SRC) -I $(INC) -o "2"
