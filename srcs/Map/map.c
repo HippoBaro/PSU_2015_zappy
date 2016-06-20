@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <bits/stdio2.h>
 #include <Drone.h>
+#include "Sound.h"
 
 void DestroyMap(Map *map) {
     map->mapTiles->freeAll(map->mapTiles, (void (*)(void *)) &DestroyMapTile);
@@ -117,6 +118,7 @@ Map *CreateMap(ZappyServer *server, int width, int height) {
     world->RemoveDrone = & RemoveDrone;
     world->mapTiles = CreateLinkedList();
     world->drones = CreateLinkedList();
+    world->GetTileReceivingSound = &evaluate_sound_path;
     while (i != width * height) {
         world->mapTiles->addElemEnd(world->mapTiles, CreateMapTile(world, x, y));
         ++i;

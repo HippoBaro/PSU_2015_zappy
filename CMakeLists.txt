@@ -14,6 +14,7 @@ set(SOURCE_FILES
         srcs/Response/Response.c
         srcs/Item/Item.c
         srcs/Map/map.c
+        srcs/Map/sound.c
         srcs/Map/map_sight.c
         srcs/Map/maptile.c
         srcs/Map/maptile_player_directions.c

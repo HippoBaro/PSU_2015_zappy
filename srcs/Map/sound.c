@@ -5,19 +5,13 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 19 16:21:45 2016 Christian Diaconu
-** Last update Mon Jun 20 19:03:23 2016 Christian Diaconu
+** Last update Mon Jun 20 21:52:36 2016 Christian Diaconu
 */
-
-#define	MAP_XY			        10
-#define	DRONE1_START_POS_X		5
-#define	DRONE1_START_POS_Y		5
-#define DRONE2_START_POS_X		9
-#define DRONE2_START_POS_Y		0
 
 #include "Map.h"
 #include "Drone.h"
 #include "Sound.h"
-#include "Generic.h"
+#include "MapSight.h"
 
 /*
  * This function might be a bit confusing, illustrated by an example :) !
@@ -123,10 +117,9 @@ static void		sound_compile_results(Sound *metrics)
       metrics->x_rotation = CIRCULAR;
       metrics->X = metrics->res_circular_x;
     }
-  return (0);
 }
 
-static MapTile	*evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
+MapTile	    *evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
 {
   Sound			sound;
 
@@ -154,6 +147,7 @@ static MapTile	*evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
   sound_vector_compute_1(emitter, receiver, &sound, world);
   sound_vector_compute_2(emitter, receiver, &sound, world);
 
+ /*
   printf("[Drone 1] X@%i || Y@%i\n", emitter->mapTile->X, emitter->mapTile->Y);
   printf("[Drone 2] X@%i || Y@%i\n", receiver->mapTile->X, receiver->mapTile->Y);
   printf("[AXE -> X]  --> No Circular mode will take [%i] steps && Circular mode will take [%i] steps\n", sound.res_nocircular_x, sound.res_circular_x);
@@ -182,23 +176,7 @@ static MapTile	*evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
     printf(" ---> [Y] path finding conclude going BOTTOM\n");
   if (sound.y_direction == GO_LEFT)
     printf(" ---> [Y] path finding conclude going LEFT\n");
-
+*/
 
   return (sound_get_targed_tile(receiver, world, &sound));
-}
-
-int		main()
-{
-  Map		*world;
-  Drone		*emitter;
-  Drone		*receiver;
-  MapTile   *tile;
-
-  world = CreateMap(NULL, MAP_XY, MAP_XY);
-  emitter = CreateDrone();
-  receiver = CreateDrone();
-  world->AddDrone(world->GetTile(world, DRONE1_START_POS_X, DRONE1_START_POS_Y), emitter);
-  world->AddDrone(world->GetTile(world, DRONE2_START_POS_X, DRONE2_START_POS_Y), receiver);
-  tile = evaluate_sound_path(emitter, receiver, world);
-  printf("Sound will be recieved form the tile positioned at X: [%i] && Y: [%i]\n", tile->X, tile->Y);
 }

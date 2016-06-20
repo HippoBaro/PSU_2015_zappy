@@ -31,11 +31,12 @@ typedef struct	        s_map
     MapTile             *(*GetRandomTile)(struct s_map *world);
     struct s_map        *(*AddDrone)(MapTile *tile, Drone *drone);
     struct s_map        *(*RemoveDrone)(struct s_map *world, Drone *drone);
+    MapTile             *(*GetTileReceivingSound)(Drone *emitter, Drone *receiver, struct s_map *world);
     void                (*Free)(struct s_map *map);
 }		                Map;
 
 
-Map *CreateMap(ZappyServer *server, int width, int height);
+Map     *CreateMap(ZappyServer *server, int width, int height);
 void    DestroyMap(Map *map);
 
 #endif
