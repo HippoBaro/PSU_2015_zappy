@@ -8,7 +8,7 @@
 ** Last update Mon Jun 20 21:57:32 2016 Christian Diaconu
 */
 
-#define MAP_XY				10
+#define MAP_XY				    10
 #define DRONE1_START_POS_X		5
 #define DRONE1_START_POS_Y		5
 #define DRONE2_START_POS_X		9

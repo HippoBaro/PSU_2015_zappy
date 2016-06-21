@@ -20,10 +20,10 @@ typedef struct e_Drone {
     int         socketFd;
     Rotation    rotation;
     struct s_maptile        *mapTile;
-    uint64_t    lastUpdate;
+    uint64_t    scheduledDeath;
+
 
     bool        (*UpdateLifeTime)(struct e_Drone *self);
-    uint64_t    (*GetLifeTimeLeft)(struct e_Drone *self);
     void        (*Move)(struct e_Drone *self, Map *map);
     void        (*Look)(struct e_Drone *self);
     string      (*GetDroneSight)(struct e_Drone *self, struct s_map *map);

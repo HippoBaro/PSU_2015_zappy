@@ -81,6 +81,7 @@ static void Take (struct e_Drone *self, ItemType itemType) {
         self->inventory->addElemFront(self->inventory, item);
 }
 
+//todo make it so that Drop handles quantity nicely (it leaks right now)
 static void Drop (struct e_Drone *self, ItemType itemType, int quantity) {
     t_list *elem;
 
@@ -94,8 +95,9 @@ static void Drop (struct e_Drone *self, ItemType itemType, int quantity) {
             self->inventory->removeThisElem(self->inventory, elem);
             self->mapTile->AddRessource(self->mapTile, elem->data);
         }
-        else
-            ((Item *)elem->data)->quantity -= quantity;
+        else {
+            ((Item *) elem->data)->quantity -= quantity;
+        }
     }
     else
         Log(ERROR, "Trying to drop an item that the drone doesn't have in its inventory.");
@@ -193,49 +195,24 @@ static Drone *ExecutePendingRequest(Drone *drone) {
 
 static bool UpdateLifeTime(Drone *drone) {
     uint64_t now;
-    t_list *elem;
-    int lifeConsumed;
+    t_list *tList;
+    Item *food;
 
     now = GetTimeNowAsUSec();
-    if (drone->lastUpdate == 0)
+    if (drone->scheduledDeath == 0)
         return false;
-    if (now - drone->lastUpdate > SecToUSec(1 * drone->mapTile->map->server->configuration->temporalDelay))
-    {
-        lifeConsumed = (int) ((now - drone->lastUpdate) / SecToUSec(126 * drone->mapTile->map->server->configuration->temporalDelay));
-        Log(INFORMATION, "Life consumed : %d", lifeConsumed);
-        elem = drone->inventory->firstElementFromPredicate(drone->inventory, lambda(bool, (void *item, void *dat), {
-            return (bool)(((Item *)item)->type == NOURRITURE);
+    if (now >= drone->scheduledDeath) {
+        tList = drone->inventory->firstElementFromPredicate(drone->inventory, lambda(bool, (void *elem, void *det), {
+            return (bool)(((Item *)elem)->type == NOURRITURE);
         }), NULL);
-        if (elem != NULL && elem->data != NULL && ((Item *)elem->data)->quantity > 0)
-        {
-            drone->Drop(drone, NOURRITURE, lifeConsumed);
-            drone->lastUpdate = now;
+        if (tList != NULL && (food = tList->data) != NULL) {
+            drone->Drop(drone, NOURRITURE, food->quantity);
+
         }
-        if (elem != NULL && elem->data != NULL && ((Item *)elem->data)->quantity < 1)
-        {
-            drone->Die(drone);
-            return true;
-        }
+        drone->Die(drone);
+        return true;
     }
     return false;
-}
-
-static uint64_t GetLifeTimeLeft(Drone *drone) {
-    t_list *elem;
-    struct timeval current;
-    double timeFactor;
-
-    timeFactor = drone->mapTile->map->server->configuration->temporalDelay;
-    elem = drone->inventory->firstElementFromPredicate(drone->inventory, lambda(bool, (void *item, void *dat), {
-        if (((Item *)item)->type == NOURRITURE)
-            return true;
-        return false;
-    }), NULL);
-    if (elem == NULL || elem->data == NULL)
-        return GetTimeNowAsUSec();
-    if (gettimeofday(&current, NULL) != 0)
-        Log(ERROR, "Unable to start Timer -- error getting current time.");
-    return (uint64_t) (1000000 * current.tv_sec + current.tv_usec + SecToUSec(((Item *)elem->data)->quantity * 126 * timeFactor));
 }
 
 Drone   *CreateDrone() {
@@ -250,10 +227,9 @@ Drone   *CreateDrone() {
     ret->currentPendingRequest = NULL;
     ret->level = 1;
     ret->status = NEW;
-    ret->lastUpdate = (uint64_t) 0;
+    ret->scheduledDeath = (uint64_t) 0;
 
     ret->UpdateLifeTime = &UpdateLifeTime;
-    ret->GetLifeTimeLeft = &GetLifeTimeLeft;
     ret->Move = &Move;
     ret->GoTop = &GoTop;
     ret->GoRight = &GoRight; // useless

@@ -11,7 +11,13 @@
     </ADDITIONAL_GENERATION_ENVIRONMENT>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d68f449f-ef66-411c-9e13-fc390b386184" name="Default" comment="" />
+    <list default="true" id="d68f449f-ef66-411c-9e13-fc390b386184" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/Drone.h" afterPath="$PROJECT_DIR$/includes/Drone.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Drone/Drone.c" afterPath="$PROJECT_DIR$/srcs/Drone/Drone.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" afterPath="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/unit-tests/sound_main.c" afterPath="$PROJECT_DIR$/unit-tests/sound_main.c" />
+    </list>
     <ignored path="PSU_2015_zappy.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,33 +37,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Sound.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/includes/Sound.h">
+      <file leaf-file-name="ZappyServer.c" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="429">
-              <caret line="45" column="32" selection-start-line="45" selection-start-column="13" selection-end-line="45" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sound_main.c" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/unit-tests/sound_main.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="32" column="9" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sound.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/srcs/Map/sound.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="77" />
+            <state relative-caret-position="-952">
+              <caret line="80" column="57" selection-start-line="80" selection-start-column="57" selection-end-line="80" selection-end-column="57" />
               <folding>
-                <element signature="e#278#294#0" expanded="true" />
+                <element signature="e#41#59#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -66,8 +52,8 @@
       <file leaf-file-name="Map.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/Map.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="33" column="103" selection-start-line="33" selection-start-column="103" selection-end-line="33" selection-end-column="103" />
+            <state relative-caret-position="756">
+              <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
               <folding>
                 <element signature="e#310#333#0" expanded="true" />
               </folding>
@@ -78,21 +64,29 @@
       <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
+            <state relative-caret-position="448">
               <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Drone.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Drone.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/srcs/Drone/Drone.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
-              <folding>
-                <marker date="1466450588034" expanded="false" signature="50:70" ph="..." />
-              </folding>
+            <state relative-caret-position="313">
+              <caret line="107" column="1" selection-start-line="107" selection-start-column="1" selection-end-line="107" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Drone.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/includes/Drone.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="672">
+              <caret line="27" column="46" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -100,7 +94,7 @@
       <file leaf-file-name="maptile.c" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/srcs/Map/maptile.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
+            <state relative-caret-position="448">
               <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
               <folding />
             </state>
@@ -112,26 +106,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="558">
               <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapSight.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/includes/MapSight.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="21" column="35" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Drones.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/unit-tests/Drones.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -156,8 +130,6 @@
         <option value="$PROJECT_DIR$/srcs/Map/map_sight.c" />
         <option value="$PROJECT_DIR$/srcs/main.c" />
         <option value="$PROJECT_DIR$/includes/MapTile.h" />
-        <option value="$PROJECT_DIR$/includes/Drone.h" />
-        <option value="$PROJECT_DIR$/srcs/Drone/Drone.c" />
         <option value="$PROJECT_DIR$/unit-tests/drone_directions.c" />
         <option value="$PROJECT_DIR$/includes/Generic.h" />
         <option value="$PROJECT_DIR$/unit-tests/sound.c" />
@@ -168,6 +140,9 @@
         <option value="$PROJECT_DIR$/includes/Map.h" />
         <option value="$PROJECT_DIR$/srcs/Map/map.c" />
         <option value="$PROJECT_DIR$/unit-tests/sound_main.c" />
+        <option value="$PROJECT_DIR$/includes/Drone.h" />
+        <option value="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" />
+        <option value="$PROJECT_DIR$/srcs/Drone/Drone.c" />
       </list>
     </option>
   </component>
@@ -179,10 +154,10 @@
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1" />
-    <option name="y" value="27" />
-    <option name="width" value="1922" />
-    <option name="height" value="1054" />
+    <option name="x" value="130" />
+    <option name="y" value="48" />
+    <option name="width" value="3710" />
+    <option name="height" value="2352" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -337,33 +312,13 @@
       <recent name="$PROJECT_DIR$/srcs/Map" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Build All">
+  <component name="RunManager" selected="Application.PSU_2015_zappy">
     <configuration default="true" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PSU_2015_zappy" TARGET_NAME="PSU_2015_zappy" CONFIG_NAME="Debug" TEST_MODE="SUITE_TEST">
       <envs />
       <method />
     </configuration>
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PSU_2015_zappy" TARGET_NAME="PSU_2015_zappy" CONFIG_NAME="Debug">
       <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="" />
-      <working_directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <method />
-    </configuration>
-    <configuration default="true" type="GoRunFileConfiguration" factoryName="Go Single File">
-      <module name="" />
-      <working_directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="" />
-      <working_directory value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <kind value="DIRECTORY" />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -519,7 +474,7 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="PSU_2015_zappy" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PSU_2015_zappy" TARGET_NAME="PSU_2015_zappy" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PSU_2015_zappy" RUN_TARGET_NAME="PSU_2015_zappy">
+    <configuration default="false" name="PSU_2015_zappy" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-p 1024 -x 5 -y 5 -n test -c 10 -t 10 -s 512" WORKING_DIR="" PASS_PARENT_ENVS_2="true" PROJECT_NAME="PSU_2015_zappy" TARGET_NAME="PSU_2015_zappy" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="PSU_2015_zappy" RUN_TARGET_NAME="PSU_2015_zappy">
       <envs />
       <method />
     </configuration>
@@ -546,21 +501,31 @@
       <option name="presentableId" value="Default" />
       <updated>1465835313457</updated>
     </task>
+    <task id="LOCAL-00001" summary="With life support working. Drone dies when then run out of food.">
+      <created>1466469484374</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1466469484374</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="27" width="1922" height="1054" extended-state="6" />
-    <editor active="false" />
+    <frame x="130" y="48" width="3710" height="2352" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16510417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3280255" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276756" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3375796" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33757663" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16703479" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32909006" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39808917" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -568,7 +533,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32920536" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -602,6 +566,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="With life support working. Drone dies when then run out of food." />
+    <option name="LAST_COMMIT_MESSAGE" value="With life support working. Drone dies when then run out of food." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -668,9 +636,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="24" column="49" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="49" />
-          <folding>
-            <marker date="1466450588034" expanded="false" signature="50:70" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -701,7 +667,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="28" selection-end-column="29" />
-          <folding />
+          <folding>
+            <element signature="e#310#333#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -741,9 +709,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="24" column="49" selection-start-line="24" selection-start-column="41" selection-end-line="24" selection-end-column="49" />
-          <folding>
-            <marker date="1466450588034" expanded="false" signature="50:70" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -774,7 +740,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#310#333#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -782,14 +750,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="15" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -879,14 +839,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/unit-tests/drone_directions.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/includes/Generic.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="676">
@@ -895,36 +847,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/unit-tests/Drones.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/srcs/Map/maptile.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
+        <state relative-caret-position="448">
           <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/srcs/Drone/Drone.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
-          <folding>
-            <marker date="1466450588034" expanded="false" signature="50:70" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/includes/MapSight.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="21" column="35" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -955,46 +881,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/includes/Drone.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
+        <state relative-caret-position="448">
           <caret line="16" column="24" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/includes/Map.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="543">
-          <caret line="33" column="103" selection-start-line="33" selection-start-column="103" selection-end-line="33" selection-end-column="103" />
-          <folding>
-            <element signature="e#310#333#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/srcs/Map/sound.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="77" />
-          <folding>
-            <element signature="e#278#294#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/includes/Sound.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="45" column="32" selection-start-line="45" selection-start-column="13" selection-end-line="45" selection-end-column="32" />
           <folding />
         </state>
       </provider>
@@ -1011,8 +901,86 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/unit-tests/sound_main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="32" column="9" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
+        <state relative-caret-position="644">
+          <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/Sound.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="728">
+          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcs/Map/sound.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="77" />
+          <folding>
+            <element signature="e#278#294#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/Map.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="27" column="16" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="16" />
+          <folding>
+            <element signature="e#310#333#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/unit-tests/Drones.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/MapSight.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="22" column="66" selection-start-line="22" selection-start-column="66" selection-end-line="22" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/unit-tests/drone_directions.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/Drone.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="27" column="46" selection-start-line="27" selection-start-column="46" selection-end-line="27" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-952">
+          <caret line="80" column="57" selection-start-line="80" selection-start-column="57" selection-end-line="80" selection-end-column="57" />
+          <folding>
+            <element signature="e#41#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/srcs/Drone/Drone.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="107" column="1" selection-start-line="107" selection-start-column="1" selection-end-line="107" selection-end-column="1" />
           <folding />
         </state>
       </provider>

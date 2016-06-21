@@ -72,7 +72,7 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
         response = CreateResponseFrom(request);
         response->message = asprintf("%d %d", drone->mapTile->X, drone->mapTile->Y);
         response->Send(response);
-        drone->lastUpdate = GetTimeNowAsUSec();
+        drone->scheduledDeath = (uint64_t) (GetTimeNowAsUSec() + SecToUSec(10 * server->configuration->temporalDelay));
         drone->status = READY;
     }
     else if (drone != NULL && drone->status == READY) {
@@ -138,8 +138,8 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
                 Log (INFORMATION, "Next comes from action queue.");
             }
         if (((Drone *)drone)->status == READY) {
-            droneT = ((Drone *) drone)->GetLifeTimeLeft(drone);
-            if (droneT < next)
+            droneT = ((Drone *) drone)->scheduledDeath;
+            if (droneT > 0 && droneT < next)
                 {
                     next = droneT;
                     Log (INFORMATION, "Next comes from action life left.");
