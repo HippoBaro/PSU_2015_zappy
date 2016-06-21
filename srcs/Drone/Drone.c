@@ -81,18 +81,24 @@ static void Take (struct e_Drone *self, ItemType itemType) {
         self->inventory->addElemFront(self->inventory, item);
 }
 
-static void Drop (struct e_Drone *self, ItemType itemType) {
+static void Drop (struct e_Drone *self, ItemType itemType, int quantity) {
     t_list *elem;
 
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
         return (bool)(((Item *)itemPred)->type == itemType);
     }), NULL);
     if (elem != NULL && elem->data != NULL) {
-        self->inventory->removeThisElem(self->inventory, elem);
-        self->mapTile->AddRessource(self->mapTile, elem->data);
+        Log(INFORMATION, "Item quantity : %d", ((Item *)elem->data)->quantity);
+        if (((Item *)elem->data)->quantity <= 1)
+        {
+            self->inventory->removeThisElem(self->inventory, elem);
+            self->mapTile->AddRessource(self->mapTile, elem->data);
+        }
+        else
+            ((Item *)elem->data)->quantity -= quantity;
     }
     else
-        Log(ERROR, "Trying to drop an item that the drone hasn't in its inventory.");
+        Log(ERROR, "Trying to drop an item that the drone doesn't have in its inventory.");
 }
 
 static void Expulse (struct e_Drone *self) {
@@ -162,8 +168,7 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
 static Drone *ExecutePendingRequest(Drone *drone) {
     t_list *elem;
 
-    if (drone->UpdateLifeTime(drone))
-        return drone;
+    Log(WARNING, "Entered");
     if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) == 0)
         return drone;
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
@@ -189,16 +194,24 @@ static Drone *ExecutePendingRequest(Drone *drone) {
 static bool UpdateLifeTime(Drone *drone) {
     uint64_t now;
     t_list *elem;
+    int lifeConsumed;
 
-    now = TimeNowAsUSec();
+    now = GetTimeNowAsUSec();
+    if (drone->lastUpdate == 0)
+        return false;
     if (now - drone->lastUpdate > SecToUSec(1 * drone->mapTile->map->server->configuration->temporalDelay))
     {
+        lifeConsumed = (int) ((now - drone->lastUpdate) / SecToUSec(126 * drone->mapTile->map->server->configuration->temporalDelay));
+        Log(INFORMATION, "Life consumed : %d", lifeConsumed);
         elem = drone->inventory->firstElementFromPredicate(drone->inventory, lambda(bool, (void *item, void *dat), {
             return (bool)(((Item *)item)->type == NOURRITURE);
         }), NULL);
         if (elem != NULL && elem->data != NULL && ((Item *)elem->data)->quantity > 0)
-            drone->Drop(drone, NOURRITURE);
-        else
+        {
+            drone->Drop(drone, NOURRITURE, lifeConsumed);
+            drone->lastUpdate = now;
+        }
+        if (elem != NULL && elem->data != NULL && ((Item *)elem->data)->quantity < 1)
         {
             drone->Die(drone);
             return true;
@@ -209,27 +222,35 @@ static bool UpdateLifeTime(Drone *drone) {
 
 static uint64_t GetLifeTimeLeft(Drone *drone) {
     t_list *elem;
+    struct timeval current;
+    double timeFactor;
 
+    timeFactor = drone->mapTile->map->server->configuration->temporalDelay;
     elem = drone->inventory->firstElementFromPredicate(drone->inventory, lambda(bool, (void *item, void *dat), {
-        return (bool)(((Item *)item)->type == NOURRITURE);
+        if (((Item *)item)->type == NOURRITURE)
+            return true;
+        return false;
     }), NULL);
     if (elem == NULL || elem->data == NULL)
-        return TimeNowAsUSec();
-    return (uint64_t) (TimeNowAsUSec() + SecToUSec(((Item *)elem->data)->quantity * 1));
+        return GetTimeNowAsUSec();
+    if (gettimeofday(&current, NULL) != 0)
+        Log(ERROR, "Unable to start Timer -- error getting current time.");
+    return (uint64_t) (1000000 * current.tv_sec + current.tv_usec + SecToUSec(((Item *)elem->data)->quantity * 126 * timeFactor));
 }
 
 Drone   *CreateDrone() {
     Drone   *ret;
 
     ret = xmalloc(sizeof(Drone));
+    ret->pendingRequests = CreateLinkedList();
     ret->inventory = CreateLinkedList();
     ret->inventory->addElemFront(ret->inventory, CreateItemWithQuantity(NOURRITURE, 10));
-    ret->pendingRequests = CreateLinkedList();
     ret->mapTile = NULL;
     ret->team = NULL;
+    ret->currentPendingRequest = NULL;
     ret->level = 1;
     ret->status = NEW;
-    ret->lastUpdate = TimeNowAsUSec();
+    ret->lastUpdate = (uint64_t) 0;
 
     ret->UpdateLifeTime = &UpdateLifeTime;
     ret->GetLifeTimeLeft = &GetLifeTimeLeft;

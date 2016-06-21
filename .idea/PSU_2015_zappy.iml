@@ -3,18 +3,18 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/includes/LinkedList.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/includes/ZappyServer.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/includes/Request.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/includes/Map.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/includes/Network.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/includes/Sound.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/includes/Drone.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/includes/Map.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/includes/Item.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/includes/Timer.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/includes/Generic.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/includes/Response.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/includes/Generic.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/includes/Request.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/includes/MapTile.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/includes/MapSight.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/includes/Item.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/includes/ZappyServer.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/srcs/ZappyServer/Configuration.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/srcs/ZappyServer/ZappyServer.c" isTestSource="false" />
@@ -42,14 +42,14 @@
       <library name="Header Search Paths">
         <CLASSES>
           <root url="file:///usr/include" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
           <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
           <root url="file:///usr/local/include" />
         </CLASSES>
         <SOURCES>
           <root url="file:///usr/include" />
-          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
           <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
           <root url="file:///usr/local/include" />
         </SOURCES>
       </library>

@@ -32,7 +32,7 @@ typedef struct e_Drone {
     void        (*Rotate)(struct e_Drone *self, Rotation rotation);
     string      (*ListInventory)(struct e_Drone *self);
     void        (*Take)(struct e_Drone *self, ItemType item);
-    void        (*Drop)(struct e_Drone *self, ItemType item);
+    void        (*Drop)(struct e_Drone *self, ItemType item, int quantity);
     void        (*Expulse)(struct e_Drone *self);
     void        (*Fork)(struct e_Drone *self);
     void        (*Die)(struct e_Drone *self);
