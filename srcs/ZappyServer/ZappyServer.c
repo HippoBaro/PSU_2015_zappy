@@ -65,16 +65,17 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
     Response    *response;
 
     drone = server->GetAssociatedDrone(request, server->world);
-    if (drone->status == WELCOME_SENT) {
+    if (drone != NULL && drone->status == WELCOME_SENT) {
         response = CreateResponseFrom(request);
         response->message = asprintf("%d", request->socketFd);
         response->Send(response);
         response = CreateResponseFrom(request);
         response->message = asprintf("%d %d", drone->mapTile->X, drone->mapTile->Y);
         response->Send(response);
+        drone->lastUpdate = GetTimeNowAsUSec();
         drone->status = READY;
     }
-    else if (drone->status == READY) {
+    else if (drone != NULL && drone->status == READY) {
         Log(INFORMATION, "New command from client %d : %s", drone->socketFd, request->message);
         request->Parse(request);
         if (request->requestedAction == UNKNOWN_ACTION) {
@@ -84,7 +85,6 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
         else
             drone->CommitRequest(drone, request);
     }
-    ExecuteRequests(server);
 }
 
 static ZappyServer *Start(ZappyServer *server) {
@@ -95,6 +95,9 @@ static ZappyServer *Start(ZappyServer *server) {
     Log(SUCCESS, "Zappy server started.");
     while (true) {
         request = server->network->Receive(server->network, server->GetNextRequestDelay(server));
+        server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
+            ((Drone *)drone)->UpdateLifeTime(drone);
+        }), NULL);
         if (request != NULL)
         {
             if (request->type == NEW_CLIENT)
@@ -102,6 +105,7 @@ static ZappyServer *Start(ZappyServer *server) {
             else
                 ExistingClient(server, request);
         }
+        ExecuteRequests(server);
     }
     return server->ShutDown(server);
 }
@@ -115,7 +119,7 @@ static Drone    *GetAssociatedDrone(Request *request, Map *map) {
         return false;
     }), NULL);
     if (elem == NULL || elem->data == NULL)
-        Log(ERROR, "Unable to bind request to existing drone.");
+        return NULL;
     return elem->data;
 }
 
@@ -129,23 +133,27 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
     ret = xmalloc(sizeof(struct timeval));
     server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
         if (((Drone *)drone)->currentPendingRequest != NULL && ((Drone *)drone)->currentPendingRequest->timer->target < next)
-            next = ((Drone *)drone)->currentPendingRequest->timer->target;
-        if (((Drone *)drone)->status != READY)
-            return;
-        droneT = ((Drone *)drone)->GetLifeTimeLeft(drone);
-        if (droneT < next)
-            next = droneT;
+            {
+                next = ((Drone *)drone)->currentPendingRequest->timer->target;
+                Log (INFORMATION, "Next comes from action queue.");
+            }
+        if (((Drone *)drone)->status == READY) {
+            droneT = ((Drone *) drone)->GetLifeTimeLeft(drone);
+            if (droneT < next)
+                {
+                    next = droneT;
+                    Log (INFORMATION, "Next comes from action life left.");
+                }
+        }
     }), NULL);
 
-    struct timeval t;
-    uint64_t now = (uint64_t)(1000000 * t.tv_sec + t.tv_usec);
     if (next == UINT64_MAX)
         return NULL;
     nextTimeval.tv_sec = next / 1000000;
     nextTimeval.tv_usec = next % 1000000;
     gettimeofday(&current, NULL);
     timersub(&nextTimeval, &current, ret);
-    (void)now;
+    Log(INFORMATION, "Next timeout is %d sec and %l us", ret->tv_sec, ret->tv_usec);
     return ret;
 }
 
