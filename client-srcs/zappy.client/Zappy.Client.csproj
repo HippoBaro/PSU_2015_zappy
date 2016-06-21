@@ -33,13 +33,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\Drone\AI.cs" />
     <Compile Include="Class\Generic\App.cs" />
     <Compile Include="Class\Generic\Constantes.cs" />
     <Compile Include="Class\Item\Item.cs" />
     <Compile Include="Class\Map\MapMaths.cs" />
     <Compile Include="Class\Network\NetworkEngine.cs" />
     <Compile Include="Class\Network\GenericRequest.cs" />
-    <Compile Include="Class\Network\RequestCollection\HelloWorldRequest.cs" />
+    <Compile Include="Class\Network\RequestCollection\BroadcastRequest.cs" />
+    <Compile Include="Class\Network\RequestCollection\DroneManagementRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Class\Map\Map.cs" />
