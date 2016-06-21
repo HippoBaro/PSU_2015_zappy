@@ -81,8 +81,7 @@ static void Take (struct e_Drone *self, ItemType itemType) {
         self->inventory->addElemFront(self->inventory, item);
 }
 
-//todo make it so that Drop handles quantity nicely (it leaks right now)
-static void Drop (struct e_Drone *self, ItemType itemType, int quantity) {
+static void Drop (struct e_Drone *self, ItemType itemType, int quantity, bool destroyItem) {
     t_list *elem;
 
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
@@ -90,13 +89,18 @@ static void Drop (struct e_Drone *self, ItemType itemType, int quantity) {
     }), NULL);
     if (elem != NULL && elem->data != NULL) {
         Log(INFORMATION, "Item quantity : %d", ((Item *)elem->data)->quantity);
-        if (((Item *)elem->data)->quantity <= 1)
+        if (((Item *)elem->data)->quantity == 1)
         {
             self->inventory->removeThisElem(self->inventory, elem);
-            self->mapTile->AddRessource(self->mapTile, elem->data);
+            if (!destroyItem)
+                self->mapTile->AddRessource(self->mapTile, elem->data);
+            else
+                ((Item *)elem->data)->Free(elem->data);
         }
         else {
             ((Item *) elem->data)->quantity -= quantity;
+            if (!destroyItem)
+                self->mapTile->AddRessource(self->mapTile, elem->data); //todo this create an item with a quantity on the map. Map should not handle quantity. Rather x separate Items
         }
     }
     else
@@ -159,7 +163,7 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
     if (drone->currentPendingRequest != NULL &&
         drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
             drone->pendingRequests->addElemFront(drone->pendingRequests, request);
-    else
+    else if (drone->currentPendingRequest == NULL)
     {
         drone->currentPendingRequest = request;
         drone->currentPendingRequest->timer = CreateAndStartTimer(request->GetCompletionTime(request, drone->mapTile->map->server));
@@ -206,8 +210,8 @@ static bool UpdateLifeTime(Drone *drone) {
             return (bool)(((Item *)elem)->type == NOURRITURE);
         }), NULL);
         if (tList != NULL && (food = tList->data) != NULL) {
-            drone->Drop(drone, NOURRITURE, food->quantity);
-
+            drone->scheduledDeath = (uint64_t) (food->quantity + SecToUSec(food->quantity * drone->mapTile->map->server->configuration->temporalDelay) * 126);
+            drone->Drop(drone, NOURRITURE, food->quantity, true);
         }
         drone->Die(drone);
         return true;

@@ -215,7 +215,6 @@ static Request *Receive(struct Network *this, struct timeval *tv) {
             }
             else {
                 buffer[valread] = '\0';
-                Log(INFORMATION, "MSG From server: %s.", buffer);
                 xfree(someData, sizeof(t_dataServer));
                 req = CreateRequest(strdup(buffer), this->_sock);
                 return (req);

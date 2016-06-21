@@ -38,10 +38,12 @@ static Response *Execute(Request *request, Drone *drone) { //todo refactor. THIS
 
 static uint64_t GetCompletionTime(Request *self, ZappyServer *server) {
     double delayAsSeconds;
+    uint64_t ret;
 
-    delayAsSeconds = (double)self->absoluteActionTime / server->configuration->temporalDelay;
+    delayAsSeconds = (double)self->absoluteActionTime * server->configuration->temporalDelay;
     Log(INFORMATION, "Request time is %lu", delayAsSeconds * 1000000);
-    return (uint64_t) delayAsSeconds * 1000000;
+    ret = (uint64_t) (delayAsSeconds * 1000000);
+    return ret;
 }
 
 void    DestroyRequest(Request *request) {

@@ -72,7 +72,7 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
         response = CreateResponseFrom(request);
         response->message = asprintf("%d %d", drone->mapTile->X, drone->mapTile->Y);
         response->Send(response);
-        drone->scheduledDeath = (uint64_t) (GetTimeNowAsUSec() + SecToUSec(10 * server->configuration->temporalDelay));
+        drone->scheduledDeath = (uint64_t) (GetTimeNowAsUSec() + SecToUSec(10 * server->configuration->temporalDelay) * 126);
         drone->status = READY;
     }
     else if (drone != NULL && drone->status == READY) {
@@ -153,7 +153,7 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
     nextTimeval.tv_usec = next % 1000000;
     gettimeofday(&current, NULL);
     timersub(&nextTimeval, &current, ret);
-    Log(INFORMATION, "Next timeout is %d sec and %l us", ret->tv_sec, ret->tv_usec);
+    Log(INFORMATION, "Next timeout is %lu sec and %lu us", ret->tv_sec, ret->tv_usec);
     return ret;
 }
 

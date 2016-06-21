@@ -22,7 +22,7 @@ static bool IsElapsed(Timer *self) {
     return false;
 }
 
-Timer   *CreateAndStartTimer(suseconds_t target) {
+Timer   *CreateAndStartTimer(uint64_t target) {
     Timer *ret;
     struct timeval current;
 

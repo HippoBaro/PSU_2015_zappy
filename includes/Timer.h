@@ -13,7 +13,7 @@ typedef struct              s_Timer {
     bool                    (*isElapsed)(struct s_Timer *self);
 }                           Timer;
 
-Timer   *CreateAndStartTimer(suseconds_t target);
+Timer   *CreateAndStartTimer(uint64_t target);
 void    DestroyTimer(Timer *self);
 
 #endif //PSU_2015_ZAPPY_TIMER_H
