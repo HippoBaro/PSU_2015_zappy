@@ -6,9 +6,12 @@
 
 static void DeleteNetwork(struct Network *this);
 
+static void Disconnect(struct Network *this, int fd);
+
 void initNetworkPtrFunc(Network *this) {
     initNetworkPtrFuncSend(this);
     initNetworkPtrFuncReceive(this);
+    this->Disconnect = &Disconnect;
     this->DeleteNetwork = &DeleteNetwork;
 }
 
@@ -24,6 +27,25 @@ Network *CreateNetwork(NetworkType type, uint16_t port, char *addr) {
     this->_addr = addr;
     createSocket(this);
     return (this);
+}
+
+static void Disconnect(struct Network *this, int fd) {
+    t_list *tmp;
+
+    Log(WARNING, "I'm sure this function is quite useless ! Uncomment if you thinks it's useful");
+//    tmp = this->_clientSock->firstElementFromPredicate(
+//            this->_clientSock, lambda(bool, (void *elem, void *userData), {
+//                if (((t_client *) elem)->_sock == fd)
+//                    return (true);
+//                else
+//                    return (false);
+//            }), NULL);
+//    if (tmp != NULL) {
+//        this->_clientSock->freeThisElem(this->_clientSock,
+//                                        lambda(void, (void *data), {
+//                                            free((t_client *) data);
+//                                        }), tmp);
+//    }
 }
 
 static void DeleteNetwork(struct Network *this) {
