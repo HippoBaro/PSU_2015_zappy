@@ -7,7 +7,18 @@ include_directories("includes/")
 
 set(SOURCE_FILES
         srcs/LinkedList/LinkedList.c
+        srcs/LinkedList/LinkedList_add.c
+        srcs/LinkedList/LinkedList_forEach.c
+        srcs/LinkedList/LinkedList_free.c
+        srcs/LinkedList/LinkedList_getElem.c
+        srcs/LinkedList/LinkedList_remove.c
+        srcs/LinkedList/LinkedList_utils.c
         srcs/Network/Network.c
+        srcs/Network/Network_utils.c
+        srcs/Network/Network_client.c
+        srcs/Network/Network_server.c
+        srcs/Network/Network_receive.c
+        srcs/Network/Network_send.c
         srcs/Request/Request.c
         srcs/Generic.c
         srcs/Drone/Drone.c
