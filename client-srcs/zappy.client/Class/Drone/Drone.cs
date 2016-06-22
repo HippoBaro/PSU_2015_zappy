@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Zappy.Client.Network.RequestCollection;
 using Zappy.Client.MapSystem;
 using Zappy.Client.Class;
+using System.Threading.Tasks;
 
 namespace Zappy.Client
 {
@@ -20,6 +22,8 @@ namespace Zappy.Client
         public  MapTile ActualMapTile { get { return (actual_maptile); } }
         private MapTile actual_maptile { get; set; } // MapTile will be set after binding @0x0
         private Dictionary<RessourceType, int> Ressources { get; set; }
+        private DroneManagementRequest DroneRequest { get; set; }
+
 
         /* Default constructor */
         public Drone(int UID, ref Map this_map)
@@ -27,6 +31,7 @@ namespace Zappy.Client
 			this.UID = UID;
             this.rotation = RotationState.TOP;
             this.Ressources = new Dictionary<RessourceType, int>();
+            this.DroneRequest = new DroneManagementRequest(this);
 
             // Setting Drone on map
             this.this_world = this_map;
@@ -47,36 +52,50 @@ namespace Zappy.Client
 			return (true);
 		}
 
-		/* Ask the server to move the drone 90° Drone Right */
-		public bool Turn90DegreeesRight()
+        public void ApplySight(string server_sight_string)
+        {
+
+        }
+
+        public void ApplyInventory(string server_inventory_string)
+        {
+
+        }
+
+        /* Ask the server to move the drone 90° Drone Right */
+        public async Task<bool> Turn90DegreeesRight()
 		{
 			if (this.this_world == null)
 				return (false);
 
-            /* If validation OK */
-            if (true == true)
+            this.DroneRequest.SetRequest(DroneRequestType.TURN_RIGHT);
+            await App.Network.ExecuteRequest(this.DroneRequest);
+
+            if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
                 rotation += 90;
                 return (true);
             }
-
-			return (false);
+            else
+                return (false);
 		}
 
 		/* Ask the server to move the drone 90° Drone Left */
-		public bool Turn90DegreeesLeft()
+		public async Task<bool> Turn90DegreeesLeft()
 		{
 			if (this.this_world == null)
 				return (false);
 
-            /* If validation OK */
-            if (true == true)
+            this.DroneRequest.SetRequest(DroneRequestType.TURN_LEFT);
+            await App.Network.ExecuteRequest(this.DroneRequest);
+
+            if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
                 rotation -= 90;
                 return (true);
             }
-
-            return (false);
+            else
+                return (false);
 		}
 
         /* Get Actual rotation */
@@ -94,17 +113,47 @@ namespace Zappy.Client
 			return (false);
 		}
 
-		/* Ask the server to kickout a given drone defined by it's UID */
-		public bool ExpulseDrone(int DroneUID)
+		/* Ask the server to kickout a drone on this case */
+		public async Task ExpulseDrone()
 		{
 			if (this.this_world == null)
-				return (false);
+				return ;
 
-			return (false);
+            this.DroneRequest.SetRequest(DroneRequestType.EXPULSE);
+            await App.Network.ExecuteRequest(this.DroneRequest);
+        }
 
-		}
+        /* Ask the server to fork a given drone as 'this' */
+        public async Task ForkDrone()
+        {
+            if (this.this_world == null)
+                return;
 
-		public Dictionary<RessourceType, int> Inventory
+            this.DroneRequest.SetRequest(DroneRequestType.FORK);
+            await App.Network.ExecuteRequest(this.DroneRequest);
+        }
+
+        public async Task UpdateInventory()
+        {
+            if (this.this_world == null)
+                return;
+
+            this.DroneRequest.SetRequest(DroneRequestType.INVENTORY);
+            await App.Network.ExecuteRequest(this.DroneRequest);
+        }
+
+        public async Task BroadcastSound(string message)
+        {
+            if (this.this_world == null)
+                return;
+
+            using (BroadcastRequest sound = new BroadcastRequest(message))
+            {
+                await App.Network.ExecuteRequest(sound);
+            }
+        }
+
+        public Dictionary<RessourceType, int> Inventory
 		{
 			get
 			{
