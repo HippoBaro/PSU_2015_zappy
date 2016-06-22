@@ -88,7 +88,6 @@ static void Drop (struct e_Drone *self, ItemType itemType, int quantity, bool de
         return (bool)(((Item *)itemPred)->type == itemType);
     }), NULL);
     if (elem != NULL && elem->data != NULL) {
-        Log(INFORMATION, "Item quantity : %d", ((Item *)elem->data)->quantity);
         if (((Item *)elem->data)->quantity == 1)
         {
             self->inventory->removeThisElem(self->inventory, elem);
@@ -103,8 +102,6 @@ static void Drop (struct e_Drone *self, ItemType itemType, int quantity, bool de
                 self->mapTile->AddRessource(self->mapTile, elem->data); //todo this create an item with a quantity on the map. Map should not handle quantity. Rather x separate Items
         }
     }
-    else
-        Log(ERROR, "Trying to drop an item that the drone doesn't have in its inventory.");
 }
 
 static void Expulse (struct e_Drone *self) {

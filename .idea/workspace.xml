@@ -13,13 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d68f449f-ef66-411c-9e13-fc390b386184" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/Drone.h" afterPath="$PROJECT_DIR$/includes/Drone.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/Timer.h" afterPath="$PROJECT_DIR$/includes/Timer.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Drone/Drone.c" afterPath="$PROJECT_DIR$/srcs/Drone/Drone.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Network/Network.c" afterPath="$PROJECT_DIR$/srcs/Network/Network.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Request/Request.c" afterPath="$PROJECT_DIR$/srcs/Request/Request.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Request/Timer.c" afterPath="$PROJECT_DIR$/srcs/Request/Timer.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" afterPath="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" />
     </list>
     <ignored path="PSU_2015_zappy.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,8 +69,18 @@
       <file leaf-file-name="Drone.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/srcs/Drone/Drone.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="169" column="5" selection-start-line="169" selection-start-column="5" selection-end-line="169" selection-end-column="5" />
+            <state relative-caret-position="712">
+              <caret line="97" column="9" selection-start-line="97" selection-start-column="9" selection-end-line="97" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MapTile.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/includes/MapTile.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="488">
+              <caret line="56" column="76" selection-start-line="56" selection-start-column="76" selection-end-line="56" selection-end-column="76" />
               <folding />
             </state>
           </provider>
@@ -134,16 +138,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="drone_directions.c" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/unit-tests/drone_directions.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -162,7 +156,6 @@
         <option value="$PROJECT_DIR$/srcs/Map/maptile_player_directions.c" />
         <option value="$PROJECT_DIR$/srcs/Map/map_sight.c" />
         <option value="$PROJECT_DIR$/srcs/main.c" />
-        <option value="$PROJECT_DIR$/includes/MapTile.h" />
         <option value="$PROJECT_DIR$/unit-tests/drone_directions.c" />
         <option value="$PROJECT_DIR$/unit-tests/sound.c" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
@@ -179,6 +172,7 @@
         <option value="$PROJECT_DIR$/srcs/Request/Request.c" />
         <option value="$PROJECT_DIR$/srcs/Network/Network.c" />
         <option value="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" />
+        <option value="$PROJECT_DIR$/includes/MapTile.h" />
         <option value="$PROJECT_DIR$/srcs/Drone/Drone.c" />
       </list>
     </option>
@@ -604,14 +598,30 @@
       <option name="project" value="LOCAL" />
       <updated>1466549003571</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Revised life system and corrected Request Queue">
+      <created>1466552422077</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1466552422077</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="130" y="48" width="3710" height="2352" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32956153" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276756" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -666,7 +676,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="With life support working. Drone dies when then run out of food." />
     <MESSAGE value="Revamped life system" />
-    <option name="LAST_COMMIT_MESSAGE" value="Revamped life system" />
+    <MESSAGE value="Revised life system and corrected Request Queue" />
+    <option name="LAST_COMMIT_MESSAGE" value="Revised life system and corrected Request Queue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -874,14 +885,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/includes/MapTile.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="81" column="37" selection-start-line="81" selection-start-column="37" selection-end-line="81" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/srcs/Map/maptile_players.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-129">
@@ -1084,10 +1087,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/includes/MapTile.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="56" column="76" selection-start-line="56" selection-start-column="76" selection-end-line="56" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/srcs/Drone/Drone.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="169" column="5" selection-start-line="169" selection-start-column="5" selection-end-line="169" selection-end-column="5" />
+        <state relative-caret-position="712">
+          <caret line="97" column="9" selection-start-line="97" selection-start-column="9" selection-end-line="97" selection-end-column="9" />
           <folding />
         </state>
       </provider>
