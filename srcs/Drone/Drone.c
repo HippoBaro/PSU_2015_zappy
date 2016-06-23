@@ -164,7 +164,9 @@ static Response *Broadcast(struct s_Drone *self, string message) {
 }
 
 static Drone *CommitRequest(Drone *drone, Request *request) {
-    if (drone->currentPendingRequest != NULL &&
+    if (request->requestedAction == DIE)
+        drone->Die(drone);
+    else if (drone->currentPendingRequest != NULL &&
         drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
             drone->pendingRequests->addElemFront(drone->pendingRequests, request);
     else if (drone->currentPendingRequest == NULL)
@@ -230,7 +232,6 @@ Drone   *CreateDrone(Team *team) {
     ret = xmalloc(sizeof(Drone));
     ret->pendingRequests = CreateLinkedList();
     ret->inventory = CreateLinkedList();
-    ret->inventory->addElemFront(ret->inventory, CreateItemWithQuantity(NOURRITURE, 10));
     ret->mapTile = NULL;
     ret->team = team;
     ret->currentPendingRequest = NULL;

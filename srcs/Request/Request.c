@@ -36,6 +36,23 @@ static Response *Execute(Request *request, Drone *drone) { //todo refactor. THIS
     return NULL; //todo return response correctly
 }
 
+static Request  *Sanitize(Request *self) {
+    size_t len;
+
+    if (self->message == NULL || (len = strlen(self->message)) == 0)
+        return self;
+    while (len > 0)
+    {
+        if (self->message[len] == '\n')
+        {
+            self->message[len] = '\0';
+            return self;
+        }
+        --len;
+    }
+    return self;
+}
+
 static uint64_t GetCompletionTime(Request *self, ZappyServer *server) {
     double delayAsSeconds;
     uint64_t ret;
@@ -48,7 +65,7 @@ static uint64_t GetCompletionTime(Request *self, ZappyServer *server) {
 
 void    DestroyRequest(Request *request) {
     if (request->message != NULL)
-        xfree(request->message, strlen(request->message));
+        xfree(request->message, strlen(request->message) + 1);
     if (request->actionSubject != NULL)
         xfree(request->actionSubject, strlen(request->actionSubject));
     xfree(request->timer, sizeof(Timer));
@@ -67,6 +84,7 @@ Request *CreateRequest(string message, int socketFd) {
     ret->timer = NULL;
     ret->absoluteActionTime = -1;
     ret->Execute = (void *(*)(struct t_Request *, void *)) &Execute;
+    ret->Sanitize = &Sanitize;
     ret->Free = &DestroyRequest;
     ret->Parse = &ParseRequest;
     ret->GetCompletionTime = &GetCompletionTime;

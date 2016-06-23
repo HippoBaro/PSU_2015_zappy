@@ -18,8 +18,6 @@ void initNetworkPtrFunc(Network *this) {
 Network *CreateNetwork(NetworkType type, uint16_t port, char *addr) {
     Network *this;
 
-    signal(SIGINT, INThandler);
-    signal(SIGPIPE, PIPEhandler);
     this = xmalloc(sizeof(Network));
     initNetworkPtrFunc(this);
     this->_type = type;
@@ -47,7 +45,8 @@ static void Disconnect(struct Network *this, int fd) {
             ntohs(((t_client *) tmp->data)->_adressage.sin_port));
         this->_clientSock->freeThisElem(this->_clientSock,
                                         lambda(void, (void *data), {
-                                            free((t_client *) data);
+                                            xfree((t_client *) data,
+                                                  sizeof(t_client));
                                         }), tmp);
     }
 }
@@ -66,13 +65,14 @@ static void DeleteNetwork(struct Network *this) {
                        }), NULL);
         this->_clientSock->freeAll(this->_clientSock,
                                    lambda(void, (void *elem), {
-                                       free((t_client *) elem);
+                                       xfree((t_client *) elem,
+                                             sizeof(t_client));
                                    }));
         this->_clientSock->Free(this->_clientSock);
     }
     shutdown(this->_sock, 2);
     close(this->_sock);
-    free(this);
+    xfree(this, sizeof(Network));
 }
 
 /*
@@ -109,17 +109,10 @@ int main(int ac, char **av) {
     else if (strcmp(av[1], "client") == 0) {
         net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
         while (1) {
-//            char *buffer = NULL;
-//            ssize_t read;
-//            size_t len;
-//
-//            Log(INFORMATION, "Waiting for input");
-//            if ((read = getline(&buffer, &len, stdin)) != -1) {
-//                Response *tmp = CreateEmptyResponse();
-//                tmp->destFd = net->_sock;
-//                tmp->message = buffer;
-//                net->Send(tmp);
-//            }
+            char *buffer = NULL;
+            ssize_t read;
+            size_t len;
+
             tv.tv_sec = 1;
             tv.tv_usec = 0;
             req = net->Receive(net, &tv);
@@ -132,9 +125,16 @@ int main(int ac, char **av) {
                     Log(INFORMATION, "MSG: %s", req->message);
                 req->Free(req);
             }
+            Log(INFORMATION, "Waiting for input : ");
+            if ((read = getline(&buffer, &len, stdin)) != -1) {
+                Response *tmp = CreateEmptyResponse();
+                tmp->destFd = net->_sock;
+                tmp->message = buffer;
+                net->Send(tmp);
+            }
         }
         net->DeleteNetwork(net);
     }
     return (0);
 }
- */
+*/

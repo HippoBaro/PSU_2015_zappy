@@ -4,20 +4,6 @@
 
 #include "Network.h"
 
-void INThandler(int sig) {
-    (void)sig;
-    shutdown(masterSocket, 2);
-    close(masterSocket);
-    Log(ERROR, "User interrupt ! Be careful some data were not destroyed !");
-}
-
-void PIPEhandler(int sig) {
-    (void)sig;
-    shutdown(masterSocket, 2);
-    close(masterSocket);
-    Log(ERROR, "The other side of the socket have been closed :/");
-}
-
 void createSocket(struct Network *this) {
     this->_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (this->_sock != -1) {

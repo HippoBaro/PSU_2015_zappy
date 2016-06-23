@@ -26,7 +26,8 @@ static Request *Receive_server(struct Network *this,
             var->someData->req->message[0] == '-')
             this->_clientSock->freeThisElem(this->_clientSock,
                                             lambda(void, (void *data), {
-                                                free((t_client *) data);
+                                                xfree((t_client *) data,
+                                                      sizeof(t_client));
                                             }), var->tmp);
         var->req = CreateRequest(strdup(var->someData->req->message),
                                  var->someData->req->socketFd);
@@ -81,6 +82,10 @@ static Request *Receive(struct Network *this, struct timeval *tv) {
                     if (var.sd > var.maxfd)
                         var.maxfd = var.sd;
                 }), NULL);
+    if (tv != NULL)
+        Log(INFORMATION, "Next timeout is %lu sec and %lu us.", tv->tv_sec, tv->tv_usec);
+    else
+        Log(INFORMATION, "Next timeout is infinite.");
     if (select(var.maxfd + 1, &var.someData->rfds, NULL, NULL, tv) == -1)
         Log(ERROR, "Select error : errno is %d", errno);
     if (this->_type == SERVER)

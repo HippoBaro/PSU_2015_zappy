@@ -23,6 +23,7 @@ typedef struct          t_Request {
     bool                (*Validate)(struct t_Request *self);
     void                *(*Execute)(struct t_Request *self, void *drone);
     struct t_Request    *(*Parse)(struct t_Request *self);
+    struct t_Request    *(*Sanitize)(struct t_Request *self);
     void                (*Free)(struct t_Request *self);
 }                       Request;
 

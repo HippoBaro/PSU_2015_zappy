@@ -38,20 +38,14 @@ static string getSubject(string message) {
 
 static string cutMessage(string message) {
     string str;
-    int i;
-    int x;
+    size_t i;
 
     i = 0;
-    while (message[i] && message[i] != '\n' && message[i] != ' ')
+    while (message[i] && message[i] != ' ')
         i++;
     str = xmalloc((size_t) (i + 1));
-    x = i;
-    i = 0;
-    while (i < x) {
-        str[i] = message[i];
-        i++;
-    }
-    str[i] = '\n';
+    strncpy(str, message, i);
+    str[i] = '\0';
     return (str);
 }
 
@@ -130,19 +124,19 @@ static void reqDeath(Request *req) {
 
 static const struct s_command_string requestsArray[] =
     {
-        {"avance\n\0",      &reqMove,           7},
-        {"droite\n\0",      &reqRotateRight,    7},
-        {"gauche\n\0",      &reqRotateLeft,     7},
-        {"voir\n\0",        &reqLook,           7},
-        {"inventaire\n\0",  &reqLookInventory,  1},
-        {"prend\n\0",       &reqTake,           7},
-        {"pose\n\0",        &reqDrop,           7},
-        {"expulse\n\0",     &reqExpulse,        7},
-        {"broadcast\n\0",   &reqBroadcast,      7},
-        {"incantation\n\0", &reqIncant,         300},
-        {"fork\n\0",        &reqFork,           42},
-        {"connect nbr\n\0", &reqLook,           0},
-        {"-\n\0",           &reqDeath,          0}
+        {"avance",      &reqMove,           7},
+        {"droite",      &reqRotateRight,    7},
+        {"gauche",      &reqRotateLeft,     7},
+        {"voir",        &reqLook,           7},
+        {"inventaire",  &reqLookInventory,  1},
+        {"prend",       &reqTake,           7},
+        {"pose",        &reqDrop,           7},
+        {"expulse",     &reqExpulse,        7},
+        {"broadcast",   &reqBroadcast,      7},
+        {"incantation", &reqIncant,         300},
+        {"fork",        &reqFork,           42},
+        {"connect nbr", &reqLook,           0},
+        {"-",           &reqDeath,          0}
     };
 
 Request *ParseRequest(Request *request) {
@@ -151,7 +145,7 @@ Request *ParseRequest(Request *request) {
 
     i = 0;
     cut = cutMessage(request->message);
-    while (i < 12)
+    while (i <= 12)
     {
         if (strcmp(cut, requestsArray[i].str) == 0) {
             request->absoluteActionTime = requestsArray[i].absoluteTime;

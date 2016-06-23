@@ -81,6 +81,8 @@ static void     InitDrone(ZappyServer *server, Drone *drone, Request *request) {
         response = CreateResponseFrom(request);
         response->message = asprintf("%d %d", drone->mapTile->X, drone->mapTile->Y);
         response->Send(response);
+        team->currentUsedSlot++;
+        drone->team = team;
         drone->scheduledDeath = (uint64_t) (GetTimeNowAsUSec() + SecToUSec(10 * server->configuration->temporalDelay) * 126);
         drone->status = READY;
     }
@@ -105,6 +107,7 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
         if (request->requestedAction == UNKNOWN_ACTION) {
             response = CreateKoResponseFrom(request);
             response->Send(response);
+            request->Free(request);
         }
         else
             drone->CommitRequest(drone, request);
@@ -138,6 +141,7 @@ static ZappyServer *Start(ZappyServer *server) {
         }), NULL);
         if (request != NULL)
         {
+            request->Sanitize(request);
             if (request->type == NEW_CLIENT)
                 NewClient(server, request);
             else
@@ -168,23 +172,15 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
     struct timeval current;
     struct timeval *ret;
 
-    if (server->nextTimeout != NULL) {
-        Log(INFORMATION, "Free");
+    if (server->nextTimeout != NULL)
         xfree(server->nextTimeout, sizeof(struct timeval));
-    }
     server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
         if (((Drone *)drone)->currentPendingRequest != NULL && ((Drone *)drone)->currentPendingRequest->timer->target < next)
-            {
-                next = ((Drone *)drone)->currentPendingRequest->timer->target;
-                Log (INFORMATION, "Next comes from action queue.");
-            }
+            next = ((Drone *)drone)->currentPendingRequest->timer->target;
         if (((Drone *)drone)->status == READY) {
             droneT = ((Drone *) drone)->scheduledDeath;
             if (droneT > 0 && droneT < next)
-                {
-                    next = droneT;
-                    Log (INFORMATION, "Next comes from action life left.");
-                }
+                next = droneT;
         }
     }), NULL);
 
@@ -195,7 +191,6 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
     nextTimeval.tv_usec = next % 1000000;
     gettimeofday(&current, NULL);
     timersub(&nextTimeval, &current, ret);
-    Log(INFORMATION, "Next timeout is %lu sec and %lu us", ret->tv_sec, ret->tv_usec);
     return ret;
 }
 

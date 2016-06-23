@@ -4,7 +4,7 @@
 
 #include "Generic.h"
 
-static unsigned long on_heap = 0;
+static uint64_t on_heap = 0;
 void *xmalloc(size_t size) {
     void    *ret;
 
