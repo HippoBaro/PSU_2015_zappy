@@ -11,7 +11,7 @@ void initNetworkPtrFuncReceive(Network *this) {
     this->Receive = &Receive;
 }
 
-static Request *Receive_server(struct Network *this, struct timeval *tv,
+static Request *Receive_server(struct Network *this,
                                t_variable *var) {
     if (FD_ISSET(this->_sock, &var->someData->rfds)) {
         addClientToList(this, &var->req);
@@ -39,7 +39,7 @@ static Request *Receive_server(struct Network *this, struct timeval *tv,
     return (NULL);
 }
 
-static Request *Receive_client(struct Network *this, struct timeval *tv,
+static Request *Receive_client(struct Network *this,
                                t_variable *var) {
     if (FD_ISSET(this->_sock, &var->someData->rfds)) {
         if ((var->valread = read(this->_sock, var->buffer, 1024)) == 0) {
@@ -84,9 +84,9 @@ static Request *Receive(struct Network *this, struct timeval *tv) {
     if (select(var.maxfd + 1, &var.someData->rfds, NULL, NULL, tv) == -1)
         Log(ERROR, "Select error : errno is %d", errno);
     if (this->_type == SERVER)
-        return (Receive_server(this, tv, &var));
+        return (Receive_server(this, &var));
     else if (this->_type == CLIENT)
-        return (Receive_client(this, tv, &var));
+        return (Receive_client(this, &var));
     xfree(var.someData, sizeof(t_dataServer));
     return (NULL);
 }
