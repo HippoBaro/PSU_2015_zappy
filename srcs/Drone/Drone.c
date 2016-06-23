@@ -142,14 +142,14 @@ static void Die (struct s_Drone *self) {
 
 static void Turn90DegreesLeft (struct s_Drone *self) {
     if (self->rotation - 90 == 0)
-        self->rotation = 270;
+        self->rotation = (Rotation) 270;
     else
         self->rotation -= 90;
 }
 
 static void Turn90DegreesRight (struct s_Drone *self) {
     if (self->rotation + 90 == 360)
-        self->rotation = 0;
+        self->rotation = (Rotation) 0;
     else
         self->rotation += 90;
 }

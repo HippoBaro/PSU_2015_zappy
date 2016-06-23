@@ -13,25 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d68f449f-ef66-411c-9e13-fc390b386184" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/includes/Team.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/srcs/Team/Team.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/Drone.h" afterPath="$PROJECT_DIR$/includes/Drone.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/Map.h" afterPath="$PROJECT_DIR$/includes/Map.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/MapTile.h" afterPath="$PROJECT_DIR$/includes/MapTile.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/Network.h" afterPath="$PROJECT_DIR$/includes/Network.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/Sound.h" afterPath="$PROJECT_DIR$/includes/Sound.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/ZappyServer.h" afterPath="$PROJECT_DIR$/includes/ZappyServer.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Drone/Drone.c" afterPath="$PROJECT_DIR$/srcs/Drone/Drone.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Generic.c" afterPath="$PROJECT_DIR$/srcs/Generic.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Map/map.c" afterPath="$PROJECT_DIR$/srcs/Map/map.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Map/maptile_player_sight.c" afterPath="$PROJECT_DIR$/srcs/Map/maptile_player_sight.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Network/Network.c" afterPath="$PROJECT_DIR$/srcs/Network/Network.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Network/Network_receive.c" afterPath="$PROJECT_DIR$/srcs/Network/Network_receive.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Request/Parser.c" afterPath="$PROJECT_DIR$/srcs/Request/Parser.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/Request/Request.c" afterPath="$PROJECT_DIR$/srcs/Request/Request.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/ZappyServer/Configuration.c" afterPath="$PROJECT_DIR$/srcs/ZappyServer/Configuration.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" afterPath="$PROJECT_DIR$/srcs/ZappyServer/ZappyServer.c" />
     </list>
     <ignored path="PSU_2015_zappy.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -131,8 +113,8 @@
       <file leaf-file-name="Drone.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/srcs/Drone/Drone.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="746">
-              <caret line="134" column="56" selection-start-line="134" selection-start-column="56" selection-end-line="134" selection-end-column="56" />
+            <state relative-caret-position="811">
+              <caret line="187" column="46" selection-start-line="187" selection-start-column="46" selection-end-line="187" selection-end-column="46" />
               <folding>
                 <element signature="e#41#60#0" expanded="true" />
               </folding>
@@ -577,7 +559,14 @@
       <option name="project" value="LOCAL" />
       <updated>1466555023594</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="With team support.">
+      <created>1466649655631</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1466649655631</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -650,7 +639,8 @@
     <MESSAGE value="Revamped life system" />
     <MESSAGE value="Revised life system and corrected Request Queue" />
     <MESSAGE value="fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix" />
+    <MESSAGE value="With team support." />
+    <option name="LAST_COMMIT_MESSAGE" value="With team support." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1053,8 +1043,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/srcs/Drone/Drone.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="746">
-          <caret line="134" column="56" selection-start-line="134" selection-start-column="56" selection-end-line="134" selection-end-column="56" />
+        <state relative-caret-position="811">
+          <caret line="187" column="46" selection-start-line="187" selection-start-column="46" selection-end-line="187" selection-end-column="46" />
           <folding>
             <element signature="e#41#60#0" expanded="true" />
           </folding>
