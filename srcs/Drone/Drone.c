@@ -164,7 +164,7 @@ static Response *Broadcast(struct s_Drone *self, string message) {
 }
 
 static Drone *CommitRequest(Drone *drone, Request *request) {
-    if (request->requestedAction == DIE)
+    if (request != NULL && request->requestedAction == DIE)
         drone->Die(drone);
     else if (drone->currentPendingRequest != NULL &&
         drone->pendingRequests->countLinkedList(drone->pendingRequests) < 9)
