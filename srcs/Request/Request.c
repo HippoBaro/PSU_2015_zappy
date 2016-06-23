@@ -51,6 +51,7 @@ void    DestroyRequest(Request *request) {
         xfree(request->message, strlen(request->message));
     if (request->actionSubject != NULL)
         xfree(request->actionSubject, strlen(request->actionSubject));
+    xfree(request->timer, sizeof(Timer));
     xfree(request, sizeof(Request));
 }
 

@@ -42,9 +42,9 @@ static string cutMessage(string message) {
     int x;
 
     i = 0;
-    while (message[i] != '\n' && message[i] != ' ')
+    while (message[i] && message[i] != '\n' && message[i] != ' ')
         i++;
-    str = xmalloc(sizeof(char) * i + 1);
+    str = xmalloc((size_t) (i + 1));
     x = i;
     i = 0;
     while (i < x) {
@@ -151,7 +151,7 @@ Request *ParseRequest(Request *request) {
 
     i = 0;
     cut = cutMessage(request->message);
-    while (i <= 12)
+    while (i < 12)
     {
         if (strcmp(cut, requestsArray[i].str) == 0) {
             request->absoluteActionTime = requestsArray[i].absoluteTime;
@@ -159,6 +159,6 @@ Request *ParseRequest(Request *request) {
         }
         ++i;
     }
-
+    xfree(cut, strlen(cut));
     return request;
 }

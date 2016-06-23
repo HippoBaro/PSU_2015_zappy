@@ -5,6 +5,22 @@
 #include <getopt.h>
 #include "ZappyServer.h"
 
+static LinkedList(string) *GetTeamsFromArg(string team) {
+    string pch;
+    LinkedList(string) *teams;
+
+    if (team == NULL || strlen(team) == 0)
+        return NULL;
+    teams = CreateLinkedList();
+    pch = strtok (team, " \t");
+    while (pch != NULL)
+    {
+        teams->addElemFront(teams, pch);
+        pch = strtok (NULL, " ,.-");
+    }
+    return teams;
+}
+
 static Configuration *ParseFrom(Configuration *config, int ac, char **av) {
     int c;
     int index;
@@ -24,7 +40,8 @@ static Configuration *ParseFrom(Configuration *config, int ac, char **av) {
             config->temporalDelay = atof(optarg);
         else if (c == 's')
             config->seed = atomicdup(int, atoi(optarg));
-        //todo handle teams
+        else if (c == 'n')
+            config->teamNames = GetTeamsFromArg(optarg);
     }
 
     for (index = optind; index < ac; index++)
@@ -41,7 +58,8 @@ static Configuration   *Validate(Configuration *config) {
         Log(ERROR, "Unable to bind socket to requested port number. Sub-1000 ports numbers are protocol-reserved.");
     if (config->port > 65535)
         Log(ERROR, "Illegal port number.");
-    //todo validate team names
+    if (config->teamNames == NULL || config->teamNames->countLinkedList(config->teamNames) > 1)
+        Log(ERROR, "You must provide as least 1 team name.");
     if (config->temporalDelay < 0)
         Log(ERROR, "Temporal factor must be > 0.");
     Log(INFORMATION, "Configuration was successfully validated.");
@@ -49,12 +67,14 @@ static Configuration   *Validate(Configuration *config) {
 }
 
 void DestroyConfiguration(Configuration *config) {
-    config->teamNames->freeAll(config->teamNames, lambda(void, (void *elem), {
-        xfree(elem, strlen(elem));
-    }));
+    if (config->teamNames != NULL) {
+        config->teamNames->freeAll(config->teamNames, lambda(void, (void *elem), {
+            xfree(elem, strlen(elem));
+        }));
+        config->teamNames->Free(config->teamNames);
+    }
     if (config->seed != NULL)
         xfree(config->seed, sizeof(int));
-    config->teamNames->Free(config->teamNames);
     xfree(config, sizeof(Configuration));
 }
 
@@ -67,7 +87,7 @@ Configuration *CreateConfiguration() {
     ret->temporalDelay = 100;
     ret->worldHeight = 0;
     ret->worldWidth = 0;
-    ret->teamNames = CreateLinkedList();
+    ret->teamNames = NULL;
     ret->Validate = &Validate;
     ret->ParseFrom = &ParseFrom;
     ret->Free = &DestroyConfiguration;

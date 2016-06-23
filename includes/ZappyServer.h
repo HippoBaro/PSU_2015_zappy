@@ -7,6 +7,7 @@
 
 #include <Map.h>
 #include "Network.h"
+#include "Team.h"
 
 typedef struct              s_Configuration {
     int                     port;
@@ -25,9 +26,11 @@ typedef struct              s_ZappyServer {
     ZappyServerStatus       status;
     Configuration           *configuration;
     Map                     *world;
-    LinkedList(string)      *teams;
+    LinkedList(Team)        *teams;
     Network                 *network;
+    struct timeval          *nextTimeout;
     struct s_ZappyServer    *(*Configure)(struct s_ZappyServer *self, Configuration *config);
+    Team                    *(*GetTeamFromTeamName)(struct s_ZappyServer *self, string teamName);
     struct s_ZappyServer    *(*Start)(struct s_ZappyServer *self);
     struct s_ZappyServer    *(*ShutDown)(struct s_ZappyServer *self);
     Drone                   *(*GetAssociatedDrone)(Request *self, Map *map);

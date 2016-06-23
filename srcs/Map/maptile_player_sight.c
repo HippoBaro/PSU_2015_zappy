@@ -18,7 +18,7 @@ static Drone    *DuplicateDrone(Drone *existing_drone, Map *world)
 {
     Drone       *fake;
 
-    fake = CreateDrone();
+    fake = CreateDrone(existing_drone->team);
     fake->rotation = existing_drone->rotation;
     fake->mapTile = existing_drone->mapTile;
     fake->team = existing_drone->team;

@@ -9,9 +9,10 @@
 #include "Item.h"
 #include "Response.h"
 #include "Map.h"
+#include "Team.h"
 
-typedef struct e_Drone {
-    string      team;
+typedef struct s_Drone {
+    Team        *team;
     LinkedList(Item)    *inventory;
     LinkedList(Request) *pendingRequests;
     Request     *currentPendingRequest;
@@ -23,23 +24,23 @@ typedef struct e_Drone {
     uint64_t    scheduledDeath;
 
 
-    bool        (*UpdateLifeTime)(struct e_Drone *self);
-    void        (*Move)(struct e_Drone *self, Map *map);
-    void        (*Look)(struct e_Drone *self);
-    string      (*GetDroneSight)(struct e_Drone *self, struct s_map *map);
-    void        (*Turn90DegreesLeft)(struct e_Drone *self);
-    void        (*Turn90DegreesRight)(struct e_Drone *self);
-    void        (*Rotate)(struct e_Drone *self, Rotation rotation);
-    string      (*ListInventory)(struct e_Drone *self);
-    void        (*Take)(struct e_Drone *self, ItemType item);
-    void        (*Drop)(struct e_Drone *self, ItemType item, int quantity, bool destroyItem);
-    void        (*Expulse)(struct e_Drone *self);
-    void        (*Fork)(struct e_Drone *self);
-    void        (*Die)(struct e_Drone *self);
-    Response    *(*Broadcast)(struct e_Drone *self, string message);
-    struct e_Drone *(*CommitRequest)(struct e_Drone *drone, Request *request);
-    struct e_Drone *(*ExecutePendingRequest)(struct e_Drone *drone);
-    void        (*Free)(struct e_Drone *self);
+    bool        (*UpdateLifeTime)(struct s_Drone *self);
+    void        (*Move)(struct s_Drone *self, Map *map);
+    void        (*Look)(struct s_Drone *self);
+    string      (*GetDroneSight)(struct s_Drone *self, struct s_map *map);
+    void        (*Turn90DegreesLeft)(struct s_Drone *self);
+    void        (*Turn90DegreesRight)(struct s_Drone *self);
+    void        (*Rotate)(struct s_Drone *self, Rotation rotation);
+    string      (*ListInventory)(struct s_Drone *self);
+    void        (*Take)(struct s_Drone *self, ItemType item);
+    void        (*Drop)(struct s_Drone *self, ItemType item, int quantity, bool destroyItem);
+    void        (*Expulse)(struct s_Drone *self);
+    void        (*Fork)(struct s_Drone *self);
+    void        (*Die)(struct s_Drone *self);
+    Response    *(*Broadcast)(struct s_Drone *self, string message);
+    struct s_Drone *(*CommitRequest)(struct s_Drone *drone, Request *request);
+    struct s_Drone *(*ExecutePendingRequest)(struct s_Drone *drone);
+    void        (*Free)(struct s_Drone *self);
 
     /*
      * Unfair functions that WILL NOT be use by the clients, for server only [internal purposes].
@@ -50,15 +51,15 @@ typedef struct e_Drone {
      * In other words, there only updates the 'drone->mapTile' pointer.
      */
 
-    void        (*GoTop)(struct e_Drone *self, struct s_map *map);
-    void        (*GoRight)(struct e_Drone *self, struct s_map *map);
-    void        (*GoLeft)(struct e_Drone *self, struct s_map *map);
-    void        (*GoBackwards)(struct e_Drone *self, struct s_map *map);
+    void        (*GoTop)(struct s_Drone *self, struct s_map *map);
+    void        (*GoRight)(struct s_Drone *self, struct s_map *map);
+    void        (*GoLeft)(struct s_Drone *self, struct s_map *map);
+    void        (*GoBackwards)(struct s_Drone *self, struct s_map *map);
 
 }               Drone;
 
 string      GetDroneSight(Drone *self, struct s_map *map);
-Drone       *CreateDrone();
+Drone       *CreateDrone(Team *team);
 void        DestroyDrone(Drone *drone);
 
 #endif //PSU_2015_ZAPPY_DRONE_H

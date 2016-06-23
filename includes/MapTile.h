@@ -29,7 +29,7 @@
 #include "Item.h"
 
 typedef struct	    s_map Map;
-typedef struct      e_Drone Drone;
+typedef struct      s_Drone Drone;
 
 typedef struct		s_maptile
 {

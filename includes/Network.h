@@ -58,11 +58,8 @@ typedef struct Network {
     LinkedList *_clientSock;
 
     Request *(*Receive)(struct Network *this, struct timeval *tv);
-
     bool (*Send)(struct e_Response *rep);
-
     void (*DeleteNetwork)(struct Network *this);
-
     void (*Disconnect)(struct Network *this, int fd);
 } Network;
 

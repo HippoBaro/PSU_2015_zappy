@@ -26,6 +26,8 @@ void *xcalloc(size_t nelem, size_t elsize)
 }
 
 void xfree(void *ptr, size_t size) {
+    if (ptr == NULL)
+        return;
     on_heap -= size;
     free(ptr);
 }

@@ -7,8 +7,11 @@
 #include "Sound.h"
 
 void DestroyMap(Map *map) {
+    Log(INFORMATION, "Destroying map");
     map->mapTiles->freeAll(map->mapTiles, (void (*)(void *)) &DestroyMapTile);
     map->mapTiles->Free(map->mapTiles);
+    map->drones->freeAll(map->drones, (void (*)(void *)) &DestroyDrone);
+    map->drones->Free(map->drones);
     xfree(map, sizeof(Map));
 }
 

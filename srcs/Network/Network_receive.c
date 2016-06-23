@@ -83,8 +83,6 @@ static Request *Receive(struct Network *this, struct timeval *tv) {
                 }), NULL);
     if (select(var.maxfd + 1, &var.someData->rfds, NULL, NULL, tv) == -1)
         Log(ERROR, "Select error : errno is %d", errno);
-    if (tv != NULL)
-        free(tv);
     if (this->_type == SERVER)
         return (Receive_server(this, tv, &var));
     else if (this->_type == CLIENT)

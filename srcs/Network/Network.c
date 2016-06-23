@@ -18,8 +18,6 @@ void initNetworkPtrFunc(Network *this) {
 Network *CreateNetwork(NetworkType type, uint16_t port, char *addr) {
     Network *this;
 
-    signal(SIGINT, INThandler);
-    signal(SIGPIPE, PIPEhandler);
     this = xmalloc(sizeof(Network));
     initNetworkPtrFunc(this);
     this->_type = type;
@@ -30,22 +28,23 @@ Network *CreateNetwork(NetworkType type, uint16_t port, char *addr) {
 }
 
 static void Disconnect(struct Network *this, int fd) {
-    t_list *tmp;
+  t_list *tmp;
 
-    Log(WARNING, "I'm sure this function is quite useless ! Uncomment if you thinks it's useful");
-//    tmp = this->_clientSock->firstElementFromPredicate(
-//            this->_clientSock, lambda(bool, (void *elem, void *userData), {
-//                if (((t_client *) elem)->_sock == fd)
-//                    return (true);
-//                else
-//                    return (false);
-//            }), NULL);
-//    if (tmp != NULL) {
-//        this->_clientSock->freeThisElem(this->_clientSock,
-//                                        lambda(void, (void *data), {
-//                                            free((t_client *) data);
-//                                        }), tmp);
-//    }
+    //Log(WARNING, "I'm sure this function is quite useless ! Uncomment if you thinks it's useful");
+    tmp = this->_clientSock->firstElementFromPredicate(
+            this->_clientSock, lambda(bool, (void *elem, void *userData), {
+                if (((t_client *) elem)->_sock == fd)
+                    return (true);
+                else
+                    return (false);
+            }), NULL);
+    if (tmp != NULL) {
+        close(fd);
+        this->_clientSock->freeThisElem(this->_clientSock,
+                                        lambda(void, (void *data), {
+                                            free((t_client *) data);
+                                        }), tmp);
+    }
 }
 
 static void DeleteNetwork(struct Network *this) {
