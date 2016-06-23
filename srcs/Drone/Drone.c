@@ -172,6 +172,7 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
     else if (drone->currentPendingRequest == NULL)
     {
         drone->currentPendingRequest = request;
+        drone->currentPendingRequest->RequestDidBecomeActive(drone->currentPendingRequest, drone);
         drone->currentPendingRequest->timer = CreateAndStartTimer(request->GetCompletionTime(request, drone->mapTile->map->server));
     }
     return drone;
@@ -185,6 +186,7 @@ static Drone *ExecutePendingRequest(Drone *drone) {
     else if (drone->currentPendingRequest == NULL && drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
         elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
         drone->currentPendingRequest = elem->data;
+        drone->currentPendingRequest->RequestDidBecomeActive(drone->currentPendingRequest, drone);
         drone->currentPendingRequest->timer = CreateAndStartTimer(drone->
                 currentPendingRequest->GetCompletionTime(drone->currentPendingRequest, drone->mapTile->map->server));
         drone->pendingRequests->removeThisElem(drone->pendingRequests, elem);

@@ -36,6 +36,23 @@ static Response *Execute(Request *request, Drone *drone) { //todo refactor. THIS
     return NULL; //todo return response correctly
 }
 
+/*
+ * This gets called when the request's Timer is started.
+ * The request HAS been Validated.
+ */
+static Request *RequestDidBecomeActive(Request *request, Drone *drone) {
+    Response *res;
+
+    if (request->requestedAction == INCANT)
+    {
+        res = CreateResponseFrom(request);
+        res->message = asprintf("elevation en cours\nniveau actuel : %d", drone->level);
+        res->Send(res);
+    }
+    return request;
+}
+
+
 static Request  *Sanitize(Request *self) {
     size_t len;
 
@@ -83,7 +100,8 @@ Request *CreateRequest(string message, int socketFd) {
     ret->actionSubject = NULL;
     ret->timer = NULL;
     ret->absoluteActionTime = -1;
-    ret->Execute = (void *(*)(struct t_Request *, void *)) &Execute;
+    ret->Execute = (void *(*)(Request *, void *)) &Execute;
+    ret->RequestDidBecomeActive = (Request *(*)(Request *, void *)) &RequestDidBecomeActive;
     ret->Sanitize = &Sanitize;
     ret->Free = &DestroyRequest;
     ret->Parse = &ParseRequest;
