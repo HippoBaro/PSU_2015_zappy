@@ -42,6 +42,7 @@
     <Compile Include="Class\Network\GenericRequest.cs" />
     <Compile Include="Class\Network\RequestCollection\BroadcastRequest.cs" />
     <Compile Include="Class\Network\RequestCollection\DroneManagementRequest.cs" />
+    <Compile Include="Class\Network\RequestCollection\DroneTakeObjectRequest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Class\Map\Map.cs" />
