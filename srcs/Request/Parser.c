@@ -123,21 +123,21 @@ static void reqDeath(Request *req) {
 }
 
 static const struct s_command_string requestsArray[] =
-    {
-        {"avance",      &reqMove,           7},
-        {"droite",      &reqRotateRight,    7},
-        {"gauche",      &reqRotateLeft,     7},
-        {"voir",        &reqLook,           7},
-        {"inventaire",  &reqLookInventory,  1},
-        {"prend",       &reqTake,           7},
-        {"pose",        &reqDrop,           7},
-        {"expulse",     &reqExpulse,        7},
-        {"broadcast",   &reqBroadcast,      7},
-        {"incantation", &reqIncant,         300},
-        {"fork",        &reqFork,           42},
-        {"connect nbr", &reqLook,           0},
-        {"-",           &reqDeath,          0}
-    };
+{
+    {"avance",      &reqMove,           7},
+    {"droite",      &reqRotateRight,    7},
+    {"gauche",      &reqRotateLeft,     7},
+    {"voir",        &reqLook,           7},
+    {"inventaire",  &reqLookInventory,  1},
+    {"prend",       &reqTake,           7},
+    {"pose",        &reqDrop,           7},
+    {"expulse",     &reqExpulse,        7},
+    {"broadcast",   &reqBroadcast,      7},
+    {"incantation", &reqIncant,         300},
+    {"fork",        &reqFork,           42},
+    {"connect nbr", &reqLook,           0},
+    {"-",           &reqDeath,          0}
+};
 
 Request *ParseRequest(Request *request) {
     int i;
