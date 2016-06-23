@@ -33,6 +33,7 @@ static bool removeThisElem(LinkedList *this, t_list *elem) {
         if (it == elem) {
             it->prev->next = it->next;
             it->next->prev = it->prev;
+            xfree(it, sizeof(t_list));
             return (true);
         }
         it = it->next;
@@ -47,6 +48,7 @@ static bool removeElemFront(LinkedList *this) {
     if (it != this->myList) {
         it->prev->next = it->next;
         it->next->prev = it->prev;
+        xfree(it, sizeof(t_list));
         return (true);
     }
     return (false);
@@ -59,6 +61,7 @@ static bool removeElemEnd(LinkedList *this) {
     if (it != this->myList) {
         it->prev->next = it->next;
         it->next->prev = it->prev;
+        xfree(it, sizeof(t_list));
         return (true);
     }
     return (false);
@@ -74,6 +77,7 @@ static bool removeElemAtPos(LinkedList *this, int pos) {
         if (i == pos) {
             it->prev->next = it->next;
             it->next->prev = it->prev;
+            xfree(it, sizeof(t_list));
             return (true);
         }
         it = it->next;
