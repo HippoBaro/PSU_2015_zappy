@@ -55,6 +55,13 @@ namespace Zappy.Client
             return (0);
         }
 
+        public static void PrintListString(string _string)
+        {
+            List<string> args = App.ParseServerAnswerToStringList(_string);
+            foreach (string str in args)
+                Console.WriteLine(str);
+        }
+
         public static List<string> ParseServerAnswerToStringList(string server_anwser)
         {
             server_anwser = server_anwser.Replace('{', ' ');
