@@ -26,7 +26,6 @@ namespace Zappy.Client.MapSystem
                 X = world.X - 1;
             else
                 X = tile.X - 1;
-            Console.WriteLine("[DEGUG] --> @{0}x{1}", X, tile.Y);
             return (world.GetTile(X, tile.Y));
         }
 

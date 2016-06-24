@@ -25,5 +25,8 @@ namespace Zappy.Client
 
         /* BroadcastRequest */
         public const string NETWORK_REQUEST_DRONE_BROADCAST = "broadcast ";
+
+        /* Drone */
+        public const int DRONE_MAX_ELEVATION_LEVEL = 8;
     }
 }

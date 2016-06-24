@@ -7,7 +7,8 @@ namespace Zappy.Client.MapSystem
 {
 	public class MapTile
 	{
-		private Dictionary<RessourceType, int> Ressources { get; set; } = new Dictionary<RessourceType, int>();
+        public Dictionary<RessourceType, int> Ressources { get { return (_ressources); } }
+        private Dictionary<RessourceType, int> _ressources { get; set; } = new Dictionary<RessourceType, int>();
 
 		public int X { get { return (_Y);} }
 		public int Y { get { return (_X);} }
@@ -88,24 +89,34 @@ namespace Zappy.Client.MapSystem
 
         public void AddRessourceEstimation(RessourceType type, int ressource_toadd)
 		{
-            if (Ressources.ContainsKey(type) == false) {
-                Ressources.Add(type, ressource_toadd);
+            if (_ressources.ContainsKey(type) == false) {
+                _ressources.Add(type, ressource_toadd);
                 return ;
             }
-			Ressources[type] += ressource_toadd;
+			_ressources[type] += ressource_toadd;
 		}
 
 		public void SetRessourceEstimation(RessourceType type, int effective_count)
 		{
-            if (Ressources.ContainsKey(type) == false)
+            if (_ressources.ContainsKey(type) == false)
             {
-                Ressources.Add(type, effective_count);
+                _ressources.Add(type, effective_count);
                 return ;
             }
-            Ressources[type] = effective_count;
+            _ressources[type] = effective_count;
 		}
 
-		public RessourceType GetRessource(RessourceType type)
+        public int GetRessourceEstimation(RessourceType type)
+        {
+            if (_ressources.ContainsKey(type) == false)
+            {
+                _ressources.Add(type, 0);
+                return (0);
+            }
+            return (_ressources[type]);
+        }
+
+        public RessourceType GetRessource(RessourceType type)
 		{
 			/* Perform a request to get a special ressource from the server */
 			/* if requested ressource is not found */

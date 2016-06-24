@@ -41,7 +41,7 @@ namespace Zappy.Client.Network.RequestCollection
             if (_request == DroneRequestType.FORK)
                 SetDataToSend(Constantes.NETWORK_REQUEST_DRONE_FORK);
             if (_request == DroneRequestType.SEE)
-                SetDataToSend(Constantes.NETWORK_REQUEST_DRONE_FORK);
+                SetDataToSend(Constantes.NETWORK_REQUEST_DRONE_SEE);
             if (_request == DroneRequestType.INVENTORY)
                 SetDataToSend(Constantes.NETWORK_REQUEST_DRONE_INVENTAIRE);
         }

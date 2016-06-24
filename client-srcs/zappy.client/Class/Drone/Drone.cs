@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Zappy.Client.Network.RequestCollection;
 using Zappy.Client.MapSystem;
-using Zappy.Client.Class;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
@@ -12,7 +11,7 @@ namespace Zappy.Client
 	public class Drone
     {
 		private int UID { set; get;}
-        private int Level { get; set; } = 1;
+        public int Level { get; set; } = 1;
         private bool IsCloned { get; set; } = false;
         public RotationState Rotation { get
             {
@@ -56,6 +55,7 @@ namespace Zappy.Client
             this.IsCloned = true;
             this.Map = _drone_to_copy.GetMap();
             this.actual_maptile = _drone_to_copy.ActualMapTile;
+            this.DroneRequest = _drone_to_copy.DroneRequest;
         }
 
         #region DRONE SIGHT
@@ -71,8 +71,8 @@ namespace Zappy.Client
                 maptile.SetRessourceEstimation(type, count);
                 if (Constantes.IS_DEBUG == true && count > 0)
                 {
-                    Console.WriteLine(" --> [MAPTILE {0}x{1}] --> Adding [{2}] elements of type [{3}]",
-                                         maptile.X, maptile.Y, count, type.ToString());
+                    Console.WriteLine(" --> Adding [{0}] elements of type [{1}] on MapTile [{2}x{3}]",
+                                            count, type.ToString(), maptile.X, maptile.Y);
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace Zappy.Client
 
             while (i < level_n)
             {
-                drone_forked.MoveLeft();
+                drone_forked.MoveLeft_Offline();
                 i++;
             }
 
@@ -97,7 +97,7 @@ namespace Zappy.Client
             {
                 actual_tile++;
                 ApplyRessourcesOnTile(drone_forked.ActualMapTile, actual_tile, ref Ressources);
-                drone_forked.MoveRight();
+                drone_forked.MoveRight_Offline();
                 i2++;
             }
         }
@@ -163,6 +163,13 @@ namespace Zappy.Client
             Ressources[type] = effective_count;
         }
 
+        public int GetRessourceCount(RessourceType type)
+        {
+            if (this.Ressources.ContainsKey(type))
+                return (this.Ressources[type]);
+            return (0);
+        }
+
         /* Fuction lunched by callback of a network request giving the inventory */
         public void ApplyInventory(string server_inventory_string)
         {
@@ -199,13 +206,13 @@ namespace Zappy.Client
         #region ASK SERVER
 
         /* Ask the server to move the drone forward */
-        public async Task<bool> MoveFoward()
+        public bool MoveFoward()
         {
             if (this.Map == null)
                 return (false);
 
             this.DroneRequest.SetRequest(DroneRequestType.FORWARD);
-            await App.Network.ExecuteRequest(this.DroneRequest);
+            App.Network.ExecuteRequest(this.DroneRequest);
 
             if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
@@ -215,14 +222,31 @@ namespace Zappy.Client
             return (false);
         }
 
+        /* Ask the server to move the drone forward */
+        public bool See()
+        {
+            if (this.Map == null)
+                return (false);
+
+            this.DroneRequest.SetRequest(DroneRequestType.SEE);
+            App.Network.ExecuteRequest(this.DroneRequest);
+
+            if (this.DroneRequest.STATUS == Network.StatusType.OK)
+            {
+                // Handled in DroneRequest ;)
+                return (true);
+            }
+            return (false);
+        }
+
         /* Ask the server to move the drone 90° Drone Right */
-        public async Task<bool> Turn90DegreeesRight()
+        public bool Turn90DegreeesRight()
 		{
 			if (this.Map == null)
 				return (false);
 
             this.DroneRequest.SetRequest(DroneRequestType.TURN_RIGHT);
-            await App.Network.ExecuteRequest(this.DroneRequest);
+            App.Network.ExecuteRequest(this.DroneRequest);
 
             if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
@@ -234,13 +258,13 @@ namespace Zappy.Client
 		}
 
 		/* Ask the server to move the drone 90° Drone Left */
-		public async Task<bool> Turn90DegreeesLeft()
+		public bool Turn90DegreeesLeft()
 		{
 			if (this.Map == null)
 				return (false);
 
             this.DroneRequest.SetRequest(DroneRequestType.TURN_LEFT);
-            await App.Network.ExecuteRequest(this.DroneRequest);
+            App.Network.ExecuteRequest(this.DroneRequest);
 
             if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
@@ -252,14 +276,14 @@ namespace Zappy.Client
 		}
 
 		/* Ask the server to take a given type of object */
-		public async Task<bool> TakeObject(RessourceType ressource)
+		public bool TakeObject(RessourceType ressource)
 		{
 			if (this.Map == null)
 				return (false);
 
             using (DroneTakeObjectRequest DTOR = new DroneTakeObjectRequest(this))
             {
-                await App.Network.ExecuteRequest(DTOR);
+                App.Network.ExecuteRequest(DTOR);
 
                 if (DTOR.STATUS == Network.StatusType.OK)
                 {
@@ -271,13 +295,13 @@ namespace Zappy.Client
 		}
 
 		/* Ask the server to kickout a drone on this case */
-		public async Task<bool> ExpulseDrone()
+		public bool ExpulseDrone()
 		{
 			if (this.Map == null)
 				return (false);
 
             this.DroneRequest.SetRequest(DroneRequestType.EXPULSE);
-            await App.Network.ExecuteRequest(this.DroneRequest);
+            App.Network.ExecuteRequest(this.DroneRequest);
 
             if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
@@ -287,23 +311,23 @@ namespace Zappy.Client
         }
 
         /* Ask the server to fork a given drone as 'this' */
-        public async Task ForkDrone()
+        public void ForkDrone()
         {
             if (this.Map == null)
                 return;
 
             this.DroneRequest.SetRequest(DroneRequestType.FORK);
-            await App.Network.ExecuteRequest(this.DroneRequest);
+            App.Network.ExecuteRequest(this.DroneRequest);
         }
 
         /* Ask the server the inventory of curent drone */
-        public async Task<bool> UpdateInventory()
+        public bool UpdateInventory()
         {
             if (this.Map == null)
                 return (false);
 
             this.DroneRequest.SetRequest(DroneRequestType.INVENTORY);
-            await App.Network.ExecuteRequest(this.DroneRequest);
+            App.Network.ExecuteRequest(this.DroneRequest);
 
             if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
@@ -313,14 +337,14 @@ namespace Zappy.Client
         }
 
         /* Ask the server to broadcast sound */
-        public async Task BroadcastSound(string message)
+        public void BroadcastSound(string message)
         {
             if (this.Map == null)
                 return;
 
             using (BroadcastRequest sound = new BroadcastRequest(message))
             {
-                await App.Network.ExecuteRequest(sound);
+                App.Network.ExecuteRequest(sound);
             }
         }
         #endregion
@@ -330,7 +354,17 @@ namespace Zappy.Client
         /* ONLY CLONED DRONE CAN USE THOSE FXs */
 
         /* Unfair // Move Left */
-        public bool MoveLeft()
+        public bool MoveTop_Offline()
+        {
+            if (this.Map == null || this.IsCloned == false)
+                return (false);
+
+            actual_maptile = actual_maptile.GetTopTile(this);
+            return (true);
+        }
+
+        /* Unfair // Move Left */
+        public bool MoveLeft_Offline()
         {
             if (this.Map == null || this.IsCloned == false)
                 return (false);
@@ -340,7 +374,7 @@ namespace Zappy.Client
         }
 
         /* Unfair // Move Right */
-        public bool MoveRight()
+        public bool MoveRight_Offline()
         {
             if (this.Map == null || this.IsCloned == false)
                 return (false);
@@ -350,7 +384,7 @@ namespace Zappy.Client
         }
 
         /* Unfair // Move Right */
-        public bool MoveBackwards()
+        public bool MoveBackwards_Offline()
         {
             if (this.Map == null || this.IsCloned == false)
                 return (false);
@@ -381,4 +415,3 @@ namespace Zappy.Client
         #endregion
     }
 }
-

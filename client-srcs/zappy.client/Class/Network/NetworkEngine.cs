@@ -17,15 +17,16 @@ namespace Zappy.Client.Network
             /* Nothing there */
         }
 
-        public async Task ExecuteRequest(GenericRequest request)
+        public bool ExecuteRequest(GenericRequest request)
         {
             if (is_init == false)
             {
                 App.Log(LogLevel.WARNING, "Can not perform request, you did not initialized network connection first.");
-                return ;
+                return (false) ;
             }
 
             /* TO DO */
+            return (true);
         }
 
         public bool Connect(string server_url, int server_port)
