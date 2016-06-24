@@ -89,7 +89,7 @@ static void     InitDrone(ZappyServer *server, Drone *drone, Request *request) {
     else
     {
         server->network->Disconnect(server->network, request->socketFd);
-        drone->Die(drone);
+        drone->Die(drone, request);
     }
     request->Free(request);
 }

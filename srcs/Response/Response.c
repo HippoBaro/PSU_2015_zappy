@@ -21,6 +21,15 @@ Response    *CreateResponseFrom(Request *request) {
     return ret;
 }
 
+Response    *CreateResponseFromFdWithMessage(int fd, string message) {
+    Response    *ret;
+
+    ret = CreateEmptyResponse();
+    ret->destFd = fd;
+    ret->message = message;
+    return ret;
+}
+
 Response    *CreateKoResponseFrom(Request *request) {
     Response    *ret;
 

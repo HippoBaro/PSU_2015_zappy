@@ -23,21 +23,14 @@ typedef struct s_Drone {
     struct s_maptile        *mapTile;
     uint64_t    scheduledDeath;
 
-
     bool        (*UpdateLifeTime)(struct s_Drone *self);
-    void        (*Move)(struct s_Drone *self, Map *map);
-    void        (*Look)(struct s_Drone *self);
-    string      (*GetDroneSight)(struct s_Drone *self, struct s_map *map);
+
+    Response    *(*Die)(struct s_Drone *self, Request *request);
+
+    void        (*DropInternal)(struct s_Drone *self, ItemType item, int quantity, bool destroyItem);
     void        (*Turn90DegreesLeft)(struct s_Drone *self);
     void        (*Turn90DegreesRight)(struct s_Drone *self);
-    void        (*Rotate)(struct s_Drone *self, Rotation rotation);
-    string      (*ListInventory)(struct s_Drone *self);
-    void        (*Take)(struct s_Drone *self, ItemType item);
-    void        (*Drop)(struct s_Drone *self, ItemType item, int quantity, bool destroyItem);
-    void        (*Expulse)(struct s_Drone *self);
-    void        (*Fork)(struct s_Drone *self);
-    void        (*Die)(struct s_Drone *self);
-    Response    *(*Broadcast)(struct s_Drone *self, string message);
+    string      (*GetDroneSight)(struct s_Drone *self, struct s_map *map);
     struct s_Drone *(*CommitRequest)(struct s_Drone *drone, Request *request);
     struct s_Drone *(*ExecutePendingRequest)(struct s_Drone *drone);
     void        (*Free)(struct s_Drone *self);
@@ -58,8 +51,25 @@ typedef struct s_Drone {
 
 }               Drone;
 
+Response    *Move(struct s_Drone *self, Request *request);
+Response    *Look(struct s_Drone *self, Request *request);
+Response    *Rotate(struct s_Drone *self, Request *request);
+Response    *ListInventory(struct s_Drone *self, Request *request);
+Response    *Take(struct s_Drone *self, Request *request);
+Response    *Drop(struct s_Drone *self, Request *request);
+Response    *Expulse(struct s_Drone *self, Request *request);
+Response    *Fork(struct s_Drone *self, Request *request);
+Response    *Broadcast(struct s_Drone *self, Request *request);
+Response    *GetTeamSlot(struct s_Drone *self, Request *request);
+Response    *Incant(struct s_Drone *self, Request *request)
+Response    *Die (Drone *self, Request *request)
+
+
+void        DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool destroyItem);
 string      GetDroneSight(Drone *self, struct s_map *map);
 Drone       *CreateDrone(Team *team);
 void        DestroyDrone(Drone *drone);
+void        InitDroneMove(Drone *selfDrone);
+void        InitDroneRequest(Drone *selfDrone);
 
 #endif //PSU_2015_ZAPPY_DRONE_H

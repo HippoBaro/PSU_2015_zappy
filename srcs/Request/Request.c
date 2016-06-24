@@ -6,33 +6,24 @@
 #include "Request.h"
 #include "Drone.h"
 
+static const struct s_request_invoke requestsArray[] =
+{
+        {MOVE,      (void *(*)(Request *, void *)) &Move},
+        {ROTATE,      (void *(*)(Request *, void *)) &Rotate},
+        {LOOK,        (void *(*)(Request *, void *)) &Look},
+        {LOOK_INVENTORY,  (void *(*)(Request *, void *)) &ListInventory},
+        {TAKE,       (void *(*)(Request *, void *)) &Take},
+        {DROP,        (void *(*)(Request *, void *)) &Drop},
+        {EXPULSE,     (void *(*)(Request *, void *)) &Expulse},
+        {BROADCAST,   (void *(*)(Request *, void *)) &Broadcast},
+        {INCANT, (void *(*)(Request *, void *)) &Incant},
+        {FORK,        (void *(*)(Request *, void *)) &Fork},
+        {ASK_SLOT, (void *(*)(Request *, void *)) &GetTeamSlot},
+        {DIE,           (void *(*)(Request *, void *)) &Die}
+};
+
 static Response *Execute(Request *request, Drone *drone) { //todo refactor. THIS IS UGLY BUT I DON'T KNOW HOW TO DO IT DIFFERENTLY
-    if (request->requestedAction == UNKNOWN_ACTION)
-        Log(ERROR, "Trying to execute unknown action");
-    else if (request->requestedAction == TAKE)
-        Log (INFORMATION, "Drone [%d] : Taking object %s", drone->socketFd, request->actionSubject);
-    else if (request->requestedAction == DROP)
-        Log (INFORMATION, "Drone [%d] : Droping object %s", drone->socketFd, request->actionSubject);
-    else if (request->requestedAction == FORK)
-        Log (INFORMATION, "Drone [%d] : Forking", drone->socketFd);
-    else if (request->requestedAction == DIE)
-        drone->Die(drone);
-    else if (request->requestedAction == MOVE)
-        drone->Move(drone, drone->mapTile->map);
-    else if (request->requestedAction == ROTATE)
-        Log (INFORMATION, "Drone [%d] : Rotation to %s", drone->socketFd, request->actionSubject);
-    else if (request->requestedAction == LOOK_INVENTORY)
-        Log (INFORMATION, "Drone [%d] : Look at inventory", drone->socketFd);
-    else if (request->requestedAction == EXPULSE)
-    Log (INFORMATION, "Drone [%d] : Expulse", drone->socketFd);
-    else if (request->requestedAction == BROADCAST)
-        Log (INFORMATION, "Drone [%d] : Broadcast %s", drone->socketFd, request->actionSubject);
-    else if (request->requestedAction == INCANT)
-        Log (INFORMATION, "Drone [%d] : Incanting", drone->socketFd);
-    else if (request->requestedAction == ASK_SLOT)
-        Log (INFORMATION, "Drone [%d] : Asking for slots status", drone->socketFd);
-    else if (request->requestedAction == LOOK)
-        Log (INFORMATION, "Drone [%d] : Look", drone->socketFd, request->actionSubject);
+
     return NULL; //todo return response correctly
 }
 

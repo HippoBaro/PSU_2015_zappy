@@ -22,5 +22,6 @@ typedef struct e_Response {
 Response    *CreateEmptyResponse();
 Response    *CreateResponseFrom(Request *request);
 Response    *CreateKoResponseFrom(Request *request);
+Response    *CreateResponseFromFdWithMessage(int fd, string message);
 
 #endif //PSU_2015_ZAPPY_RESPONSE_H

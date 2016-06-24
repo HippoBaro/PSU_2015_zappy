@@ -25,15 +25,19 @@ typedef struct          t_Request {
     struct t_Request    *(*RequestDidBecomeActive)(struct t_Request *self, void *drone);
     struct t_Request    *(*Parse)(struct t_Request *self);
     struct t_Request    *(*Sanitize)(struct t_Request *self);
-
-
     void                (*Free)(struct t_Request *self);
 }                       Request;
 
+struct s_request_invoke {
+    Action	        requestAction;
+    void		    *(*invokeAction)(Request *self, void *drone);
+    void		    *(*invokeValidate)(Request *self, void *drone);
+};
+
 struct s_command_string {
-    string	str;
-    void		(*doAction)(Request *);
-    int     absoluteTime;
+    string	        str;
+    void		    (*doAction)(Request *);
+    int             absoluteTime;
 };
 
 Request *CreateRequest(string message, int socketFd);
