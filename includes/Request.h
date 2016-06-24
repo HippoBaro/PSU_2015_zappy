@@ -30,8 +30,8 @@ typedef struct          t_Request {
 
 struct s_request_invoke {
     Action	        requestAction;
-    void		    *(*invokeAction)(Request *self, void *drone);
-    void		    *(*invokeValidate)(Request *self, void *drone);
+    void		    *(*invokeAction)(void *drone, Request *self);
+    void		    *(*invokeValidate)(void *drone, Request *self);
 };
 
 struct s_command_string {

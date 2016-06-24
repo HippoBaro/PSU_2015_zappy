@@ -3,34 +3,37 @@
 //
 
 #include <ZappyServer.h>
-#include "Request.h"
 #include "Drone.h"
 
-static const struct s_request_invoke requestsArray[] =
+static const struct s_request_invoke commands[] =
 {
-        {MOVE,      (void *(*)(Request *, void *)) &Move},
-        {ROTATE,      (void *(*)(Request *, void *)) &Rotate},
-        {LOOK,        (void *(*)(Request *, void *)) &Look},
-        {LOOK_INVENTORY,  (void *(*)(Request *, void *)) &ListInventory},
-        {TAKE,       (void *(*)(Request *, void *)) &Take},
-        {DROP,        (void *(*)(Request *, void *)) &Drop},
-        {EXPULSE,     (void *(*)(Request *, void *)) &Expulse},
-        {BROADCAST,   (void *(*)(Request *, void *)) &Broadcast},
-        {INCANT, (void *(*)(Request *, void *)) &Incant},
-        {FORK,        (void *(*)(Request *, void *)) &Fork},
-        {ASK_SLOT, (void *(*)(Request *, void *)) &GetTeamSlot},
-        {DIE,           (void *(*)(Request *, void *)) &Die}
+    {MOVE,           (void *(*)(void *, Request *)) &Move, NULL},
+    {ROTATE,         (void *(*)(void *, Request *)) &Rotate, NULL},
+    {LOOK,           (void *(*)(void *, Request *)) &Look, NULL},
+    {LOOK_INVENTORY, (void *(*)(void *, Request *)) &ListInventory, NULL},
+    {TAKE,           (void *(*)(void *, Request *)) &Take, NULL},
+    {DROP,           (void *(*)(void *, Request *)) &Drop, NULL},
+    {EXPULSE,        (void *(*)(void *, Request *)) &Expulse, NULL},
+    {BROADCAST,      (void *(*)(void *, Request *)) &Broadcast, NULL},
+    {INCANT,         (void *(*)(void *, Request *)) &Incant, NULL},
+    {FORK,           (void *(*)(void *, Request *)) &Fork, NULL},
+    {ASK_SLOT,       (void *(*)(void *, Request *)) &GetTeamSlot, NULL},
+    {DIE,            (void *(*)(void *, Request *)) &Die, NULL}
 };
 
 static Response *Execute(Request *request, Drone *drone) { //todo refactor. THIS IS UGLY BUT I DON'T KNOW HOW TO DO IT DIFFERENTLY
+    int i;
 
-    return NULL; //todo return response correctly
+    i = 0;
+    while (i <= 11) //todo validate request
+    {
+        if (request->requestedAction == commands[i].requestAction)
+            return commands[i].invokeAction(drone, request);
+        ++i;
+    }
+    return NULL;
 }
 
-/*
- * This gets called when the request's Timer is started.
- * The request HAS been Validated.
- */
 static Request *RequestDidBecomeActive(Request *request, Drone *drone) {
     Response *res;
 

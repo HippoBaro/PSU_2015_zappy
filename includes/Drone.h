@@ -33,6 +33,7 @@ typedef struct s_Drone {
     string      (*GetDroneSight)(struct s_Drone *self, struct s_map *map);
     struct s_Drone *(*CommitRequest)(struct s_Drone *drone, Request *request);
     struct s_Drone *(*ExecutePendingRequest)(struct s_Drone *drone);
+    void        (*ExecuteCurrentPendingRequest)(struct s_Drone *drone);
     void        (*Free)(struct s_Drone *self);
 
     /*
@@ -61,8 +62,8 @@ Response    *Expulse(struct s_Drone *self, Request *request);
 Response    *Fork(struct s_Drone *self, Request *request);
 Response    *Broadcast(struct s_Drone *self, Request *request);
 Response    *GetTeamSlot(struct s_Drone *self, Request *request);
-Response    *Incant(struct s_Drone *self, Request *request)
-Response    *Die (Drone *self, Request *request)
+Response    *Incant(struct s_Drone *self, Request *request);
+Response    *Die (Drone *self, Request *request);
 
 
 void        DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool destroyItem);

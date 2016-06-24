@@ -20,6 +20,20 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
     return drone;
 }
 
+static void ExecuteCurrentPendingRequest(Drone *drone) {
+    Response *response;
+
+    if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
+        Log(WARNING, "Executing action on drone %d. Action number is : %d. Suject is : %s", drone->socketFd, drone->currentPendingRequest->requestedAction, drone->currentPendingRequest->actionSubject);
+        response = drone->currentPendingRequest->Execute(drone->currentPendingRequest, drone);
+        if (response != NULL)
+            response->Send(response);
+        drone->currentPendingRequest->Free(drone->currentPendingRequest);
+        drone->currentPendingRequest = NULL;
+        drone->ExecutePendingRequest(drone);
+    }
+}
+
 static Drone *ExecutePendingRequest(Drone *drone) {
     t_list *elem;
 
@@ -33,15 +47,8 @@ static Drone *ExecutePendingRequest(Drone *drone) {
                 currentPendingRequest->GetCompletionTime(drone->currentPendingRequest, drone->mapTile->map->server));
         drone->pendingRequests->removeThisElem(drone->pendingRequests, elem);
     }
-    if (drone->currentPendingRequest != NULL) {
-        if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
-            Log(WARNING, "Executing action on drone %d. Action number is : %d", drone->socketFd, drone->currentPendingRequest->requestedAction);
-            drone->currentPendingRequest->Execute(drone->currentPendingRequest, drone);
-            drone->currentPendingRequest->Free(drone->currentPendingRequest);
-            drone->currentPendingRequest = NULL;
-            drone->ExecutePendingRequest(drone);
-        }
-    }
+    if (drone->currentPendingRequest != NULL)
+        drone->ExecuteCurrentPendingRequest(drone);
     return drone;
 }
 
@@ -72,4 +79,5 @@ void InitDroneRequest(Drone *selfDrone) {
     selfDrone->UpdateLifeTime = &UpdateLifeTime;
     selfDrone->CommitRequest = &CommitRequest;
     selfDrone->ExecutePendingRequest = &ExecutePendingRequest;
+    selfDrone->ExecuteCurrentPendingRequest = &ExecuteCurrentPendingRequest;
 }
