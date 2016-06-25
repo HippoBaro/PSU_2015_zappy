@@ -7,28 +7,44 @@
 
 static const struct s_request_invoke commands[] =
 {
-    {MOVE,           (void *(*)(void *, Request *)) &Move, NULL},
-    {ROTATE,         (void *(*)(void *, Request *)) &Rotate, NULL},
-    {LOOK,           (void *(*)(void *, Request *)) &Look, NULL},
-    {LOOK_INVENTORY, (void *(*)(void *, Request *)) &ListInventory, NULL},
-    {TAKE,           (void *(*)(void *, Request *)) &Take, NULL},
-    {DROP,           (void *(*)(void *, Request *)) &Drop, NULL},
-    {EXPULSE,        (void *(*)(void *, Request *)) &Expulse, NULL},
-    {BROADCAST,      (void *(*)(void *, Request *)) &Broadcast, NULL},
-    {INCANT,         (void *(*)(void *, Request *)) &Incant, NULL},
-    {FORK,           (void *(*)(void *, Request *)) &Fork, NULL},
-    {ASK_SLOT,       (void *(*)(void *, Request *)) &GetTeamSlot, NULL},
-    {DIE,            (void *(*)(void *, Request *)) &Die, NULL}
+    {MOVE,           (void *(*)(void *, Request *)) &Move,                                   NULL},
+    {ROTATE,         (void *(*)(void *, Request *)) &Rotate,  (void *(*)(void *, Request *)) &CanRotate},
+    {LOOK,           (void *(*)(void *, Request *)) &Look,                                   NULL},
+    {LOOK_INVENTORY, (void *(*)(void *, Request *)) &ListInventory,                          NULL},
+    {TAKE,           (void *(*)(void *, Request *)) &Take,    (void *(*)(void *, Request *)) &CanTake},
+    {DROP,           (void *(*)(void *, Request *)) &Drop,    (void *(*)(void *, Request *)) &CanDrop},
+    {EXPULSE,        (void *(*)(void *, Request *)) &Expulse, (void *(*)(void *, Request *)) &CanExpulse},
+    {BROADCAST,      (void *(*)(void *, Request *)) &Broadcast,                              NULL},
+    {INCANT,         (void *(*)(void *, Request *)) &Incant,  (void *(*)(void *, Request *)) &CanIncant},
+    {FORK,           (void *(*)(void *, Request *)) &Fork,                                   NULL},
+    {ASK_SLOT,       (void *(*)(void *, Request *)) &GetTeamSlot,                            NULL},
+    {DIE,            (void *(*)(void *, Request *)) &Die,                                    NULL}
 };
 
-static Response *Execute(Request *request, Drone *drone) { //todo refactor. THIS IS UGLY BUT I DON'T KNOW HOW TO DO IT DIFFERENTLY
+static Response *Execute(Request *request, Drone *drone) {
     int i;
 
     i = 0;
-    while (i <= 11) //todo validate request
+    while (i <= 11)
     {
         if (request->requestedAction == commands[i].requestAction)
             return commands[i].invokeAction(drone, request);
+        ++i;
+    }
+    return NULL;
+}
+
+static Response *Validate(Request *request, Drone *drone) {
+    int i;
+
+    i = 0;
+    while (i <= 11)
+    {
+        if (request->requestedAction == commands[i].requestAction)
+        {
+            if (commands[i].invokeValidate != NULL)
+                return commands[i].invokeValidate(drone, request);
+        }
         ++i;
     }
     return NULL;
@@ -100,6 +116,6 @@ Request *CreateRequest(string message, int socketFd) {
     ret->Free = &DestroyRequest;
     ret->Parse = &ParseRequest;
     ret->GetCompletionTime = &GetCompletionTime;
-    //todo set Validate
+    ret->Validate = (void *(*)(struct t_Request *, void *)) &Validate;
     return ret;
 }

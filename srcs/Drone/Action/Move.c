@@ -30,7 +30,7 @@ Response *Rotate(struct s_Drone *self, Request *request) {
     if (strcmp(request->actionSubject, "gauche") == 0)
         self->Turn90DegreesLeft(self);
     else if (strcmp(request->actionSubject, "droite") == 0)
-        self->Turn90DegreesLeft(self);
+        self->Turn90DegreesRight(self);
     else
         return CreateKoResponseFrom(request);
     return CreateResponseFromFdWithMessage(self->socketFd, strdup("ok"));

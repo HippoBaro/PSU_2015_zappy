@@ -34,14 +34,13 @@ ItemType ItemFromString(string item) {
 
     i = 0;
     if (item == NULL)
-        Log(ERROR, "Called FromString with NULL string.");
+        return UNKNOWN_ITEMTYPE;
     while (i < 7)
     {
         if (strcmp(toStringItem[i].str, item) == 0)
             return toStringItem[i].type;
         ++i;
     }
-    Log(ERROR, "Called FromString on unknown item type. String was %s.", item);
     return UNKNOWN_ITEMTYPE;
 }
 

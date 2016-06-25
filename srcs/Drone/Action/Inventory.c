@@ -5,17 +5,17 @@
 #include "Drone.h"
 
 Response *ListInventory(struct s_Drone *self, Request *request) {
-    //todo refactor to tak into account quantity
     string ret = NULL;
     bool isFirst;
 
     isFirst = true;
     if (self->inventory->countLinkedList(self->inventory) > 0)
         self->inventory->forEachElements(self->inventory, lambda(void, (void *param, void *t), {
-            Item *item = (Item *)param;
+            Item *item = (Item *) param;
             if (!isFirst)
                 ret = strappend(ret, ", ", FIRST);
             ret = strappend(ret, item->ToString(item), FIRST);
+            ret = strappend(ret, asprintf(" %d", item->quantity), BOTH);
             isFirst = false;
         }), NULL);
     ret = strappend(ret, "}", FIRST);
@@ -29,15 +29,12 @@ Response *Take (struct s_Drone *self, Request *request) {
 
     item = self->mapTile->GetRessource(self->mapTile, ItemFromString(request->actionSubject));
     if (item == NULL)
-        return CreateResponseFromFdWithMessage(self->socketFd, strdup("ko"));
+        return CreateKoResponseFrom(request);
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
         return (bool)(((Item *)itemPred)->type == ItemFromString(request->actionSubject));
     }), NULL);
     if (elem != NULL && elem->data != NULL)
-    {
         ((Item *)elem->data)->quantity++;
-        item->Free(item);
-    }
     else
         self->inventory->addElemFront(self->inventory, CreateItemFrom(item->type));
     item->Free(item);
@@ -55,7 +52,7 @@ void DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool de
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
         return (bool)(((Item *)itemPred)->type == itemType);
     }), NULL);
-    if (elem != NULL && elem->data != NULL) {
+    if (elem != NULL && elem->data != NULL && quantity > 0) {
         if (((Item *)elem->data)->quantity == 1)
         {
             self->inventory->removeThisElem(self->inventory, elem);

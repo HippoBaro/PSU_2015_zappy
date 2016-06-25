@@ -25,7 +25,6 @@ int GetTileNumberForDrone(MapTile *targeted_tile, Drone *receiver, Map *world)
       ghost->GoRight(ghost, world);
     else if (i >= 6 && i <= 7)
       ghost->GoTop(ghost, world);
-    printf("[TILE] --> @%ix%i\n", ghost->mapTile->X, ghost->mapTile->Y);
     i++;
   }
   if (i <= 8)

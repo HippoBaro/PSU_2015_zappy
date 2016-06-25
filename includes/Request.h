@@ -20,7 +20,7 @@ typedef struct          t_Request {
     int                 absoluteActionTime;
     Timer               *timer;
     uint64_t            (*GetCompletionTime)(struct t_Request *self, ZappyServer *server);
-    bool                (*Validate)(struct t_Request *self);
+    void                *(*Validate)(struct t_Request *self, void *drone);
     void                *(*Execute)(struct t_Request *self, void *drone);
     struct t_Request    *(*RequestDidBecomeActive)(struct t_Request *self, void *drone);
     struct t_Request    *(*Parse)(struct t_Request *self);
