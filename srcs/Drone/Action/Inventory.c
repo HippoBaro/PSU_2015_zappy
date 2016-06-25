@@ -34,10 +34,7 @@ Response *Take (struct s_Drone *self, Request *request) {
         return (bool)(((Item *)itemPred)->type == ItemFromString(request->actionSubject));
     }), NULL);
     if (elem != NULL && elem->data != NULL)
-    {
         ((Item *)elem->data)->quantity++;
-        item->Free(item);
-    }
     else
         self->inventory->addElemFront(self->inventory, CreateItemFrom(item->type));
     item->Free(item);
@@ -55,7 +52,7 @@ void DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool de
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
         return (bool)(((Item *)itemPred)->type == itemType);
     }), NULL);
-    if (elem != NULL && elem->data != NULL) {
+    if (elem != NULL && elem->data != NULL && quantity > 0) {
         if (((Item *)elem->data)->quantity == 1)
         {
             self->inventory->removeThisElem(self->inventory, elem);

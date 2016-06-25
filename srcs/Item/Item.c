@@ -34,7 +34,7 @@ ItemType ItemFromString(string item) {
 
     i = 0;
     if (item == NULL)
-        Log(ERROR, "Called FromString with NULL string.");
+        return UNKNOWN_ITEMTYPE;
     while (i < 7)
     {
         if (strcmp(toStringItem[i].str, item) == 0)

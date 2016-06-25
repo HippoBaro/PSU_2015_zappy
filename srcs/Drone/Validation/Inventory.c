@@ -5,14 +5,16 @@
 #include "Drone.h"
 
 Response *CanTake (struct s_Drone *self, Request *request) {
-    Item *item;
+    t_list *elem;
     ItemType itemType;
 
     itemType = ItemFromString(request->actionSubject);
     if (itemType == UNKNOWN_ITEMTYPE)
         return CreateKoResponseFrom(request);
-    item = self->mapTile->GetRessource(self->mapTile, itemType);
-    if (item == NULL || item->quantity < 1)
+    elem = self->mapTile->ressources->firstElementFromPredicate(self->mapTile->ressources, lambda(bool, (void *ress, void *dat), {
+        return (bool) (((Item *) ress)->type == itemType && ((Item *) ress)->quantity > 0);
+    }), NULL);
+    if (elem == NULL || ((Item *) elem->data)->quantity < 1)
         return CreateKoResponseFrom(request);
     return NULL;
 }
