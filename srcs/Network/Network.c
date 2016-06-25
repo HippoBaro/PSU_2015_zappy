@@ -4,7 +4,7 @@
 
 #include "Network.h"
 
-static void DeleteNetwork(struct Network *this);
+extern void DeleteNetwork(struct Network *this);
 
 static void Disconnect(struct Network *this, int fd);
 
@@ -51,7 +51,7 @@ static void Disconnect(struct Network *this, int fd) {
     }
 }
 
-static void DeleteNetwork(struct Network *this) {
+extern void DeleteNetwork(struct Network *this) {
     if (this->_type == SERVER) {
         this->_clientSock->forEachElements(
                 this->_clientSock,

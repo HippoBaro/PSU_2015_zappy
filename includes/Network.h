@@ -64,8 +64,9 @@ typedef struct Network {
 } Network;
 
 extern Network *CreateNetwork(NetworkType type, uint16_t port, char *addr);
-
-bool Send(Response *rep);
+extern Request *Receive(struct Network *this, struct timeval *tv);
+extern bool Send(struct e_Response *rep);
+extern void DeleteNetwork(struct Network *this);
 
 void initNetworkPtrFuncReceive(Network *this);
 

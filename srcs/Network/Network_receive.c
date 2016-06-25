@@ -5,7 +5,7 @@
 #include <errno.h>
 #include "Network.h"
 
-static Request *Receive(struct Network *this, struct timeval *tv);
+extern Request *Receive(struct Network *this, struct timeval *tv);
 
 void initNetworkPtrFuncReceive(Network *this) {
     this->Receive = &Receive;
@@ -70,7 +70,7 @@ static void initVarNetwork(struct Network *this, t_variable *var) {
     var->maxfd = this->_sock;
 }
 
-static Request *Receive(struct Network *this, struct timeval *tv) {
+extern Request *Receive(struct Network *this, struct timeval *tv) {
     t_variable var;
 
     initVarNetwork(this, &var);
