@@ -5,17 +5,17 @@
 #include "Drone.h"
 
 Response *ListInventory(struct s_Drone *self, Request *request) {
-    //todo refactor to tak into account quantity
     string ret = NULL;
     bool isFirst;
 
     isFirst = true;
     if (self->inventory->countLinkedList(self->inventory) > 0)
         self->inventory->forEachElements(self->inventory, lambda(void, (void *param, void *t), {
-            Item *item = (Item *)param;
+            Item *item = (Item *) param;
             if (!isFirst)
                 ret = strappend(ret, ", ", FIRST);
             ret = strappend(ret, item->ToString(item), FIRST);
+            ret = strappend(ret, asprintf(" %d", item->quantity), BOTH);
             isFirst = false;
         }), NULL);
     ret = strappend(ret, "}", FIRST);

@@ -12,7 +12,7 @@ int main(int ac, char **av) {
     struct timeval tv;
 
     net = CreateNetwork(CLIENT, 1024, "127.0.0.1");
-    while (1) {
+    while (true) {
         char *buffer = NULL;
         ssize_t read;
         size_t len;
@@ -51,7 +51,6 @@ int main(int ac, char **av) {
                     ->Validate(server->configuration))
             ->Start(server)
             ->Free(server);
-
     return EXIT_SUCCESS;
 }
 

@@ -52,6 +52,15 @@ typedef struct s_Drone {
 
 }               Drone;
 
+
+//Validate
+Response    *CanIncant(struct s_Drone *self, Request *request);
+Response    *CanExpulse (Drone *self, Request *request);
+Response    *CanTake (struct s_Drone *self, Request *request);
+Response    *CanDrop (struct s_Drone *self, Request *request);
+Response    *CanRotate(struct s_Drone *self, Request *request);
+
+//Execute
 Response    *Move(struct s_Drone *self, Request *request);
 Response    *Look(struct s_Drone *self, Request *request);
 Response    *Rotate(struct s_Drone *self, Request *request);
@@ -65,7 +74,7 @@ Response    *GetTeamSlot(struct s_Drone *self, Request *request);
 Response    *Incant(struct s_Drone *self, Request *request);
 Response    *Die (Drone *self, Request *request);
 
-
+//Internal
 void        DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool destroyItem);
 string      GetDroneSight(Drone *self, struct s_map *map);
 Drone       *CreateDrone(Team *team);

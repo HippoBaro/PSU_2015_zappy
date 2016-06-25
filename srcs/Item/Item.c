@@ -41,7 +41,6 @@ ItemType ItemFromString(string item) {
             return toStringItem[i].type;
         ++i;
     }
-    Log(ERROR, "Called FromString on unknown item type. String was %s.", item);
     return UNKNOWN_ITEMTYPE;
 }
 
