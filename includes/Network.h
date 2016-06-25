@@ -63,7 +63,7 @@ typedef struct Network {
     void (*Disconnect)(struct Network *this, int fd);
 } Network;
 
-Network *CreateNetwork(NetworkType type, uint16_t port, char *addr);
+extern Network *CreateNetwork(NetworkType type, uint16_t port, char *addr);
 
 bool Send(Response *rep);
 

@@ -43,7 +43,7 @@ static Request *Receive_server(struct Network *this,
 static Request *Receive_client(struct Network *this,
                                t_variable *var) {
     if (FD_ISSET(this->_sock, &var->someData->rfds)) {
-        if ((var->valread = read(this->_sock, var->buffer, 1024)) == 0) {
+        if ((var->valread = read(this->_sock, var->buffer, BUFFSIZE - 1)) == 0) {
             Log(WARNING, "Server disconnected");
             close(this->_sock);
             xfree(var->someData, sizeof(t_dataServer));

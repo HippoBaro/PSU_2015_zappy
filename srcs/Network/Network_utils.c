@@ -54,7 +54,7 @@ bool checkServerConnectionAndMessage(void *elem, void *userData) {
     someData = (t_dataServer *) userData;
     sd = ((t_client *) elem)->_sock;
     if (FD_ISSET(sd, &someData->rfds)) {
-        if ((valread = read(sd, buffer, 1024)) == 0) {
+        if ((valread = read(sd, buffer, BUFFSIZE - 1)) == 0) {
             someData->req = CreateRequest(strdup("-"), sd);
             someData->req->type = EXISTING_CLIENT;
             Log(INFORMATION, "Host disconnected , ip %s , port %d",
