@@ -20,7 +20,7 @@
  * This means, and only because the map is circular, that if the sound goes up it will be received by
  * the other drone at it's bottom. (and only if there are not at the same level [x])
  */
-static MapTile		*sound_get_targed_tile(Drone *receiver, Map *world, Sound *metrics)
+MapTile		*sound_get_targed_tile(Drone *receiver, Map *world, Sound *metrics)
 {
   MapTile		*tile;
 
@@ -41,7 +41,7 @@ static MapTile		*sound_get_targed_tile(Drone *receiver, Map *world, Sound *metri
  * sound_vector_compute_1 && sound_vector_compute_2 functions
  */
 
-  static void		sound_vector_compute_1(Drone *emitter, Drone *receiver, Sound *metrics, Map *world)
+void		sound_vector_compute_1(Drone *emitter, Drone *receiver, Sound *metrics, Map *world)
 {
   MapTile		*temp_tile;
   int			i;
@@ -72,7 +72,7 @@ static MapTile		*sound_get_targed_tile(Drone *receiver, Map *world, Sound *metri
  * Calculating the vector direction, globally and on the X and Y axel with the,
  * sound_vector_compute_1 && sound_vector_compute_2 functions
  */
-static void		sound_vector_compute_2(Drone *emitter, Drone *receiver, Sound *metrics, Map *world)
+void		sound_vector_compute_2(Drone *emitter, Drone *receiver, Sound *metrics, Map *world)
 {
   MapTile		*temp_tile;
   int			i;
@@ -93,7 +93,7 @@ static void		sound_vector_compute_2(Drone *emitter, Drone *receiver, Sound *metr
 /*
  * This functions compiles all the calculated metrics in order to get compelling results.
  */
-static void		sound_compile_results(Sound *metrics)
+void		sound_compile_results(Sound *metrics)
 {
   // Setting'up best path for axe Y !
   if (metrics->res_nocircular_y_absolute < metrics->res_circular_y)

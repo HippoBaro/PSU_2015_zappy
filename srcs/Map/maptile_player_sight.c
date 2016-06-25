@@ -43,7 +43,7 @@ static string GetRessourcesAsStringOnSightOnLength(Drone *player, Map *world, in
         if (DEBUG == true)
             printf(" --> TILE : @%ix%i  [%i --> %i]\n", player->mapTile->X, player->mapTile->Y, i, row_length);
         if (i != 0)
-            answer = asprintf("%s, %s", answer, player->mapTile->ListContent(player->mapTile));
+            answer = asprintf("%s,%s", answer, player->mapTile->ListContent(player->mapTile));
         else
             answer = asprintf("%s", player->mapTile->ListContent(player->mapTile));
         player->GoRight(player, world);
@@ -109,9 +109,9 @@ string         GetDroneSight(Drone *player, Map *world)
         new_drone->GoTop(new_drone, world);
         temp = GetRessourceOnSightAtLevel(new_drone, world, i + 1);
         if (strlen(temp) > 3)
-            answer = asprintf(" %s, %s", answer, temp);
+            answer = asprintf("%s, %s", answer, temp);
         else
-            answer = asprintf(" %s,", answer, temp);
+            answer = asprintf("%s,", answer, temp);
         i++;
     }
     answer = asprintf("%s}", answer);
