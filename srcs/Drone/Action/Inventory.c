@@ -29,7 +29,7 @@ Response *Take (struct s_Drone *self, Request *request) {
 
     item = self->mapTile->GetRessource(self->mapTile, ItemFromString(request->actionSubject));
     if (item == NULL)
-        return CreateResponseFromFdWithMessage(self->socketFd, strdup("ko"));
+        return CreateKoResponseFrom(request);
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
         return (bool)(((Item *)itemPred)->type == ItemFromString(request->actionSubject));
     }), NULL);

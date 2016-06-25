@@ -96,7 +96,6 @@ static void     InitDrone(ZappyServer *server, Drone *drone, Request *request) {
 
 static void     ExistingClient(ZappyServer *server, Request *request) {
     Drone       *drone;
-    Response    *response;
 
     drone = server->GetAssociatedDrone(request, server->world);
     if (drone != NULL && drone->status == WELCOME_SENT)
@@ -104,11 +103,8 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
     else if (drone != NULL && drone->status == READY) {
         Log(INFORMATION, "New command from client %d : %s", drone->socketFd, request->message);
         request->Parse(request);
-        if (request->requestedAction == UNKNOWN_ACTION) {
-            response = CreateKoResponseFrom(request);
-            response->Send(response);
+        if (request->requestedAction == UNKNOWN_ACTION)
             request->Free(request);
-        }
         else
             drone->CommitRequest(drone, request);
     }
