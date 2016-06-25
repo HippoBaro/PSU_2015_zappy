@@ -10,7 +10,16 @@ Response *Look(Drone *self, Request *request) {
 }
 
 Response *Expulse (Drone *self, Request *request) {
-    //todo expulse drone from mapTile
+    self->mapTile->drones->forEachElements(self->mapTile->drones, lambda(void, (void *droneD, void *dat), {
+        Drone *drone;
+
+        if ((drone = droneD) == self)
+            return;
+        drone->mapTile->RemoveDrone(drone->mapTile, drone);
+        drone->mapTile = drone->mapTile->GetTopTile(drone, drone->mapTile->map);
+        drone->mapTile->AddDrone(drone->mapTile, drone);
+        //todo send message to other clients.
+    }), NULL);
     return CreateResponseFromFdWithMessage(self->socketFd, strdup("ok"));
 }
 
@@ -20,6 +29,7 @@ Response *Fork (Drone *self, Request *request) {
 }
 
 Response *Broadcast(Drone *self, Request *request) {
+    //todo create function to get number from TileMap in relation to player TileMap.
     //todo foreach drones, send message with correct tileNumber.
     return CreateResponseFromFdWithMessage(self->socketFd, strdup("ok"));
 }

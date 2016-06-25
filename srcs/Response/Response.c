@@ -2,7 +2,7 @@
 // Created by barrauh on 6/12/16.
 //
 
-
+#include "Generic.h"
 #include "Response.h"
 #include <Network.h>
 
@@ -44,7 +44,10 @@ Response    *CreateEmptyResponse() {
     ret = xmalloc(sizeof(Response));
     ret->message = NULL;
     ret->destFd = -1;
-    ret->Send = &Send;
+    ret->Send = lambda(bool, (Response *self), {
+        self->message = strappend(self->message, "\n", FIRST);
+        return Send(self);
+    });
     ret->Free = &DestroyResponse;
     return ret;
 }
