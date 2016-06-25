@@ -89,6 +89,7 @@ static string GetRessourceOnSightAtLevel(Drone *player, Map *world, int level_n)
 string         GetDroneSight(Drone *player, Map *world)
 {
     string      answer;
+    string      temp;
     Drone       *new_drone;
     int         height;
     int         i;
@@ -98,7 +99,7 @@ string         GetDroneSight(Drone *player, Map *world)
     height = player->level;
     answer = NULL;
     new_drone->GoTop(new_drone, world);
-    answer = asprintf("{ %s", new_drone->mapTile->ListContent(player->mapTile));
+    answer = asprintf("{%s", new_drone->mapTile->ListContent(new_drone->mapTile));
     if (player->level == 0) {
         answer = asprintf(" %s}", answer);
         return (answer);
@@ -106,9 +107,13 @@ string         GetDroneSight(Drone *player, Map *world)
     while (i != height)
     {
         new_drone->GoTop(new_drone, world);
-        answer = asprintf(" %s, %s", answer, GetRessourceOnSightAtLevel(new_drone, world, i + 1));
+        temp = GetRessourceOnSightAtLevel(new_drone, world, i + 1);
+        if (strlen(temp) > 3)
+            answer = asprintf(" %s, %s", answer, temp);
+        else
+            answer = asprintf(" %s,", answer, temp);
         i++;
     }
-    answer = asprintf(" %s}", answer);
+    answer = asprintf("%s}", answer);
     return (answer);
 }
