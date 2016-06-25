@@ -154,4 +154,3 @@ uint64_t GetTimeNowAsUSec() {
         Log(ERROR, "Unable to start Timer -- error getting current time.");
     return (uint64_t) (1000000 * current.tv_sec + current.tv_usec);
 }
-

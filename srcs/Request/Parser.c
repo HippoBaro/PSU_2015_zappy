@@ -1,39 +1,26 @@
-/*
-** Parser.c for  in /home/antoine/zappy/srcs/Parser
-**
-** Made by antoine
-** Login   <antoine@epitech.net>
-**
-** Started on  Mon Jun 13 14:37:03 2016 antoine
-** Last update Tue Jun 14 17:24:44 2016 antoine
-*/
-
 #include "Request.h"
 #include "Generic.h"
 #include <stdio.h>
 #include <string.h>
 
 static string getSubject(string message) {
-  string str;
-  int i;
-  int x;
-  int match;
+    int i;
+    int start;
 
-  i = 0;
-  x = 0;
-  match = 0;
-  while (message[i++])
-    if (message[i] == ' ')
-      match = 1;
-  i = 0;
-  if (match == 1) {
-    while (message[i++] != ' ');
-    str = xmalloc(sizeof(char) * strlen(message) - i);
-    while (message[i])
-      str[x++] = message[i++];
-    return (str);
-  }
-  return ("\0");
+    i = 0;
+    start = -1;
+    while (message[i] != '\0')
+    {
+        if (message[i] == ' ' || message[i] == '\t')
+        {
+            start = ++i;
+            break;
+        }
+        ++i;
+    }
+    if (start == -1)
+        return NULL;
+    return strndup(message + start, strlen(message) - start);
 }
 
 static string cutMessage(string message) {
@@ -123,21 +110,21 @@ static void reqDeath(Request *req) {
 }
 
 static const struct s_command_string requestsArray[] =
-{
-    {"avance",      &reqMove,           7},
-    {"droite",      &reqRotateRight,    7},
-    {"gauche",      &reqRotateLeft,     7},
-    {"voir",        &reqLook,           7},
-    {"inventaire",  &reqLookInventory,  1},
-    {"prend",       &reqTake,           7},
-    {"pose",        &reqDrop,           7},
-    {"expulse",     &reqExpulse,        7},
-    {"broadcast",   &reqBroadcast,      7},
-    {"incantation", &reqIncant,         300},
-    {"fork",        &reqFork,           42},
-    {"connect nbr", &reqLook,           0},
-    {"-",           &reqDeath,          0}
-};
+        {
+                {"avance",      &reqMove,           7},
+                {"droite",      &reqRotateRight,    7},
+                {"gauche",      &reqRotateLeft,     7},
+                {"voir",        &reqLook,           7},
+                {"inventaire",  &reqLookInventory,  1},
+                {"prend",       &reqTake,           7},
+                {"pose",        &reqDrop,           7},
+                {"expulse",     &reqExpulse,        7},
+                {"broadcast",   &reqBroadcast,      7},
+                {"incantation", &reqIncant,         300},
+                {"fork",        &reqFork,           42},
+                {"connect nbr", &reqLook,           0},
+                {"-",           &reqDeath,          0}
+        };
 
 Request *ParseRequest(Request *request) {
     int i;

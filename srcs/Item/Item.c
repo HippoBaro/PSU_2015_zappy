@@ -29,20 +29,21 @@ static string ToString(Item *item) {
     return "";
 }
 
-/*static Item *FromString(string item) {
+ItemType ItemFromString(string item) {
     int  	i;
 
     i = 0;
-    while (i < 6)
+    if (item == NULL)
+        Log(ERROR, "Called FromString with NULL string.");
+    while (i < 7)
     {
-        if (toStringItem[i].type == item->type)
-            return toStringItem[i].str;
+        if (strcmp(toStringItem[i].str, item) == 0)
+            return toStringItem[i].type;
         ++i;
     }
-    Log(ERROR, "Called ToString on unknown item type.");
-    exit(EXIT_FAILURE);
-    return "";
-}*/
+    Log(ERROR, "Called FromString on unknown item type. String was %s.", item);
+    return UNKNOWN_ITEMTYPE;
+}
 
 void        DestroyItem(Item *item) {
     xfree(item, sizeof(Item));

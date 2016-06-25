@@ -13,15 +13,6 @@ void DestroyDrone(Drone *drone) {
     xfree(drone, sizeof(Drone));
 }
 
-Response *GetTeamSlot(struct s_Drone *self, Request *request) {
-    return CreateResponseFromFdWithMessage(self->socketFd, asprintf("%d",self->team->maxSlot - self->team->currentUsedSlot));
-}
-
-Response *Incant(struct s_Drone *self, Request *request) {
-    //todo Incant
-    return NULL;
-}
-
 Drone   *CreateDrone(Team *team) {
     Drone   *ret;
 

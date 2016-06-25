@@ -78,7 +78,6 @@ MapTile	    *CreateMapTile(Map *map, int X, int Y)
     MapTile	*tile;
 
     tile = xmalloc(sizeof(MapTile));
-
     tile->X = X;
     tile->Y = Y;
     tile->map = map;

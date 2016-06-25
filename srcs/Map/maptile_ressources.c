@@ -27,11 +27,13 @@ bool		add_ressource(MapTile *tile, Item *item)
 Item	*get_ressource(MapTile *tile, ItemType type)
 {
     t_list	    *elem;
+    Item        *ret;
 
     elem = tile->ressources->firstElementFromPredicate(tile->ressources, &sorting_itemtype, (void *) type);
-    if (elem != NULL) {
+    if (elem != NULL && elem->data != NULL) {
+        ret = elem->data;
         tile->ressources->removeThisElem(tile->ressources, elem);
-        return elem->data;
+        return ret;
     }
   return NULL;
 }

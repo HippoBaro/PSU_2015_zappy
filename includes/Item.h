@@ -23,5 +23,6 @@ void        DestroyItem(Item *item);
 Item        *CreateItemFrom(ItemType type);
 Item        *CreateItemWithQuantity(ItemType type, int quantity);
 Item        *CreateRandomItem();
+ItemType    ItemFromString(string item);
 
 #endif //PSU_2015_ZAPPY_ITEM_H

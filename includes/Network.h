@@ -18,7 +18,7 @@
 # include "Response.h"
 # include "Request.h"
 
-# define BUFFSIZE 1025
+# define BUFFSIZE 8096
 int masterSocket;
 
 typedef enum {

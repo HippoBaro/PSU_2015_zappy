@@ -18,21 +18,20 @@ Response *ListInventory(struct s_Drone *self, Request *request) {
             ret = strappend(ret, item->ToString(item), FIRST);
             isFirst = false;
         }), NULL);
-    ret = strappend(ret, " }", FIRST);
-    ret = strappend("{ ", ret, SECOND);
+    ret = strappend(ret, "}", FIRST);
+    ret = strappend("{", ret, SECOND);
     return CreateResponseFromFdWithMessage(self->socketFd, ret);
 }
 
 Response *Take (struct s_Drone *self, Request *request) {
     Item *item;
     t_list *elem;
-    ItemType itemType = NOURRITURE; //todo parse Request for itemType
 
-    item = self->mapTile->GetRessource(self->mapTile, itemType);
+    item = self->mapTile->GetRessource(self->mapTile, ItemFromString(request->actionSubject));
     if (item == NULL)
         return CreateResponseFromFdWithMessage(self->socketFd, strdup("ko"));
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
-        return (bool)(((Item *)itemPred)->type == itemType);
+        return (bool)(((Item *)itemPred)->type == ItemFromString(request->actionSubject));
     }), NULL);
     if (elem != NULL && elem->data != NULL)
     {
@@ -40,13 +39,13 @@ Response *Take (struct s_Drone *self, Request *request) {
         item->Free(item);
     }
     else
-        self->inventory->addElemFront(self->inventory, item);
+        self->inventory->addElemFront(self->inventory, CreateItemFrom(item->type));
+    item->Free(item);
     return CreateResponseFromFdWithMessage(self->socketFd, strdup("ok"));
 }
 
 Response *Drop (struct s_Drone *self, Request *request) {
-    ItemType itemType = NOURRITURE; //todo parse Request for itemType
-    self->DropInternal(self, itemType, 1, false);
+    self->DropInternal(self, ItemFromString(request->actionSubject), 1, false);
     return CreateResponseFromFdWithMessage(self->socketFd, strdup("ok"));
 }
 

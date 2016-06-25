@@ -64,8 +64,6 @@ bool checkServerConnectionAndMessage(void *elem, void *userData) {
             return (true);
         }
         buffer[valread] = '\0';
-        Log(INFORMATION, "MSG from client with socket : %d -> %s.", sd,
-            buffer);
         someData->req = CreateRequest(strdup(buffer), sd);
         someData->req->type = EXISTING_CLIENT;
         return (true);

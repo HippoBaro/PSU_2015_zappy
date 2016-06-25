@@ -60,7 +60,7 @@ set(UNIT_TEST_SOURCE
 set(MAIN_SOURCE
         srcs/Network/Network.c
         srcs/main.c
-        includes/Sound.h includes/Team.h srcs/Team/Team.c srcs/Drone/Action/Move.c srcs/Drone/Action/Inventory.c srcs/Drone/Action/Map.c srcs/Drone/Request.c)
+        includes/Sound.h includes/Team.h srcs/Team/Team.c srcs/Drone/Action/Move.c srcs/Drone/Action/Inventory.c srcs/Drone/Action/Map.c srcs/Drone/Request.c srcs/Drone/Action/Team.c srcs/Drone/Action/Incant.c)
 
 #set(UNIT_TEST TRUE)
 
