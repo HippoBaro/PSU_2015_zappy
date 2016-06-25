@@ -23,19 +23,27 @@ static const struct s_request_invoke commands[] =
 
 static Response *Execute(Request *request, Drone *drone) {
     int i;
-    Response *response;
+
+    i = 0;
+    while (i <= 11)
+    {
+        if (request->requestedAction == commands[i].requestAction)
+            return commands[i].invokeAction(drone, request);
+        ++i;
+    }
+    return NULL;
+}
+
+static Response *Validate(Request *request, Drone *drone) {
+    int i;
 
     i = 0;
     while (i <= 11)
     {
         if (request->requestedAction == commands[i].requestAction)
         {
-            if (commands[i].invokeValidate != NULL && (response = commands[i].invokeValidate(drone, request)) != NULL)
-            {
-                Log(INFORMATION, "Action %d failed from validation.", commands[i].requestAction);
-                return response;
-            }
-            return commands[i].invokeAction(drone, request);
+            if (commands[i].invokeValidate != NULL)
+                return commands[i].invokeValidate(drone, request);
         }
         ++i;
     }
@@ -108,6 +116,6 @@ Request *CreateRequest(string message, int socketFd) {
     ret->Free = &DestroyRequest;
     ret->Parse = &ParseRequest;
     ret->GetCompletionTime = &GetCompletionTime;
-    //todo set Validate
+    ret->Validate = (void *(*)(struct t_Request *, void *)) &Validate;
     return ret;
 }
