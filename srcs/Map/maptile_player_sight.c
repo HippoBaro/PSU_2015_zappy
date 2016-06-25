@@ -14,7 +14,7 @@
 
 #define DEBUG   false
 
-static Drone    *DuplicateDrone(Drone *existing_drone, Map *world)
+Drone    *DuplicateDrone(Drone *existing_drone, Map *world)
 {
     Drone       *fake;
 

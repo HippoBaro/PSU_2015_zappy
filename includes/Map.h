@@ -32,6 +32,7 @@ typedef struct	        s_map
     struct s_map        *(*AddDrone)(MapTile *tile, Drone *drone);
     struct s_map        *(*RemoveDrone)(struct s_map *world, Drone *drone);
     MapTile             *(*GetTileReceivingSound)(Drone *emitter, Drone *receiver, struct s_map *world);
+    int                 (*GetTileNumberForDrone)(MapTile *targeted_tile, Drone *receiver, struct s_map *world);
     void                (*Free)(struct s_map *map);
 }		                Map;
 

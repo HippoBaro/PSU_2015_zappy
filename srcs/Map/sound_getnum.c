@@ -7,24 +7,28 @@
 #include "Sound.h"
 #include "MapSight.h"
 
-int     evaluate_sound_path_numeric(Drone *emitter, Drone *receiver, Map *world)
+int GetTileNumberForDrone(MapTile *targeted_tile, Drone *receiver, Map *world)
 {
-  Sound sound;
+  Drone     *ghost;
+  int       i;
 
-  sound.res_nocircular_x = (receiver->mapTile->X - emitter->mapTile->X);
-  if (sound.res_nocircular_x < 0)
-    sound.res_nocircular_x_absolute = (sound.res_nocircular_x * (-1));
-  else
-    sound.res_nocircular_x_absolute = (sound.res_nocircular_x);
-  sound.res_nocircular_y = (receiver->mapTile->Y - emitter->mapTile->Y);
-  if (sound.res_nocircular_y < 0)
-    sound.res_nocircular_y_absolute = (sound.res_nocircular_y * (-1));
-  else
-    sound.res_nocircular_y_absolute = (sound.res_nocircular_y);
-  sound.res_circular_x = (world->X - sound.res_nocircular_x);
-  sound.res_circular_y = (world->Y - sound.res_nocircular_y);
-  //sound_compile_results(&sound);
-  //sound_vector_compute_1(emitter, receiver, &sound, world);
-  //sound_vector_compute_2(emitter, receiver, &sound, world);
+  i = 1;
+  ghost = receiver->DuplicateDrone(receiver, world);
+  ghost->GoTop(ghost, world);
+  while (ghost->mapTile != targeted_tile && i < 10)
+  {
+    if (i == 1)
+      ghost->GoLeft(ghost, world);
+    else if (i >= 2 && i <= 3)
+      ghost->GoBackwards(ghost, world);
+    if (i >= 4 && i <= 5)
+      ghost->GoRight(ghost, world);
+    else if (i >= 6 && i <= 7)
+      ghost->GoTop(ghost, world);
+    printf("[TILE] --> @%ix%i\n", ghost->mapTile->X, ghost->mapTile->Y);
+    i++;
+  }
+  if (i <= 8)
+    return (i);
   return (-1);
 }

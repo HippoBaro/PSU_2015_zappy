@@ -122,6 +122,7 @@ Map *CreateMap(ZappyServer *server, int width, int height) {
     world->mapTiles = CreateLinkedList();
     world->drones = CreateLinkedList();
     world->GetTileReceivingSound = &evaluate_sound_path;
+    world->GetTileNumberForDrone = &GetTileNumberForDrone;
     while (i != width * height) {
         world->mapTiles->addElemEnd(world->mapTiles, CreateMapTile(world, x, y));
         ++i;

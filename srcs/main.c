@@ -2,6 +2,7 @@
 // Created by pasteu_e on 06/06/16.
 //
 
+#include <Drone.h>
 #include "ZappyServer.h"
 
 #if CLIENT

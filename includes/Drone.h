@@ -27,6 +27,7 @@ typedef struct s_Drone {
 
     Response    *(*Die)(struct s_Drone *self, Request *request);
 
+    Drone       *(*DuplicateDrone)(struct s_Drone *existing_drone, struct s_map *world);
     void        (*DropInternal)(struct s_Drone *self, ItemType item, int quantity, bool destroyItem);
     void        (*Turn90DegreesLeft)(struct s_Drone *self);
     void        (*Turn90DegreesRight)(struct s_Drone *self);
@@ -66,6 +67,7 @@ Response    *Incant(struct s_Drone *self, Request *request);
 Response    *Die (Drone *self, Request *request);
 
 
+Drone       *DuplicateDrone(Drone *existing_drone, struct s_map *world);
 void        DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool destroyItem);
 string      GetDroneSight(Drone *self, struct s_map *map);
 Drone       *CreateDrone(Team *team);

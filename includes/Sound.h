@@ -44,5 +44,6 @@ typedef struct          s_sound
 }                       Sound;
 
 MapTile	    *evaluate_sound_path(struct s_Drone *emitter, struct s_Drone *receiver, struct s_map *world);
+int         GetTileNumberForDrone(MapTile *targeted_tile, Drone *receiver, Map *world);
 
 #endif //PSU_2015_ZAPPY_SOUND_H

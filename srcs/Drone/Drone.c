@@ -26,13 +26,12 @@ Drone   *CreateDrone(Team *team) {
     ret->status = NEW;
     ret->scheduledDeath = (uint64_t) 0;
     ret->rotation = TOP;
-
+    ret->DuplicateDrone = &DuplicateDrone;
     ret->Die = &Die;
-
     ret->DropInternal = &DropInternal;
     ret->GetDroneSight = &GetDroneSight;
     ret->Free = &DestroyDrone;
     InitDroneMove(ret);
     InitDroneRequest(ret);
-    return ret;
+    return (ret);
 }
