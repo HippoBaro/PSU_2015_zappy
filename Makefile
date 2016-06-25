@@ -5,7 +5,7 @@
 ## Login   <diacon_c@epitech.net>
 ## 
 ## Started on  Sun Jun 12 17:02:15 2016 Christian Diaconu
-## Last update Mon Jun 20 22:03:24 2016 Christian Diaconu
+## Last update Sat Jun 25 12:36:34 2016 Christian Diaconu
 ##
 
 INC	=	includes/
@@ -13,6 +13,12 @@ INC	=	includes/
 SRC	=	srcs/Generic.c \
 		srcs/Drone/Drone.c \
 		srcs/LinkedList/LinkedList.c \
+		srcs/LinkedList/LinkedList_add.c \
+		srcs/LinkedList/LinkedList_forEach.c \
+		srcs/LinkedList/LinkedList_free.c \
+		srcs/LinkedList/LinkedList_getElem.c \
+		srcs/LinkedList/LinkedList_remove.c \
+		srcs/LinkedList/LinkedList_utils.c \
 		srcs/Map/maptile_ressources.c \
 		srcs/Map/maptile_player_directions.c \
 		srcs/Map/maptile_player_sight.c \
@@ -28,7 +34,13 @@ SRC	=	srcs/Generic.c \
 		srcs/ZappyServer/ZappyServer.c\
 		srcs/ZappyServer/Configuration.c \
 		srcs/Request/Timer.c \
-		srcs/Network/Network.c
+		srcs/Network/Network.c \
+		srcs/Network/Network_utils.c \
+		srcs/Network/Network_client.c \
+		srcs/Network/Network_server.c \
+		srcs/Network/Network_receive.c \
+		srcs/Network/Network_send.c \
+		srcs/Team/Team.c
 
 NAME	=	zappy_server
 

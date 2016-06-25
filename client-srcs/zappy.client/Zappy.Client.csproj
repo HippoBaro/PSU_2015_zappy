@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Zappy.Client</RootNamespace>
     <AssemblyName>Zappy.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +49,7 @@
     <Compile Include="Class\Drone\Drone.cs" />
     <Compile Include="Class\Map\MapTile.cs" />
     <Compile Include="Class\Map\MapData.cs" />
+    <Compile Include="Class\Network\NetworkWrapper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

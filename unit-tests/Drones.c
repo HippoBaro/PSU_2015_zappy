@@ -8,7 +8,9 @@
 
 void TestDrone() {
     Map     *world = CreateMap(5, 5);
-    Drone   *drone = CreateDrone(world, 0, 0);
+    Team    *team = CreateTeamFrom("hello", 5);
+    Drone   *drone = CreateDrone(team);
+
     string  inventory;
 
     printf("List inventory : %s\n", inventory = drone->ListInventory(drone));
