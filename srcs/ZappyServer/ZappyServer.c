@@ -112,25 +112,15 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
         request->Free(request);
 }
 
-static ZappyServer *Start(ZappyServer *server) {
+static ZappyServer *StartInternal(ZappyServer *server) {
     Request *request;
-    int i;
 
-    i = 1;
-    while (i <= 31) {
-        if (i != SIGKILL && i != SIGSTOP)
-            signal(i, lambda(void, (int sig), {
-                Log(WARNING, "Received signal. Interrupting server. Signal was : %s (SIG = %d)", strsignal(sig), sig);
-                server->ShutDown(server);
-                server->Free(server);
-                exit(EXIT_SUCCESS);
-            }));
-        ++i;
-    }
     server->network = CreateNetwork(SERVER, (uint16_t) server->configuration->port, NULL);
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
+        if (feof(stdin))
+            break;
         request = server->network->Receive(server->network, server->nextTimeout = server->GetNextRequestDelay(server));
         server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
             ((Drone *)drone)->UpdateLifeTime(drone);
@@ -148,6 +138,23 @@ static ZappyServer *Start(ZappyServer *server) {
     return server->ShutDown(server);
 }
 
+static ZappyServer *Start(ZappyServer *server) {
+    int i;
+
+    i = 1;
+    while (i <= 31) {
+        if (i != SIGKILL && i != SIGSTOP)
+            signal(i, lambda(void, (int sig), {
+                Log(WARNING, "Received signal. Interrupting server. Signal was : %s (SIG = %d)", strsignal(sig), sig);
+                server->ShutDown(server);
+                server->Free(server);
+                exit(EXIT_SUCCESS);
+            }));
+        ++i;
+    }
+    return StartInternal(server);
+}
+
 static Drone    *GetAssociatedDrone(Request *request, Map *map) {
     t_list *elem;
 
@@ -162,12 +169,13 @@ static Drone    *GetAssociatedDrone(Request *request, Map *map) {
 }
 
 static struct timeval *GetNextRequestDelay(ZappyServer *server) {
-    uint64_t next = UINT64_MAX;
+    uint64_t next;
     uint64_t droneT;
     struct timeval nextTimeval;
     struct timeval current;
     struct timeval *ret;
 
+    next = UINT64_MAX;
     if (server->nextTimeout != NULL)
         xfree(server->nextTimeout, sizeof(struct timeval));
     server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
@@ -179,7 +187,6 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
                 next = droneT;
         }
     }), NULL);
-
     if (next == UINT64_MAX)
         return NULL;
     ret = xmalloc(sizeof(struct timeval));
