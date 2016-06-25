@@ -6,14 +6,14 @@
 #include "Drone.h"
 
 static void Turn90DegreesLeft (struct s_Drone *self) {
-    if (self->rotation - 90 == 0)
+    if ((int)(self->rotation - 90) < 0)
         self->rotation = (Rotation) 270;
     else
         self->rotation -= 90;
 }
 
 static void Turn90DegreesRight (struct s_Drone *self) {
-    if (self->rotation + 90 == 360)
+    if (self->rotation + 90 >= 360)
         self->rotation = (Rotation) 0;
     else
         self->rotation += 90;

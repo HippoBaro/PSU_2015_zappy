@@ -101,14 +101,14 @@ string         GetDroneSight(Drone *player, Map *world)
     new_drone->GoTop(new_drone, world);
     answer = asprintf("{%s", new_drone->mapTile->ListContent(new_drone->mapTile));
     if (player->level == 0) {
-        answer = asprintf(" %s}", answer);
+        answer = asprintf("%s}", answer);
         return (answer);
     }
     while (i != height)
     {
         new_drone->GoTop(new_drone, world);
         temp = GetRessourceOnSightAtLevel(new_drone, world, i + 1);
-        if (strlen(temp) > 3)
+        if (strlen(temp) > 2)
             answer = asprintf("%s, %s", answer, temp);
         else
             answer = asprintf("%s,", answer, temp);
