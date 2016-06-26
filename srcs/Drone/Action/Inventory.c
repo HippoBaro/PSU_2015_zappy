@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 13:47:27 2016 Etienne Pasteur
-** Last update Sun Jun 26 23:29:06 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:35:08 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
@@ -57,37 +57,37 @@ Response	*Drop (struct s_Drone *self, Request *request)
   return (CreateResponseFromFdWithMessage(self->socketFd, strdup("ok")));
 }
 
-static void DropNoQuantity(Drone *self, t_list *elem, bool destroyItem)
+static void	DropNoQuantity(Drone *self, t_list *elem, bool destroyItem)
 {
-    if (!destroyItem)
+  if (!destroyItem)
     {
-        self->mapTile->AddRessource(self->mapTile, elem->data);
-        self->inventory->removeThisElem(self->inventory, elem);
+      self->mapTile->AddRessource(self->mapTile, elem->data);
+      self->inventory->removeThisElem(self->inventory, elem);
     }
-    else
-        self->inventory->freeThisElem(self->inventory,
-                                      (void (*)(void *)) &DestroyItem, elem);
+  else
+    self->inventory->freeThisElem(self->inventory,
+				  (void (*)(void *)) &DestroyItem, elem);
 }
 
 void		DropInternal(Drone *self, ItemType itemType,
-                         int quantity, bool destroyItem)
+			     int quantity, bool destroyItem)
 {
-    t_list	*elem;
+  t_list	*elem;
 
-    elem = FirstPred(self->inventory, itemPred, {
-        return (bool)(((Item *)itemPred)->type == itemType);
+  elem = FirstPred(self->inventory, itemPred, {
+      return (bool)(((Item *)itemPred)->type == itemType);
     });
-    if (elem != NULL && elem->data != NULL && quantity > 0)
+  if (elem != NULL && elem->data != NULL && quantity > 0)
     {
-        if (((Item *)elem->data)->quantity == 1)
-            DropNoQuantity(self, elem, destroyItem);
-        else
+      if (((Item *)elem->data)->quantity == 1)
+	DropNoQuantity(self, elem, destroyItem);
+      else
         {
-            ((Item *) elem->data)->quantity--;
-            if (!destroyItem)
-                self->mapTile->AddRessource(self->mapTile,
-                                            CreateItemFrom(((Item *) elem->data)->type));
-            self->DropInternal(self, itemType, --quantity, destroyItem);
+	  ((Item *) elem->data)->quantity--;
+	  if (!destroyItem)
+	    self->mapTile->AddRessource(self->mapTile,
+					CreateItemFrom(((Item *) elem->data)->type));
+	  self->DropInternal(self, itemType, --quantity, destroyItem);
         }
     }
 }
