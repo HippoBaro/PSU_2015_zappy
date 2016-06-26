@@ -9,10 +9,10 @@ static ZappyServer *Configure(ZappyServer *self, Configuration *config) {
     srand((unsigned int) (config->seed != NULL ? *config->seed : time(NULL)));
     self->world = CreateMap(self, config->worldWidth, config->worldHeight);
     ForEach(config->teamNames, team, {
-        Team *team;
+        Team *teamD;
 
-        team = CreateTeamFrom((string)team, config->initialClientPerTeam)
-        self->teams->addElemFront(self->teams, team);
+        teamD = CreateTeamFrom((string)team, config->initialClientPerTeam);
+        self->teams->addElemFront(self->teams, teamD);
     });
     self->configuration = config;
     self->status = CONFIGURED;
