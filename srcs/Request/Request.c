@@ -32,6 +32,17 @@ void		DestroyRequest(Request *request)
     xfree(request, sizeof(Request));
 }
 
+string      GetRequestAsString(Request *request)
+{
+    string  ret;
+
+    if (request == NULL || request->message == NULL)
+        return strdup("");
+    ret = strdup(request->message);
+    request->Free(request);
+    return (ret);
+}
+
 Request		*CreateRequest(string message, int socketFd)
 {
     Request	*ret;

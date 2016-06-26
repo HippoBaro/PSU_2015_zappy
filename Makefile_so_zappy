@@ -64,6 +64,7 @@ SRCS	=	srcs/LinkedList/LinkedList.c \
         srcs/ZappyServer/Request.c \
         srcs/ZappyServer/Drone.c \
         srcs/ZappyServer/LifeCycle.c \
+	srcs/Generic/Time.c
 
 CFLAG 	=	-g
 

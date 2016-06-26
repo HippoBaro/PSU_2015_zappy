@@ -65,7 +65,8 @@ static void     OutputLog(LogLevel level, const string time,
 
 void			Log(LogLevel level, const string log, ...)
 {
-/*  va_list		ap;
+
+  va_list		ap;
   string		time;
   string		usage;
   string		content;
@@ -80,5 +81,5 @@ void			Log(LogLevel level, const string log, ...)
   OutputLog(level, time, usage, content);
   xfree(time, strlen(time));
   xfree(content, strlen(content));
-  xfree(usage, strlen(usage));*/
+  xfree(usage, strlen(usage));
 }

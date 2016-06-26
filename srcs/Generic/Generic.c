@@ -41,15 +41,6 @@ void			xfree(void *ptr, size_t size)
   free(ptr);
 }
 
-uint64_t		GetTimeNowAsUSec()
-{
-  struct timeval	current;
-
-  if (gettimeofday(&current, NULL) != 0)
-    Log(ERROR, "Unable to start Timer -- error getting current time.");
-  return ((uint64_t)(1000000 * current.tv_sec + current.tv_usec));
-}
-
 int			asymetricRandMinMax(int rolls, int min, int max)
 {
   int			i;

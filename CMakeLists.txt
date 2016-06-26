@@ -90,6 +90,8 @@ set(MAIN_SOURCE
         srcs/ZappyServer/Drone.c
         srcs/ZappyServer/LifeCycle.c
         srcs/Generic/Log.c
+        srcs/Generic/String.c
+        srcs/Generic/Time.c
         srcs/Generic/String.c GraphClient/blitRess.c GraphClient/utils.c)
 
 #set(UNIT_TEST TRUE)
