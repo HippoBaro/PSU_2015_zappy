@@ -5,83 +5,85 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sat Jun 11 17:47:03 2016 Etienne Pasteur
-** Last update Sun Jun 12 15:45:57 2016 Etienne Pasteur
+** Last update Sun Jun 26 16:34:17 2016 Etienne Pasteur
 */
 
 #include "LinkedList.h"
 
-static bool removeThisElem(LinkedList *this, t_list *elem);
+static bool	removeThisElem(LinkedList *this, t_list *elem);
+static bool	removeElemFront(LinkedList *this);
+static bool	removeElemEnd(LinkedList *this);
+static bool	removeElemAtPos(LinkedList *this, int pos);
 
-static bool removeElemFront(LinkedList *this);
-
-static bool removeElemEnd(LinkedList *this);
-
-static bool removeElemAtPos(LinkedList *this, int pos);
-
-void initListPtrFuncRemove(LinkedList *this) {
-    this->removeThisElem = &removeThisElem;
-    this->removeElemFront = &removeElemFront;
-    this->removeElemEnd = &removeElemEnd;
-    this->removeElemAtPos = &removeElemAtPos;
+void		initListPtrFuncRemove(LinkedList *this)
+{
+  this->removeThisElem = &removeThisElem;
+  this->removeElemFront = &removeElemFront;
+  this->removeElemEnd = &removeElemEnd;
+  this->removeElemAtPos = &removeElemAtPos;
 }
 
-static bool removeThisElem(LinkedList *this, t_list *elem) {
-    t_list *it;
+static bool	removeThisElem(LinkedList *this, t_list *elem)
+{
+  t_list	*it;
 
-    it = this->myList->next;
-    while (it != this->myList) {
-        if (it == elem) {
-            it->prev->next = it->next;
-            it->next->prev = it->prev;
-            xfree(it, sizeof(t_list));
-            return (true);
-        }
-        it = it->next;
+  it = this->myList->next;
+  while (it != this->myList) {
+    if (it == elem) {
+      it->prev->next = it->next;
+      it->next->prev = it->prev;
+      xfree(it, sizeof(t_list));
+      return (true);
     }
-    return (false);
+    it = it->next;
+  }
+  return (false);
 }
 
-static bool removeElemFront(LinkedList *this) {
-    t_list *it;
+static bool	removeElemFront(LinkedList *this)
+{
+  t_list	*it;
 
-    it = this->myList->next;
-    if (it != this->myList) {
-        it->prev->next = it->next;
-        it->next->prev = it->prev;
-        xfree(it, sizeof(t_list));
-        return (true);
-    }
-    return (false);
+  it = this->myList->next;
+  if (it != this->myList) {
+    it->prev->next = it->next;
+    it->next->prev = it->prev;
+    xfree(it, sizeof(t_list));
+    return (true);
+  }
+  return (false);
 }
 
-static bool removeElemEnd(LinkedList *this) {
-    t_list *it;
+static bool	removeElemEnd(LinkedList *this)
+{
+  t_list	*it;
 
-    it = this->myList->prev;
-    if (it != this->myList) {
-        it->prev->next = it->next;
-        it->next->prev = it->prev;
-        xfree(it, sizeof(t_list));
-        return (true);
-    }
-    return (false);
+  it = this->myList->prev;
+  if (it != this->myList) {
+    it->prev->next = it->next;
+    it->next->prev = it->prev;
+    xfree(it, sizeof(t_list));
+    return (true);
+  }
+  return (false);
 }
 
-static bool removeElemAtPos(LinkedList *this, int pos) {
-    t_list *it;
-    int i;
+static bool	removeElemAtPos(LinkedList *this, int pos)
+{
+  t_list	*it;
+  int		i;
 
-    i = 0;
-    it = this->myList->next;
-    while (it != this->myList) {
-        if (i == pos) {
-            it->prev->next = it->next;
-            it->next->prev = it->prev;
-            xfree(it, sizeof(t_list));
-            return (true);
-        }
-        it = it->next;
-        i += 1;
+  i = 0;
+  it = this->myList->next;
+  while (it != this->myList) {
+    if (i == pos) {
+      it->prev->next = it->next;
+      it->next->prev = it->prev;
+      xfree(it, sizeof(t_list));
+      return (true);
     }
-    return (false);
+    it = it->next;
+    i += 1;
+  }
+  return (false);
 }

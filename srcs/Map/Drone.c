@@ -1,48 +1,58 @@
-//
-// Created by barrauh on 6/26/16.
-//
+/*
+** Drone.c for zappy in /home/pasteu_e/rendu/PSU_2015_zappy/srcs/Map
+**
+** Made by Etienne Pasteur
+** Login   <pasteu_e@epitech.net>
+**
+** Started on  Sun Jun 26 16:35:49 2016 Etienne Pasteur
+** Last update Sun Jun 26 16:36:56 2016 Etienne Pasteur
+*/
 
 #include "Drone.h"
 #include "Map.h"
 
-Map *AddDrone(MapTile *tile, Drone *drone) {
-    drone->mapTile = tile;
-    tile->map->drones->addElemFront(tile->map->drones, drone);
-    tile->drones->addElemFront(tile->drones, drone);
-    return tile->map;
+Map		*AddDrone(MapTile *tile, Drone *drone)
+{
+  drone->mapTile = tile;
+  tile->map->drones->addElemFront(tile->map->drones, drone);
+  tile->drones->addElemFront(tile->drones, drone);
+  return (tile->map);
 }
 
-Map *RemoveDrone(Map *map, Drone *drone) {
-    t_list *element;
+Map		*RemoveDrone(Map *map, Drone *drone)
+{
+  t_list	*element;
 
-    element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
+  element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
         if (elem == drone)
-            return true;
-        return false;
-    }), NULL);
-    drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
-    return map;
+	  return (true);
+        return (false);
+      }), NULL);
+  drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
+  return (map);
 }
 
-Map *DeleteDrone(Map *map, Drone *drone) {
-    t_list *element;
+Map		*DeleteDrone(Map *map, Drone *drone)
+{
+  t_list	*element;
 
-    element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
+  element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
         if (elem == drone)
-            return true;
+	  return true;
         return false;
-    }), NULL);
-    drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
-    element = map->drones->firstElementFromPredicate(map->drones, lambda(bool, (void *elem, void*data), {
+      }), NULL);
+  drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
+  element = map->drones->firstElementFromPredicate(map->drones, lambda(bool, (void *elem, void*data), {
         if (elem == drone)
-            return true;
+	  return true;
         return false;
-    }), NULL);
-    map->drones->freeThisElem(map->drones, (void (*)(void *)) &DestroyDrone, element);
-    return map;
+      }), NULL);
+  map->drones->freeThisElem(map->drones, (void (*)(void *)) &DestroyDrone, element);
+  return map;
 }
 
-void    InitMapDrone(Map *world) {
-    world->AddDrone = &AddDrone;
-    world->RemoveDrone = & RemoveDrone;
+void		InitMapDrone(Map *world)
+{
+  world->AddDrone = &AddDrone;
+  world->RemoveDrone = & RemoveDrone;
 }

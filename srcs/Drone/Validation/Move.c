@@ -1,13 +1,20 @@
-//
-// Created by barrauh on 6/25/16.
-//
+/*
+** Move.c for zap in /home/pasteu_e/rendu/PSU_2015_zappy/srcs/Drone/Validation
+**
+** Made by Etienne Pasteur
+** Login   <pasteu_e@epitech.net>
+**
+** Started on  Sun Jun 26 15:42:30 2016 Etienne Pasteur
+** Last update Sun Jun 26 15:43:00 2016 Etienne Pasteur
+*/
 
 #include "Drone.h"
 
-Response *CanRotate(struct s_Drone *self, Request *request) {
-    if (strcmp(request->actionSubject, "gauche") == 0)
-        return NULL;
-    else if (strcmp(request->actionSubject, "droite") == 0)
-        return NULL;
-    return CreateKoResponseFrom(request);
+Response *CanRotate(struct s_Drone *self, Request *request)
+{
+  if (strcmp(request->actionSubject, "gauche") == 0)
+    return (NULL);
+  else if (strcmp(request->actionSubject, "droite") == 0)
+    return (NULL);
+  return (CreateKoResponseFrom(request));
 }

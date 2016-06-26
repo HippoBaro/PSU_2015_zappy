@@ -1,35 +1,46 @@
-//
-// Created by barrauh on 6/18/16.
-//
+/*
+** Timer.c for zappy in /home/pasteu_e/rendu/PSU_2015_zappy/srcs/Request
+**
+** Made by Etienne Pasteur
+** Login   <pasteu_e@epitech.net>
+**
+** Started on  Sun Jun 26 17:09:54 2016 Etienne Pasteur
+** Last update Sun Jun 26 17:11:49 2016 Etienne Pasteur
+*/
 
 #include "Generic.h"
 #include "Timer.h"
 
-void    DestroyTimer(Timer *self) {
-    xfree(self, sizeof(Timer));
+void			DestroyTimer(Timer *self)
+{
+  xfree(self, sizeof(Timer));
 }
 
-static bool IsElapsed(Timer *self) {
-    struct timeval current;
-    uint64_t currMicro;
+static bool		IsElapsed(Timer *self)
+{
+  struct timeval	current;
+  uint64_t		currMicro;
 
-    if (gettimeofday(&current, NULL) != 0)
-        Log(ERROR, "Unable to start Timer -- error getting current time.");
-    currMicro = (uint64_t) (1000000 * current.tv_sec + current.tv_usec);
-    Log(INFORMATION, "Target is %lu. Current is %lu. Delta is %lu.", self->target, currMicro, self->target - currMicro);
-    if (currMicro > self->target)
-        return true;
-    return false;
+  if (gettimeofday(&current, NULL) != 0)
+    Log(ERROR, "Unable to start Timer -- error getting current time.");
+  currMicro = (uint64_t) (1000000 * current.tv_sec + current.tv_usec);
+  Log(INFORMATION,
+      "Target is %lu. Current is %lu. Delta is %lu.",
+      self->target, currMicro, self->target - currMicro);
+  if (currMicro > self->target)
+    return (true);
+  return (false);
 }
 
-Timer   *CreateAndStartTimer(uint64_t target) {
-    Timer *ret;
-    struct timeval current;
+Timer			*CreateAndStartTimer(uint64_t target)
+{
+  Timer			*r;
+  struct timeval	current;
 
-    ret = xmalloc(sizeof(Timer));
-    if (gettimeofday(&current, NULL) != 0)
-        Log(ERROR, "Unable to start Timer -- error getting current time.");
-    ret->target = (uint64_t) (1000000 * current.tv_sec + current.tv_usec + target);
-    ret->isElapsed = &IsElapsed;
-    return ret;
+  r = xmalloc(sizeof(Timer));
+  if (gettimeofday(&current, NULL) != 0)
+    Log(ERROR, "Unable to start Timer -- error getting current time.");
+  r->target = (uint64_t) (1000000 * current.tv_sec + current.tv_usec + target);
+  r->isElapsed = &IsElapsed;
+  return (r);
 }

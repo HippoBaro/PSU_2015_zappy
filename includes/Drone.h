@@ -53,7 +53,7 @@ typedef struct s_Drone {
 
 }               Drone;
 
-struct s_incant_table {
+typedef struct s_incant_table {
     int requestedLevel;
     int minimumDrones;
     int linemate;
@@ -62,7 +62,7 @@ struct s_incant_table {
     int mendiane;
     int phiras;
     int thystame;
-};
+} t_inc_tbl;
 
 
 //Validate

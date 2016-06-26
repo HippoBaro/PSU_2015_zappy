@@ -1,38 +1,49 @@
-//
-// Created by barrauh on 6/26/16.
-//
+/*
+** Seed.c for zappy in /home/pasteu_e/rendu/PSU_2015_zappy/srcs/Map
+**
+** Made by Etienne Pasteur
+** Login   <pasteu_e@epitech.net>
+**
+** Started on  Sun Jun 26 16:41:17 2016 Etienne Pasteur
+** Last update Sun Jun 26 16:43:33 2016 Etienne Pasteur
+*/
 
 #include "Map.h"
 
-static Map  *SeedLoot(Map *self) {
-    long totalItems;
+static Map	*SeedLoot(Map *self)
+{
+  long		totalItems;
 
-    totalItems = 0;
-    self->mapTiles->forEachElements(self->mapTiles, lambda(void, (void *tile, void *data), {
-        if ((bool)randMinMax(0, 1) == true)
-            ((MapTile *)tile)->SeedLoot(tile);
-        totalItems += ((MapTile *)tile)->CountRessources(tile);
-    }), NULL);
-    Log(INFORMATION, "The map was successfully populated with %ld items", totalItems);
-
-    return self;
+  totalItems = 0;
+  self->mapTiles->forEachElements(self->mapTiles,
+				  lambda(void, (void *tile, void *data), {
+				      if ((bool)randMinMax(0, 1) == true)
+					((MapTile *)tile)->SeedLoot(tile);
+				      totalItems += ((MapTile *)tile)->CountRessources(tile);
+				    }), NULL);
+  Log(INFORMATION, "The map was successfully populated with %ld items",
+      totalItems);
+  return (self);
 }
 
-void    InitMapSeed(Map *world) {
-    int i;
-    int x;
-    int y;
+void		InitMapSeed(Map *wrd)
+{
+  int		i;
+  int		x;
+  int		y;
 
-    i = x = y = 0;
-    world->SeedLoot = &SeedLoot;
-    while (i != world->X * world->Y) {
-        world->mapTiles->addElemEnd(world->mapTiles, CreateMapTile(world, x, y));
-        ++i;
-        ++x;
-        if (x >= world->X) {
-            x = 0;
-            ++y;
-        }
+  i = x = y = 0;
+  wrd->SeedLoot = &SeedLoot;
+  while (i != wrd->X * wrd->Y)
+    {
+      wrd->mapTiles->addElemEnd(wrd->mapTiles, CreateMapTile(wrd, x, y));
+      ++i;
+      ++x;
+      if (x >= wrd->X)
+	{
+	  x = 0;
+	  ++y;
+	}
     }
-    world->SeedLoot(world);
+  wrd->SeedLoot(wrd);
 }

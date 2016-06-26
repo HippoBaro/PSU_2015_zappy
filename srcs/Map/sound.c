@@ -1,11 +1,11 @@
 /*
-** sound.c for Zappy in /home/diacon_c/Documents/repository/PSU_2015_zappy/unit-tests
+** sound.c for Zappy in /home/diacon_c/PSU_2015_zappy/unit-tests
 **
 ** Made by Christian Diaconu
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 19 16:21:45 2016 Christian Diaconu
-** Last update Mon Jun 20 21:52:36 2016 Christian Diaconu
+** Last update Sun Jun 26 16:44:35 2016 Etienne Pasteur
 */
 
 #include "Map.h"

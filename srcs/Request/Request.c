@@ -1,20 +1,29 @@
-//
-// Created by barrauh on 6/11/16.
-//
+/*
+** Request.c for zap in /home/pasteu_e/rendu/PSU_2015_zappy/srcs/Request
+**
+** Made by Etienne Pasteur
+** Login   <pasteu_e@epitech.net>
+**
+** Started on  Sun Jun 26 17:06:27 2016 Etienne Pasteur
+** Last update Sun Jun 26 17:09:44 2016 Etienne Pasteur
+*/
 
-#include <ZappyServer.h>
+#include "ZappyServer.h"
 
-static uint64_t GetCompletionTime(Request *self, ZappyServer *server) {
-    double delayAsSeconds;
-    uint64_t ret;
+static uint64_t	GetCompletionTime(Request *self, ZappyServer *server)
+{
+    double	dlyAsSec;
+    uint64_t	ret;
 
-    delayAsSeconds = (double)self->absoluteActionTime * server->configuration->temporalDelay;
-    Log(INFORMATION, "Request time is %lu", delayAsSeconds * 1000000);
-    ret = (uint64_t) (delayAsSeconds * 1000000);
-    return ret;
+    dlyAsSec = (double)self->absoluteActionTime *
+      server->configuration->temporalDelay;
+    Log(INFORMATION, "Request time is %lu", dlyAsSec * 1000000);
+    ret = (uint64_t) (dlyAsSec * 1000000);
+    return (ret);
 }
 
-void    DestroyRequest(Request *request) {
+void		DestroyRequest(Request *request)
+{
     if (request->message != NULL)
         xfree(request->message, strlen(request->message) + 1);
     if (request->actionSubject != NULL)
@@ -23,8 +32,9 @@ void    DestroyRequest(Request *request) {
     xfree(request, sizeof(Request));
 }
 
-Request *CreateRequest(string message, int socketFd) {
-    Request *ret;
+Request		*CreateRequest(string message, int socketFd)
+{
+    Request	*ret;
 
     ret = xmalloc(sizeof(Request));
     ret->type = UNKNOWN_REQUESTTYPE;
@@ -38,5 +48,5 @@ Request *CreateRequest(string message, int socketFd) {
     ret->GetCompletionTime = &GetCompletionTime;
     ret->Free = &DestroyRequest;
     InitRequestTransaction(ret);
-    return ret;
+    return (ret);
 }
