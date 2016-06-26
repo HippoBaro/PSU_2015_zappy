@@ -32,6 +32,7 @@ typedef struct              s_ZappyServer {
     struct s_ZappyServer    *(*Configure)(struct s_ZappyServer *self, Configuration *config);
     Team                    *(*GetTeamFromTeamName)(struct s_ZappyServer *self, string teamName);
     struct s_ZappyServer    *(*Start)(struct s_ZappyServer *self);
+    struct s_ZappyServer    *(*UpdateState)(struct s_ZappyServer *self);
     struct s_ZappyServer    *(*ShutDown)(struct s_ZappyServer *self);
     Drone                   *(*GetAssociatedDrone)(Request *self, Map *map);
     void                    (*ExistingClient)(struct s_ZappyServer *self, Request *request);

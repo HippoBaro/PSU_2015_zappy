@@ -14,12 +14,32 @@ void            DestroyTeam(Team *self)
 {
   if (self->teamName != NULL)
     xfree(self->teamName, strlen(self->teamName));
+  self->nextslots->freeAll(self->nextslots, lambda(void, (void *dat), {
+    xfree(dat, sizeof(uint64_t));
+  }));
+  self->nextslots->Free(self->nextslots);
   xfree(self, sizeof(Team));
 }
 
-static int      GetAvailableSlots(Team *self)
+static Team            *UpdateTeam(Team *self)
 {
-  return (self->maxSlot - self->currentUsedSlot);
+  uint64_t timeNow;
+  t_list *elem;
+
+  timeNow = GetTimeNowAsUSec();
+  while (true)
+  {
+    elem = FirstPred(self->nextslots, next, {
+      return (timeNow >= *((uint64_t *)next));
+    });
+    if (elem == NULL)
+      break;
+    self->maxSlot++;
+    self->nextslots->freeThisElem(self->nextslots, lambda(void, (void *elm), {
+      xfree(elm, sizeof(uint64_t));
+    }), elem);
+  }
+  return self;
 }
 
 static bool     CanAddNewDrone(Team *self)
@@ -27,6 +47,15 @@ static bool     CanAddNewDrone(Team *self)
   if (self->currentUsedSlot < self->maxSlot)
     return (true);
   return (false);
+}
+
+static Team     *ScheduleAddSlot(Team *self, double temporalDelay)
+{
+  uint64_t next;
+
+  next = (uint64_t) (GetTimeNowAsUSec() + SecToUSec(300 * temporalDelay));
+  self->nextslots->addElemFront(self->nextslots, atomicdup(uint64_t, next));
+  return self;
 }
 
 Team            *CreateTeamFrom(string name, int maxSlot)
@@ -37,8 +66,13 @@ Team            *CreateTeamFrom(string name, int maxSlot)
   ret->teamName = strdup(name);
   ret->currentUsedSlot = 0;
   ret->maxSlot = maxSlot;
+  ret->nextslots = CreateLinkedList();
   ret->CanAddNewDrone = &CanAddNewDrone;
-  ret->GetAvailableSlots = &GetAvailableSlots;
+  ret->GetAvailableSlots = lambda(int, (Team *self), {
+    return (self->maxSlot - self->currentUsedSlot);
+  });
+  ret->ScheduleAddSlot = &ScheduleAddSlot;
+  ret->UpdateTeam = &UpdateTeam;
   ret->Free = &DestroyTeam;
   return (ret);
 }

@@ -5,7 +5,19 @@
 #include "Drone.h"
 #include "ZappyServer.h"
 
-static ZappyServer *StartInternal(ZappyServer *server) {
+static ZappyServer *UpdateState(ZappyServer *self)
+{
+    ForEach(self->world->drones, drone, {
+        ((Drone *)drone)->UpdateLifeTime(drone);
+    });
+    ForEach(self->teams, team, {
+        ((Team *)team)->UpdateTeam(team);
+    });
+    return self;
+}
+
+static ZappyServer *StartInternal(ZappyServer *server)
+{
     Request *request;
 
     server->network = CreateNetwork(SERVER, (uint16_t) server->configuration->port, NULL);
@@ -15,9 +27,7 @@ static ZappyServer *StartInternal(ZappyServer *server) {
         if (feof(stdin))
             break;
         request = server->network->Receive(server->network, server->nextTimeout = server->GetNextRequestDelay(server));
-        ForEach(server->world->drones, drone, {
-            ((Drone *)drone)->UpdateLifeTime(drone);
-        });
+        server->UpdateState(server);
         if (request != NULL)
         {
             request->Sanitize(request);
@@ -31,7 +41,8 @@ static ZappyServer *StartInternal(ZappyServer *server) {
     return server->ShutDown(server);
 }
 
-static ZappyServer *Start(ZappyServer *server) {
+static ZappyServer *Start(ZappyServer *server)
+{
     int i;
 
     i = 1;
@@ -51,4 +62,5 @@ static ZappyServer *Start(ZappyServer *server) {
 void InitZappyServerLifeCycle(ZappyServer *server)
 {
     server->Start = &Start;
+    server->UpdateState = &UpdateState;
 }

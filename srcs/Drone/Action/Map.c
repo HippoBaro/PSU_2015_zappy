@@ -44,12 +44,6 @@ Response		*Expulse(Drone *self, Request *request)
   return (CreateResponseFromFdWithMessage(self->socketFd, strdup("ok")));
 }
 
-Response		*Fork(Drone *self, Request *request)
-{
-  self->team->maxSlot++;
-  return (NULL);
-}
-
 Response		*Die(Drone *s, Request *request)
 {
   LinkedList(Drones)	*drs;
