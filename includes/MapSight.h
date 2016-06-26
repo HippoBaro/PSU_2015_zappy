@@ -1,27 +1,21 @@
-//
-// Created by diacon_c on 15/06/16.
-//
-
-#ifndef PSU_2015_ZAPPY_MAPSIGHT_H
-#define PSU_2015_ZAPPY_MAPSIGHT_H
-
-#include "Map.h"
-
-/* CAUTION !
+/*
+** MapSight.h for zap in /home/pasteu_e/rendu/PSU_2015_zappy/includes
 **
-** Those functions do not take in consideration the actual rotation of the player.
-** There all based on the map it-self :
+** Made by Etienne Pasteur
+** Login   <pasteu_e@epitech.net>
 **
-**				 TOP
-**	LEFT		  X			RIGHT
-**				BOTTOM
-**
-** --> [ONLY PURE MATHS]
+** Started on  Mon Jun 27 00:08:48 2016 Etienne Pasteur
+** Last update Mon Jun 27 00:09:07 2016 Etienne Pasteur
 */
 
-MapTile            *Math_GetTopTile(Map *world, MapTile *tile);
-MapTile            *Math_GetBottomTile(Map *world, MapTile *tile);
-MapTile            *Math_GetLeftTile(Map *world, MapTile *tile);
-MapTile            *Math_GetRightTile(Map *world, MapTile *tile);
+#ifndef PSU_2015_ZAPPY_MAPSIGHT_H
+# define PSU_2015_ZAPPY_MAPSIGHT_H
+
+# include "Map.h"
+
+MapTile	*Math_GetTopTile(Map *world, MapTile *tile);
+MapTile	*Math_GetBottomTile(Map *world, MapTile *tile);
+MapTile	*Math_GetLeftTile(Map *world, MapTile *tile);
+MapTile	*Math_GetRightTile(Map *world, MapTile *tile);
 
 #endif //PSU_2015_ZAPPY_MAPSIGHT_H
