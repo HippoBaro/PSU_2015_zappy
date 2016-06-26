@@ -35,20 +35,6 @@ static Drone *CommitRequest(Drone *drone, Request *request) {
     return drone;
 }
 
-static void ExecuteCurrentPendingRequest(Drone *drone) {
-    Response *response;
-
-    if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
-        Log(WARNING, "Executing action on drone %d. Action number is : %d. Suject is : %s", drone->socketFd, drone->currentPendingRequest->requestedAction, drone->currentPendingRequest->actionSubject);
-        response = drone->currentPendingRequest->Execute(drone->currentPendingRequest, drone);
-        if (response != NULL)
-            response->Send(response);
-        drone->currentPendingRequest->Free(drone->currentPendingRequest);
-        drone->currentPendingRequest = NULL;
-        drone->ExecutePendingRequest(drone);
-    }
-}
-
 static Drone *ExecutePendingRequest(Drone *drone) {
     t_list *elem;
 
@@ -92,5 +78,16 @@ void InitDroneRequest(Drone *selfDrone) {
     selfDrone->UpdateLifeTime = &UpdateLifeTime;
     selfDrone->CommitRequest = &CommitRequest;
     selfDrone->ExecutePendingRequest = &ExecutePendingRequest;
-    selfDrone->ExecuteCurrentPendingRequest = &ExecuteCurrentPendingRequest;
+    selfDrone->ExecuteCurrentPendingRequest = lambda(void, (Drone *drone), {
+        Response *response;
+
+        if (drone->currentPendingRequest->timer->isElapsed(drone->currentPendingRequest->timer)) {
+            response = drone->currentPendingRequest->Execute(drone->currentPendingRequest, drone);
+            if (response != NULL)
+                response->Send(response);
+            drone->currentPendingRequest->Free(drone->currentPendingRequest);
+            drone->currentPendingRequest = NULL;
+            drone->ExecutePendingRequest(drone);
+        }
+    });
 }

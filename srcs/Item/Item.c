@@ -4,31 +4,6 @@
 
 #include "Item.h"
 
-static const struct s_item_string toStringItem[] =
-{
-        { LINEMATE, "linemate" },
-        { DERAUMERE, "deraumere" },
-        { SIBUR, "sibur" },
-        { MENDIANE, "mendiane" },
-        { PHIRAS, "phiras" },
-        { THYSTAME, "thystame" },
-        { NOURRITURE, "nourriture" }
-};
-
-static string ToString(Item *item) {
-    int  	i;
-
-    i = 0;
-    while (i < 7)
-    {
-        if (toStringItem[i].type == item->type)
-            return toStringItem[i].str;
-        ++i;
-    }
-    Log(ERROR, "Called ToString on unknown item type.");
-    return "";
-}
-
 ItemType ItemFromString(string item) {
     int  	i;
 
@@ -66,7 +41,19 @@ Item        *CreateItemFrom(ItemType type) {
     ret = xmalloc(sizeof(Item));
     ret->type = type;
     ret->quantity = 1;
-    ret->ToString = &ToString;
+    ret->ToString = lambda(string, (Item *item), {
+        int  	i;
+
+        i = 0;
+        while (i < 7)
+        {
+            if (toStringItem[i].type == item->type)
+                return toStringItem[i].str;
+            ++i;
+        }
+        Log(ERROR, "Called ToString on unknown item type.");
+        return "";
+    });
     ret->Free = &DestroyItem;
     return ret;
 }

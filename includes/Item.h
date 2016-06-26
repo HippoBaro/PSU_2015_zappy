@@ -25,4 +25,15 @@ Item        *CreateItemWithQuantity(ItemType type, int quantity);
 Item        *CreateRandomItem();
 ItemType    ItemFromString(string item);
 
+static const struct s_item_string toStringItem[] =
+{
+    { LINEMATE, "linemate" },
+    { DERAUMERE, "deraumere" },
+    { SIBUR, "sibur" },
+    { MENDIANE, "mendiane" },
+    { PHIRAS, "phiras" },
+    { THYSTAME, "thystame" },
+    { NOURRITURE, "nourriture" }
+};
+
 #endif //PSU_2015_ZAPPY_ITEM_H

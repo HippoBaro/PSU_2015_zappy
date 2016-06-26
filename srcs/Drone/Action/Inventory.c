@@ -46,13 +46,15 @@ Response *Drop (struct s_Drone *self, Request *request) {
     return CreateResponseFromFdWithMessage(self->socketFd, strdup("ok"));
 }
 
-void DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool destroyItem) {
+void DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool destroyItem)
+{
     t_list *elem;
 
     elem = self->inventory->firstElementFromPredicate(self->inventory, lambda(bool, (void *itemPred, void *dat), {
         return (bool)(((Item *)itemPred)->type == itemType);
     }), NULL);
-    if (elem != NULL && elem->data != NULL && quantity > 0) {
+    if (elem != NULL && elem->data != NULL && quantity > 0)
+    {
         if (((Item *)elem->data)->quantity == 1)
         {
             self->inventory->removeThisElem(self->inventory, elem);
@@ -61,7 +63,8 @@ void DropInternal(struct s_Drone *self, ItemType itemType, int quantity, bool de
             else
                 self->inventory->freeThisElem(self->inventory, (void (*)(void *)) &DestroyItem, elem);
         }
-        else {
+        else
+        {
             ((Item *) elem->data)->quantity--;
             if (!destroyItem)
                 self->mapTile->AddRessource(self->mapTile, CreateItemFrom(((Item *) elem->data)->type));

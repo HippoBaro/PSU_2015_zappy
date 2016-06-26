@@ -36,7 +36,8 @@ typedef struct	        s_map
     void                (*Free)(struct s_map *map);
 }		                Map;
 
-
+void    InitMapSeed(Map *world);
+void    InitMapDrone(Map *world);
 Map     *CreateMap(ZappyServer *server, int width, int height);
 void    DestroyMap(Map *map);
 

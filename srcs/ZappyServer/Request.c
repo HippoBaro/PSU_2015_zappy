@@ -1,0 +1,56 @@
+//
+// Created by barrauh on 6/26/16.
+//
+
+#include "Drone.h"
+#include "ZappyServer.h"
+
+static uint64_t GetNextRequestDelayAsUSec(ZappyServer *server)
+{
+    uint64_t next;
+    uint64_t droneT;
+
+    next = UINT64_MAX;
+    if (server->nextTimeout != NULL)
+        xfree(server->nextTimeout, sizeof(struct timeval));
+    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
+        if (((Drone *)drone)->currentPendingRequest != NULL && ((Drone *)drone)->currentPendingRequest->timer->target < next)
+            next = ((Drone *)drone)->currentPendingRequest->timer->target;
+        if (((Drone *)drone)->status == READY) {
+            droneT = ((Drone *) drone)->scheduledDeath;
+            if (droneT > 0 && droneT < next)
+                next = droneT;
+        }
+    }), NULL);
+    return next;
+}
+
+static struct timeval *GetNextRequestDelay(ZappyServer *server) {
+    struct timeval nextTimeval;
+    struct timeval current;
+    struct timeval *ret;
+    uint64_t next;
+
+    next = GetNextRequestDelayAsUSec(server);
+    if (next == UINT64_MAX)
+        return NULL;
+    next += 100;
+    ret = xmalloc(sizeof(struct timeval));
+    nextTimeval.tv_sec = next / 1000000;
+    nextTimeval.tv_usec = next % 1000000;
+    gettimeofday(&current, NULL);
+    timersub(&nextTimeval, &current, ret);
+    return ret;
+}
+
+static void ExecuteRequests(ZappyServer *server) {
+    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
+        ((Drone *)drone)->ExecutePendingRequest(drone);
+    }), NULL);
+}
+
+void InitZappyServerRequest(ZappyServer *server)
+{
+    server->ExecuteRequests = &ExecuteRequests;
+    server->GetNextRequestDelay = &GetNextRequestDelay;
+}

@@ -112,9 +112,11 @@ typedef enum e_Rotation {
 
 void Log(LogLevel level, const string log, ...);
 void *xmalloc(size_t size);
+void *xcalloc(size_t nelem, size_t elsize);
 void xfree(void *ptr, size_t size);
 string strappend(string dest, string source, Selection freeOption);
 int asymetricRandMinMax (int rolls, int min, int max);
+string vasprintf(const char *fmt, va_list ap);
 string asprintf(const char *fmt, ...);
 uint64_t GetTimeNowAsUSec();
 

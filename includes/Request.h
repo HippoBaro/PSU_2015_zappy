@@ -36,12 +36,15 @@ struct s_request_invoke {
 
 struct s_command_string {
     string	        str;
-    void		    (*doAction)(Request *);
+    Action          action;
+    string          staticSubject;
+    bool            setSubject;
     int             absoluteTime;
 };
 
 Request *CreateRequest(string message, int socketFd);
 Request *ParseRequest(Request *request);
 void    DestroyRequest(Request *request);
+void InitRequestTransaction(Request *request);
 
 #endif //PSU_2015_ZAPPY_REQUEST_H
