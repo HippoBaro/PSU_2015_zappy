@@ -86,6 +86,7 @@ MapTile	    *CreateMapTile(Map *map, int X, int Y)
     tile->AddDrone = &add_refplayer;
     tile->CountDrones = &count_players;
     tile->CountRessources = &count_ressources;
+    tile->CountRessource = &countRessource;
     tile->AddRessource = &add_ressource;
     tile->GetRessource = &get_ressource;
     tile->DroneExist = &is_refplayer;

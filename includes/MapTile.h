@@ -56,6 +56,7 @@ typedef struct		s_maptile
     bool		    (*AddRessource)(struct s_maptile *tile, Item *item);
     Item	        *(*GetRessource)(struct s_maptile *tile, ItemType type);
     int		        (*CountRessources)(struct s_maptile *tile);
+    int		        (*CountRessource)(struct s_maptile *tile, ItemType type);
     struct s_maptile *(*SeedLoot)( struct s_maptile *self);
     string		    (*ListContent)(struct s_maptile *tile);
 
@@ -77,6 +78,7 @@ int		    count_players(struct s_maptile *tile);
 bool		add_ressource(MapTile *tile, Item *item);
 Item	    *get_ressource(MapTile *tile, ItemType type);
 int		    count_ressources(struct s_maptile *tile);
+int		    countRessource(MapTile *tile, ItemType type);
 void		free_maptile(struct s_maptile *map);
 
 /* FX Ptr - Tile Geographics tools */

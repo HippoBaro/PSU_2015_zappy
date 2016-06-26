@@ -42,3 +42,15 @@ int		count_ressources(MapTile *tile)
 {
   return (tile->ressources->countLinkedList(tile->ressources));
 }
+
+int		countRessource(MapTile *tile, ItemType type)
+{
+    int ret;
+
+    ret = 0;
+    tile->ressources->forEachElements(tile->ressources, lambda(void, (void *res, void *dat), {
+        if (((Item *)res)->type == type)
+            res += ((Item *)res)->quantity;
+    }), NULL);
+    return ret;
+}
