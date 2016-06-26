@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 19 16:21:45 2016 Christian Diaconu
-** Last update Sun Jun 26 19:49:59 2016 Christian Diaconu
+** Last update Sun Jun 26 20:24:24 2016 Christian Diaconu
 */
 
 #include "Map.h"
@@ -99,7 +99,8 @@ void		sound_compile_results(Sound *metrics)
     }
 }
 
-MapTile			*evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
+MapTile			*evaluate_sound_path(Drone *emitter,
+					     Drone *receiver, Map *world)
 {
   Sound			sound;
 
