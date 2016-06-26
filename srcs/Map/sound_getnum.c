@@ -1,13 +1,20 @@
-//
-// Created by diacon_c on 25/06/16.
-//
+/*
+** sound_getnum.c for Zappy in /home/diacon_c/Documents/new/PSU_2015_zappy/srcs/Map
+**
+** Made by Christian Diaconu
+** Login   <diacon_c@epitech.net>
+**
+** Started on  Sun Jun 26 19:59:22 2016 Christian Diaconu
+** Last update Sun Jun 26 19:59:29 2016 Christian Diaconu
+*/
 
 #include "Map.h"
 #include "Drone.h"
 #include "Sound.h"
 #include "MapSight.h"
 
-int GetTileNumberForDrone(MapTile *targeted_tile, Drone *receiver, Map *world)
+int		GetTileNumberForDrone(MapTile *targeted_tile,
+				      Drone *receiver, Map *world)
 {
   Drone     *ghost;
   int       i;
