@@ -44,15 +44,23 @@ int main(int ac, char **av) {
 
 #else
 
-int main(int ac, char **av) {
-    ZappyServer *server = CreateZappyServer();
+int     main()
+{
+  Team    *team = CreateTeamFrom("hello", 5);
+  Map     *world = CreateMap(NULL, 10, 10);
+  Drone   *drone1 = CreateDrone(team);
+  Drone   *drone2 = CreateDrone(team);
+  MapTile *tile;
 
-    server->Configure(server, server->configuration
-                    ->ParseFrom(server->configuration, ac, av)
-                    ->Validate(server->configuration))
-            ->Start(server)
-            ->Free(server);
-    return EXIT_SUCCESS;
+  world->AddDrone(world->GetTile(world, 4, 2), drone1);
+  world->AddDrone(world->GetTile(world, 3, 7), drone2);
+
+  /*world->AddDrone(world->GetTile(world, 1, 1), drone1);
+  world->AddDrone(world->GetTile(world, 8, 8), drone2);*/ //OK
+
+  tile = world->GetTileReceivingSound(drone1, drone2, world);
+  printf("Tile receving sound : %ix%i\n", tile->X, tile->Y);
+  return  (0);
 }
 
 #endif

@@ -147,7 +147,7 @@ MapTile	    *evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
   sound_vector_compute_1(emitter, receiver, &sound, world);
   sound_vector_compute_2(emitter, receiver, &sound, world);
 
- /*
+
   printf("[Drone 1] X@%i || Y@%i\n", emitter->mapTile->X, emitter->mapTile->Y);
   printf("[Drone 2] X@%i || Y@%i\n", receiver->mapTile->X, receiver->mapTile->Y);
   printf("[AXE -> X]  --> No Circular mode will take [%i] steps && Circular mode will take [%i] steps\n", sound.res_nocircular_x, sound.res_circular_x);
@@ -176,7 +176,8 @@ MapTile	    *evaluate_sound_path(Drone *emitter, Drone *receiver, Map *world)
     printf(" ---> [Y] path finding conclude going BOTTOM\n");
   if (sound.y_direction == GO_LEFT)
     printf(" ---> [Y] path finding conclude going LEFT\n");
-*/
 
+  if (sound.X + sound.Y == 1 || sound.X + sound.Y == 2)
+    return (emitter->mapTile);
   return (sound_get_targed_tile(receiver, world, &sound));
 }
