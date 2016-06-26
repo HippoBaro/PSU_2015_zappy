@@ -53,6 +53,17 @@ typedef struct s_Drone {
 
 }               Drone;
 
+struct s_incant_table {
+    int requestedLevel;
+    int minimumDrones;
+    int linemate;
+    int deraumere;
+    int sibur;
+    int mendiane;
+    int phiras;
+    int thystame;
+};
+
 
 //Validate
 Response    *CanIncant(struct s_Drone *self, Request *request);
