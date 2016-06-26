@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 13:47:27 2016 Etienne Pasteur
-** Last update Sun Jun 26 15:03:21 2016 Etienne Pasteur
+** Last update Sun Jun 26 23:29:06 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
@@ -18,14 +18,13 @@ Response	*ListInventory(struct s_Drone *self, Request *request)
   rt = NULL;
   isFirst = true;
   if (self->inventory->countLinkedList(self->inventory) > 0)
-      ForEach(self->inventory, param, {
-					 Item *item = (Item *) param;
-					 if (!isFirst)
-					   rt = strappend(rt, ", ", FIRST);
-					 rt = strappend(rt, item->ToString(item), FIRST);
-					 rt = strappend(rt, asprintf(" %d", item->quantity), BOTH);
-					 isFirst = false;
-				       });
+    ForEach(self->inventory, param, { Item *item = (Item *) param;
+	if (!isFirst)
+	  rt = strappend(rt, ", ", FIRST);
+	rt = strappend(rt, item->ToString(item), FIRST);
+	rt = strappend(rt, asprintf(" %d", item->quantity), BOTH);
+	isFirst = false;
+      });
   rt = strappend(rt, "}", FIRST);
   rt = strappend("{", rt, SECOND);
   return (CreateResponseFromFdWithMessage(self->socketFd, rt));
@@ -41,9 +40,9 @@ Response	*Take(struct s_Drone *self, Request *request)
   if (item == NULL)
     return CreateKoResponseFrom(request);
   elem = FirstPred(self->inventory, itemPred, {
-							return (bool)(((Item *)itemPred)->type ==
-								      ItemFromString(request->actionSubject));
-						      });
+      return (bool)(((Item *)itemPred)->type ==
+		    ItemFromString(request->actionSubject));
+    });
   if (elem != NULL && elem->data != NULL)
     ((Item *)elem->data)->quantity++;
   else
@@ -59,33 +58,33 @@ Response	*Drop (struct s_Drone *self, Request *request)
 }
 
 void		DropInternal(struct s_Drone *self, ItemType itemType,
-                         int quantity, bool destroyItem)
+			     int quantity, bool destroyItem)
 {
-    t_list	*elem;
+  t_list	*elem;
 
-    elem = FirstPred(self->inventory, itemPred, {
-        return (bool)(((Item *)itemPred)->type == itemType);
+  elem = FirstPred(self->inventory, itemPred, {
+      return (bool)(((Item *)itemPred)->type == itemType);
     });
-    if (elem != NULL && elem->data != NULL && quantity > 0)
+  if (elem != NULL && elem->data != NULL && quantity > 0)
     {
-        if (((Item *)elem->data)->quantity == 1)
+      if (((Item *)elem->data)->quantity == 1)
         {
-            if (!destroyItem)
+	  if (!destroyItem)
             {
-                self->mapTile->AddRessource(self->mapTile, elem->data);
-                self->inventory->removeThisElem(self->inventory, elem);
+	      self->mapTile->AddRessource(self->mapTile, elem->data);
+	      self->inventory->removeThisElem(self->inventory, elem);
             }
-            else
-                self->inventory->freeThisElem(self->inventory,
-                                              (void (*)(void *)) &DestroyItem, elem);
+	  else
+	    self->inventory->freeThisElem(self->inventory,
+					  (void (*)(void *)) &DestroyItem, elem);
         }
-        else
+      else
         {
-            ((Item *) elem->data)->quantity--;
-            if (!destroyItem)
-                self->mapTile->AddRessource(self->mapTile,
-                                            CreateItemFrom(((Item *) elem->data)->type));
-            self->DropInternal(self, itemType, --quantity, destroyItem);
+	  ((Item *) elem->data)->quantity--;
+	  if (!destroyItem)
+	    self->mapTile->AddRessource(self->mapTile,
+					CreateItemFrom(((Item *) elem->data)->type));
+	  self->DropInternal(self, itemType, --quantity, destroyItem);
         }
     }
 }

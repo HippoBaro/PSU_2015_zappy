@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 15:26:32 2016 Christian Diaconu
-** Last update Sun Jun 12 23:04:09 2016 Christian Diaconu
+** Last update Sun Jun 26 23:20:48 2016 Christian Diaconu
 */
 
 #include "MapTile.h"
@@ -33,7 +33,8 @@ bool remove_refplayer(MapTile *tile, Drone *player) {
         return (bool) ((element) == (player));
     });
     if (elem != NULL)
-        return (bool) (tile->drones->removeThisElem(tile->drones, elem) == true);
+        return (bool) (tile->drones->removeThisElem(tile->drones,
+						    elem) == true);
     return (false);
 }
 
