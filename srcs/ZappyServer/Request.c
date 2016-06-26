@@ -14,7 +14,8 @@ static uint64_t GetNextRequestDelayAsUSec(ZappyServer *server)
     if (server->nextTimeout != NULL)
         xfree(server->nextTimeout, sizeof(struct timeval));
     ForEach(server->world->drones, drone, {
-        if (((Drone *)drone)->currentPendingRequest != NULL && ((Drone *)drone)->currentPendingRequest->timer->target < next)
+        if (((Drone *)drone)->currentPendingRequest != NULL
+            && ((Drone *)drone)->currentPendingRequest->timer->target < next)
             next = ((Drone *)drone)->currentPendingRequest->timer->target;
         if (((Drone *)drone)->status == READY) {
             droneT = ((Drone *) drone)->scheduledDeath;

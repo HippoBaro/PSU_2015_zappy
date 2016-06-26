@@ -13,9 +13,11 @@
 
 Response	*GetTeamSlot(struct s_Drone *self, Request *request)
 {
-  return (CreateResponseFromFdWithMessage(
-					  self->socketFd,
-					  asprintf("%d",self->team->maxSlot - self->team->currentUsedSlot)));
+  string responseString;
+
+  responseString = asprintf("%d", self->team->maxSlot
+                                  - self->team->currentUsedSlot);
+  return (CreateResponseFromFdWithMessage(self->socketFd, responseString);
 }
 
 Response	*Broadcast(Drone *self, Request *request)
@@ -24,16 +26,20 @@ Response	*Broadcast(Drone *self, Request *request)
   MapTile	*tile;
   Response	*response;
   int		tileNumber;
+  string    resStr;
 
   tile = NULL;
   ForEach(self->mapTile->map->drones, drone, {
     target = drone;
     if (drone == self)
       return;
-    tile = target->mapTile->map->GetTileReceivingSound(self, target, self->mapTile->map);
+    tile = target->mapTile->map->
+            GetTileReceivingSound(self, target, self->mapTile->map);
     Log(INFORMATION, "Receiving tile coords are : %d,%d", tile->X, tile->Y);
-    tileNumber = target->mapTile->map->GetTileNumberForDrone(tile, target, target->mapTile->map);
-    response = CreateResponseFromFdWithMessage(target->socketFd, asprintf("message %d,%s", tileNumber, request->actionSubject));
+    tileNumber = target->mapTile->map->
+            GetTileNumberForDrone(tile, target, target->mapTile->map);
+    resStr = asprintf("message %d,%s", tileNumber, request->actionSubject);
+    response = CreateResponseFromFdWithMessage(target->socketFd, resStr);
     response->Send(response);
       });
   return (CreateResponseFromFdWithMessage(self->socketFd, strdup("ok")));
@@ -41,6 +47,7 @@ Response	*Broadcast(Drone *self, Request *request)
 
 Response		*Fork(Drone *self, Request *request)
 {
-  self->team->ScheduleAddSlot(self->team, self->mapTile->map->server->configuration->temporalDelay);
+  self->team->ScheduleAddSlot(self->team, self->mapTile->map->server->
+          configuration->temporalDelay);
   return (CreateResponseFromFdWithMessage(self->socketFd, strdup("ok")));
 }

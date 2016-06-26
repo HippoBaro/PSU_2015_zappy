@@ -6,12 +6,13 @@
 #include "ZappyServer.h"
 
 static ZappyServer *Configure(ZappyServer *self, Configuration *config) {
-    if (self->status == SHUTDOWN)
-        Log(WARNING, "Configuring a SHUTDOWN server will cause memory leaks. Free the server a recreate one.");
     srand((unsigned int) (config->seed != NULL ? *config->seed : time(NULL)));
     self->world = CreateMap(self, config->worldWidth, config->worldHeight);
     ForEach(config->teamNames, team, {
-        self->teams->addElemFront(self->teams, CreateTeamFrom((string)team, config->initialClientPerTeam));
+        Team *teamD;
+
+        teamD = CreateTeamFrom((string)team, config->initialClientPerTeam);
+        self->teams->addElemFront(self->teams, teamD);
     });
     self->configuration = config;
     self->status = CONFIGURED;
