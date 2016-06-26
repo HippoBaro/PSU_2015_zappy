@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 16:37:15 2016 Etienne Pasteur
-** Last update Sun Jun 26 16:39:52 2016 Etienne Pasteur
+** Last update Sun Jun 26 19:53:09 2016 Christian Diaconu
 */
 
 #include "LinkedList.h"
@@ -36,7 +36,8 @@ static MapTile	*GetRandomTile(Map *self)
 	return (bool) (((MapTile *)tile)->X == x && ((MapTile *)tile)->Y == y);
       });
   if (elem == NULL || elem->data == NULL)
-    Log(ERROR, "Unable to select random MapTile. Response was NULL for coordinates %d, %d", x, y);
+    Log(ERROR, "Unable to select random MapTile. Resulted in NULL at [%dx%d]",
+	x, y);
   return (elem->data);
 }
 
@@ -61,7 +62,8 @@ Map		*CreateMap(ZappyServer *server, int width, int height)
 {
   Map		*world;
 
-  Log(INFORMATION, "Creating map of size %d x %d and populating it with random resources...", width, height);
+  Log(INFORMATION, "Creating map of size %dx%d, adding random resources...",
+      width, height);
   world = xmalloc(sizeof(Map));
   world->X = width;
   world->Y = height;
