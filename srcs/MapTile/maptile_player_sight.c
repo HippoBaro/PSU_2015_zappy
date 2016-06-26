@@ -5,14 +5,12 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Wed Jun 15 20:07:17 2016 Christian Diaconu
-** Last update Sun Jun 26 21:05:09 2016 Christian Diaconu
+** Last update Sun Jun 26 23:21:59 2016 Christian Diaconu
 */
 
 #include "LinkedList.h"
 #include "Drone.h"
 #include "Map.h"
-
-#define DEBUG   false
 
 Drone		*DuplicateDrone(Drone *existing_drone, Map *world)
 {
@@ -27,7 +25,8 @@ Drone		*DuplicateDrone(Drone *existing_drone, Map *world)
   return (fake);
 }
 
-static string	GetRessourcesAsStringOnSightOnLength(Drone *player, Map *world, int row_length)
+static string	GetRessourcesAsStringOnSightOnLength(Drone *player,
+						     Map *world, int row_length)
 {
   string	answer;
   int		i;
@@ -37,7 +36,8 @@ static string	GetRessourcesAsStringOnSightOnLength(Drone *player, Map *world, in
   while (i < (row_length))
     {
       if (i != 0)
-	answer = asprintf("%s,%s", answer, player->mapTile->ListContent(player->mapTile));
+	answer = asprintf("%s,%s", answer,
+			  player->mapTile->ListContent(player->mapTile));
       else
 	answer = asprintf("%s", player->mapTile->ListContent(player->mapTile));
       player->GoRight(player, world);
@@ -45,7 +45,6 @@ static string	GetRessourcesAsStringOnSightOnLength(Drone *player, Map *world, in
     }
   return (answer);
 }
-
 
 static string	GetRessourceOnSightAtLevel(Drone *player, Map *world, int level_n)
 {
@@ -60,7 +59,8 @@ static string	GetRessourceOnSightAtLevel(Drone *player, Map *world, int level_n)
       drone_forked->GoLeft(drone_forked, world);
       i++;
     }
-  function_answer = GetRessourcesAsStringOnSightOnLength(drone_forked, world, (level_n * 2) + 1);
+  function_answer = GetRessourcesAsStringOnSightOnLength(drone_forked,
+							 world, (level_n * 2) + 1);
   xfree(drone_forked, sizeof(Drone));
   return (function_answer);
 }
@@ -79,10 +79,6 @@ string		GetDroneSight(Drone *player, Map *world)
   answer = NULL;
   new_drone->GoTop(new_drone, world);
   answer = asprintf("{%s", new_drone->mapTile->ListContent(new_drone->mapTile));
-  if (player->level == 0) {
-    answer = asprintf("%s}", answer);
-    return (answer);
-  }
   while (i != height)
     {
       new_drone->GoTop(new_drone, world);

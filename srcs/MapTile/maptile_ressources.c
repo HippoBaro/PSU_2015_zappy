@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 15:26:32 2016 Christian Diaconu
-** Last update Sun Jun 26 21:14:09 2016 Christian Diaconu
+** Last update Sun Jun 26 23:21:41 2016 Christian Diaconu
 */
 
 #include "MapTile.h"
@@ -29,7 +29,8 @@ Item			*get_ressource(MapTile *tile, ItemType type)
   t_list		*elem;
   Item			*ret;
 
-  elem = tile->ressources->firstElementFromPredicate(tile->ressources, &sorting_itemtype, (void *) type);
+  elem = tile->ressources->firstElementFromPredicate(tile->ressources,
+						     &sorting_itemtype, (void *) type);
   if (elem != NULL && elem->data != NULL)
     {
       ret = elem->data;

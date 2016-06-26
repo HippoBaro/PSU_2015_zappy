@@ -5,13 +5,13 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 19:14:56 2016 Christian Diaconu
-** Last update Sun Jun 26 22:09:46 2016 Christian Diaconu
+** Last update Sun Jun 26 23:15:20 2016 Christian Diaconu
 */
 
 #include <Map.h>
 #include <Drone.h>
 
-void		free memoryDestroyMapTile(MapTile *mapTile)
+void		DestroyMapTile(MapTile *mapTile)
 {
   mapTile->drones->freeAll(mapTile->drones,
 			   (void (*)(void *)) &DestroyDrone);
@@ -37,46 +37,53 @@ static MapTile	*SeedLoot(MapTile *self)
   return (self);
 }
 
-static string	ListContent(MapTile *self)
+static void	ListContent2(MapTile *self, TempFind *find)
 {
-  string	ressources = NULL;
-  string	drones = NULL;
-  string	ret = NULL;
-  bool		isFirst;
+  Item		*item;
 
-  isFirst = true;
   if (self->ressources->countLinkedList(self->ressources) > 0)
     ForEach(self->ressources, param, {
-	Item *item = (Item *) param;
-	if (!isFirst)
-	  ressources = strappend(ressources, " ", FIRST);
-	ressources = strappend(ressources, item->ToString(item), FIRST);
-	isFirst = false;
+	item = (Item *) param;
+	if (!find->isFirst)
+	  find->ressources = strappend(find->ressources, " ", FIRST);
+	find->ressources = strappend(find->ressources, item->ToString(item), FIRST);
+	find->isFirst = false;
       });
-  isFirst = true;
+  find->isFirst = true;
   if (self->drones->countLinkedList(self->drones) > 0)
     ForEach(self->drones, param, {
-	if (!isFirst)
-	  drones = strappend(drones, " ", FIRST);
-	drones = strappend(drones, "player", FIRST);
-	isFirst = false;
+        if (!find->isFirst)
+	  find->drones = strappend(find->drones, " ", FIRST);
+	find->drones = strappend(find->drones, "player", FIRST);
+	find->isFirst = false;
       });
-  if (ressources == NULL && drones == NULL)
+}
+
+static string	ListContent(MapTile *self)
+{
+  TempFind	find;
+
+  find.ressources = NULL;
+  find.drones = NULL;
+  find.ret = NULL;
+  find.isFirst = true;
+  ListContent2(self, &find);
+  if (find.ressources == NULL && find.drones == NULL)
     return strdup("");
-  else if (ressources == NULL && drones != NULL) {
-    ret = asprintf("%s", drones);
-    xfree(drones, strlen(drones));
+  else if (find.ressources == NULL && find.drones != NULL) {
+    find.ret = asprintf("%s", find.drones);
+    xfree(find.drones, strlen(find.drones));
   }
-  else if (ressources != NULL && drones == NULL) {
-    ret = asprintf("%s", ressources);
-    xfree(ressources, strlen(ressources));
+  else if (find.ressources != NULL && find.drones == NULL) {
+    find.ret = asprintf("%s", find.ressources);
+    xfree(find.ressources, strlen(find.ressources));
   }
-  else if (ressources != NULL && drones != NULL) {
-    ret = asprintf("%s %s", ressources, drones);
-    xfree(ressources, strlen(ressources));
-    xfree(drones, strlen(drones));
+  else if (find.ressources != NULL && find.drones != NULL) {
+    find.ret = asprintf("%s %s", find.ressources, find.drones);
+    xfree(find.ressources, strlen(find.ressources));
+    xfree(find.drones, strlen(find.drones));
   }
-  return ret;
+  return find.ret;
 }
 
 MapTile		*CreateMapTile(Map *map, int X, int Y)

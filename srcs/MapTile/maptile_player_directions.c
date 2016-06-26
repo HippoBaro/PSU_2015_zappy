@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Wed Jun 15 12:12:37 2016 Christian Diaconu
-** Last update Sun Jun 26 20:58:14 2016 Christian Diaconu
+** Last update Sun Jun 26 23:16:33 2016 Christian Diaconu
 */
 
 #include "MapSight.h"
@@ -18,7 +18,8 @@
 **
 ** Do not attempt to modify this file, it normally just works fine.
 ** In any doubt of a bug, please contact the maintainer of this file.
-** Black magic is only recommended for advised people and required must of the time ink & paper.
+** Black magic is only recommended for advised people and required
+** must of the time ink & paper.
 */
 
 MapTile		*GetTopTile(Drone *this_drone, Map *map)

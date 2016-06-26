@@ -17,7 +17,7 @@ Response	*GetTeamSlot(struct s_Drone *self, Request *request)
 
   responseString = asprintf("%d", self->team->maxSlot
                                   - self->team->currentUsedSlot);
-  return (CreateResponseFromFdWithMessage(self->socketFd, responseString);
+  return (CreateResponseFromFdWithMessage(self->socketFd, responseString));
 }
 
 Response	*Broadcast(Drone *self, Request *request)

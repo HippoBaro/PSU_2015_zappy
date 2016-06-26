@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 14:48:54 2016 Christian Diaconu
-** Last update Tue Jun 14 14:45:12 2016 Christian Diaconu
+** Last update Sun Jun 26 22:26:52 2016 Christian Diaconu
 */
 
 /*	Map Scheme
@@ -30,6 +30,14 @@
 
 typedef struct	    s_map Map;
 typedef struct      s_Drone Drone;
+
+typedef struct		s_tempfind
+{
+  string		ressources;
+  string		drones;
+  string		ret;
+  bool			isFirst;
+}			TempFind;
 
 typedef struct		s_maptile
 {
