@@ -20,13 +20,15 @@ static ZappyServer *StartInternal(ZappyServer *server)
 {
     Request *request;
 
-    server->network = CreateNetwork(SERVER, (uint16_t) server->configuration->port, NULL);
+    server->network = CreateNetwork(SERVER, (uint16_t)
+            server->configuration->port, NULL);
     server->status = STARTED;
     Log(SUCCESS, "Zappy server started.");
     while (true) {
         if (feof(stdin))
             break;
-        request = server->network->Receive(server->network, server->nextTimeout = server->GetNextRequestDelay(server));
+        request = server->network->Receive(server->network, server->nextTimeout
+                = server->GetNextRequestDelay(server));
         server->UpdateState(server);
         if (request != NULL)
         {
@@ -49,7 +51,8 @@ static ZappyServer *Start(ZappyServer *server)
     while (i <= 31) {
         if (i != SIGKILL && i != SIGSTOP)
             signal(i, lambda(void, (int sig), {
-                Log(WARNING, "Received signal. Interrupting server. Signal was : %s (SIG = %d)", strsignal(sig), sig);
+                Log(WARNING, "Received signal. Interrupting server. "
+                        "Signal was : %s (SIG = %d)", strsignal(sig), sig);
                 server->ShutDown(server);
                 server->Free(server);
                 exit(EXIT_SUCCESS);
