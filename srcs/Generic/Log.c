@@ -40,21 +40,27 @@ static inline string	GetCurrentUsage()
     return (asprintf("MEM : %.3f MB", (float)sizeInByte / (float)1048576));
 }
 
-static void     OutputLog(LogLevel level, const string time, const string usage, const string content)
+static void     OutputLog(LogLevel level, const string time,
+                          const string usage, const string content)
 {
   if (level == ERROR)
   {
-    fprintf(stderr, COLOR_RED "[%s | %s] ERROR : %s" COLOR_RESET "\n", time, usage, content);
+    fprintf(stderr, COLOR_RED "[%s | %s] ERROR : %s" COLOR_RESET "\n",
+            time, usage, content);
     exit(EXIT_FAILURE);
   }
   else if (level == SUCCESS)
-    fprintf(stdout, COLOR_GRN "[%s | %s] SUCCESS : %s" COLOR_RESET "\n", time, usage, content);
+    fprintf(stdout, COLOR_GRN "[%s | %s] SUCCESS : %s" COLOR_RESET "\n",
+            time, usage, content);
   else if (level == WARNING)
-    fprintf(stdout, COLOR_YEL "[%s | %s] WARNING : %s" COLOR_RESET "\n", time, usage, content);
+    fprintf(stdout, COLOR_YEL "[%s | %s] WARNING : %s" COLOR_RESET "\n",
+            time, usage, content);
   else if (level == INFORMATION)
-    fprintf(stdout, "[%s | %s] INFORMATION : %s\n", time, usage, content);
+    fprintf(stdout, "[%s | %s] INFORMATION : %s\n",
+            time, usage, content);
   else
-    fprintf(stdout, "[%s | %s] UNKNOWN LOG LEVEL : %s\n", time, usage, content);
+    fprintf(stdout, "[%s | %s] UNKNOWN LOG LEVEL : %s\n",
+            time, usage, content);
 }
 
 void			Log(LogLevel level, const string log, ...)
