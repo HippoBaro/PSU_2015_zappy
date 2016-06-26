@@ -48,9 +48,9 @@ int		countRessource(MapTile *tile, ItemType type)
     int ret;
 
     ret = 0;
-    tile->ressources->forEachElements(tile->ressources, lambda(void, (void *res, void *dat), {
+    ForEach(tile->ressources, res, {
         if (((Item *)res)->type == type)
             res += ((Item *)res)->quantity;
-    }), NULL);
+    });
     return ret;
 }

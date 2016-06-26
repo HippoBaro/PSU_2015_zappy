@@ -25,7 +25,7 @@ Response	*Broadcast(Drone *self, Request *request)
   int		tileNumber;
 
   tile = NULL;
-  self->mapTile->map->drones->forEachElements(self->mapTile->map->drones,lambda(void, (void *drone, void *dat), {
+  ForEach(self->mapTile->map->drones, drone, {
     target = drone;
     if (drone == self)
       return;
@@ -38,6 +38,6 @@ Response	*Broadcast(Drone *self, Request *request)
       Log(ERROR, "GetTileNumberForDrone returned < 0. This should not append.");
     response = CreateResponseFromFdWithMessage(target->socketFd, asprintf("message %d,%s", tileNumber, request->actionSubject));
     response->Send(response);
-      }), NULL);
+      });
   return (CreateResponseFromFdWithMessage(self->socketFd, strdup("ok")));
 }

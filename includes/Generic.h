@@ -22,7 +22,8 @@
 #define randMinMax(low, high) (rand() % (high - low + 1) + low)
 #define SecToUSec(sec) (sec * 1000000)
 
-#define FirstPred(list, el2mnt, pred) (list->firstElementFromPredicate(list, lambda(bool, (void *el2mnt, void *dat),pred), NULL))
+#define FirstPred(list, el2mnt, pred) (list->firstElementFromPredicate(list, lambda(bool, (void *el2mnt, void *dat), pred), NULL))
+#define ForEach(list, el2mnt, pred) (list->forEachElements(list, lambda(void, (void *el2mnt, void *dat), pred), NULL))
 
 #define COLOR_RED   "\x1B[31m"
 #define COLOR_GRN   "\x1B[32m"

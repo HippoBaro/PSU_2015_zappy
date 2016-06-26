@@ -58,16 +58,12 @@ static void	Disconnect(struct Network *this, int fd)
 extern void	DeleteNetwork(struct Network *this)
 {
   if (this->_type == SERVER) {
-    this->_clientSock->forEachElements(
-				       this->_clientSock,
-				       lambda(void,
-					      (void *elem, void *userData),
-					      {
+      ForEach(this->_clientSock, elem, {
 						shutdown(
 							 ((t_client *) elem)->_sock,
 							 2);
 						close(((t_client *) elem)->_sock);
-					      }), NULL);
+					      });
     this->_clientSock->freeAll(this->_clientSock,
 			       lambda(void, (void *elem), {
 				   xfree((t_client *) elem,

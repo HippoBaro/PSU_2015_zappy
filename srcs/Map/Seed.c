@@ -15,12 +15,11 @@ static Map	*SeedLoot(Map *self)
   long		totalItems;
 
   totalItems = 0;
-  self->mapTiles->forEachElements(self->mapTiles,
-				  lambda(void, (void *tile, void *data), {
+    ForEach(self->mapTiles, tile, {
 				      if ((bool)randMinMax(0, 1) == true)
 					((MapTile *)tile)->SeedLoot(tile);
 				      totalItems += ((MapTile *)tile)->CountRessources(tile);
-				    }), NULL);
+				    });
   Log(INFORMATION, "The map was successfully populated with %ld items",
       totalItems);
   return (self);

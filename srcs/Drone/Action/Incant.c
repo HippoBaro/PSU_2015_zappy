@@ -12,11 +12,9 @@
 
 Response *Incant(struct s_Drone *self, Request *request)
 {
-  self->mapTile->drones->forEachElements(
-					 self->mapTile->drones,
-					 lambda(void, (void *drone, void *dat), {
+	ForEach(self->mapTile->drones, drone, {
 					     if (((Drone *)drone)->level == self->level)
 					       ((Drone *)drone)->level++;
-					   }), NULL);
+					   });
   return (NULL);
 }

@@ -15,9 +15,9 @@ static ZappyServer *StartInternal(ZappyServer *server) {
         if (feof(stdin))
             break;
         request = server->network->Receive(server->network, server->nextTimeout = server->GetNextRequestDelay(server));
-        server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
+        ForEach(server->world->drones, drone, {
             ((Drone *)drone)->UpdateLifeTime(drone);
-        }), NULL);
+        });
         if (request != NULL)
         {
             request->Sanitize(request);

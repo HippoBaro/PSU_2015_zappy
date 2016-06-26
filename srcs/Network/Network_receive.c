@@ -86,14 +86,12 @@ extern Request	*Receive(struct Network *this, struct timeval *tv)
 
   initVarNetwork(this, &var);
   if (this->_type == SERVER)
-    this->_clientSock->forEachElements(
-				       this->_clientSock,
-				       lambda(void, (void *elem, void *userData), {
+      ForEach(this->_clientSock, elem, {
 					   var.sd = ((t_client *) elem)->_sock;
 					   FD_SET(var.sd, &var.someData->rfds);
 					   if (var.sd > var.maxfd)
 					     var.maxfd = var.sd;
-					 }), NULL);
+					 });
   if (tv != NULL)
     Log(INFORMATION, "Nxt tm is %lu s and %lu us.", tv->tv_sec, tv->tv_usec);
   else

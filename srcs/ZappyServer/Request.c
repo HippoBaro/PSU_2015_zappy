@@ -13,7 +13,7 @@ static uint64_t GetNextRequestDelayAsUSec(ZappyServer *server)
     next = UINT64_MAX;
     if (server->nextTimeout != NULL)
         xfree(server->nextTimeout, sizeof(struct timeval));
-    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *data), {
+    ForEach(server->world->drones, drone, {
         if (((Drone *)drone)->currentPendingRequest != NULL && ((Drone *)drone)->currentPendingRequest->timer->target < next)
             next = ((Drone *)drone)->currentPendingRequest->timer->target;
         if (((Drone *)drone)->status == READY) {
@@ -21,7 +21,7 @@ static uint64_t GetNextRequestDelayAsUSec(ZappyServer *server)
             if (droneT > 0 && droneT < next)
                 next = droneT;
         }
-    }), NULL);
+    });
     return next;
 }
 
@@ -44,9 +44,9 @@ static struct timeval *GetNextRequestDelay(ZappyServer *server) {
 }
 
 static void ExecuteRequests(ZappyServer *server) {
-    server->world->drones->forEachElements(server->world->drones, lambda(void, (void *drone, void *dat), {
+    ForEach(server->world->drones, drone, {
         ((Drone *)drone)->ExecutePendingRequest(drone);
-    }), NULL);
+    });
 }
 
 void InitZappyServerRequest(ZappyServer *server)

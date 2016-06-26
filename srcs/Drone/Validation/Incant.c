@@ -15,11 +15,10 @@ static int CountDroneWithMinLevel(int minLevel, MapTile *tile)
   int ret;
 
   ret = 0;
-  tile->ressources->forEachElements(tile->ressources,
-				    lambda(void, (void *drone, void *dat), {
+  ForEach(tile->ressources, drone, {
 					if (((Drone *)drone)->level >= minLevel)
 					  ret++;
-				      }), NULL);
+				      });
   return (ret);
 }
 

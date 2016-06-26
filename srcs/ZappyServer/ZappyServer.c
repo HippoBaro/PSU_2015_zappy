@@ -10,9 +10,9 @@ static ZappyServer *Configure(ZappyServer *self, Configuration *config) {
         Log(WARNING, "Configuring a SHUTDOWN server will cause memory leaks. Free the server a recreate one.");
     srand((unsigned int) (config->seed != NULL ? *config->seed : time(NULL)));
     self->world = CreateMap(self, config->worldWidth, config->worldHeight);
-    config->teamNames->forEachElements(config->teamNames, lambda(void, (void *team, void *dat), {
+    ForEach(config->teamNames, team, {
         self->teams->addElemFront(self->teams, CreateTeamFrom((string)team, config->initialClientPerTeam));
-    }), NULL);
+    });
     self->configuration = config;
     self->status = CONFIGURED;
     Log(INFORMATION, "Server configured.");

@@ -40,21 +40,21 @@ static string ListContent(MapTile *self) { //todo refactor
 
     isFirst = true;
     if (self->ressources->countLinkedList(self->ressources) > 0)
-        self->ressources->forEachElements(self->ressources, lambda(void, (void *param, void *t), {
+        ForEach(self->ressources, param, {
             Item *item = (Item *) param;
             if (!isFirst)
                 ressources = strappend(ressources, " ", FIRST);
             ressources = strappend(ressources, item->ToString(item), FIRST);
             isFirst = false;
-        }), NULL);
+        });
     isFirst = true;
     if (self->drones->countLinkedList(self->drones) > 0)
-        self->drones->forEachElements(self->drones, lambda(void, (void *param, void *t), {
+        ForEach(self->drones, param, {
             if (!isFirst)
                 drones = strappend(drones, " ", FIRST);
             drones = strappend(drones, "player", FIRST);
             isFirst = false;
-        }), NULL);
+        });
     if (ressources == NULL && drones == NULL)
         return strdup("");
     else if (ressources == NULL && drones != NULL) {

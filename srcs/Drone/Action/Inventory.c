@@ -18,15 +18,14 @@ Response	*ListInventory(struct s_Drone *self, Request *request)
   rt = NULL;
   isFirst = true;
   if (self->inventory->countLinkedList(self->inventory) > 0)
-    self->inventory->forEachElements(self->inventory,
-				     lambda(void, (void *param, void *t), {
+      ForEach(self->inventory, param, {
 					 Item *item = (Item *) param;
 					 if (!isFirst)
 					   rt = strappend(rt, ", ", FIRST);
 					 rt = strappend(rt, item->ToString(item), FIRST);
 					 rt = strappend(rt, asprintf(" %d", item->quantity), BOTH);
 					 isFirst = false;
-				       }), NULL);
+				       });
   rt = strappend(rt, "}", FIRST);
   rt = strappend("{", rt, SECOND);
   return (CreateResponseFromFdWithMessage(self->socketFd, rt));

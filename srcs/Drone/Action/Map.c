@@ -39,7 +39,7 @@ Response		*Look(Drone *self, Request *request)
 
 Response		*Expulse(Drone *self, Request *request)
 {
-  self->mapTile->drones->forEachElements(self->mapTile->drones,
+    self->mapTile->drones->forEachElements(self->mapTile->drones,
 					 &func_expulse, self);
   return (CreateResponseFromFdWithMessage(self->socketFd, strdup("ok")));
 }
