@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 13:47:27 2016 Etienne Pasteur
-** Last update Sun Jun 26 15:03:21 2016 Etienne Pasteur
+** Last update Sun Jun 26 18:47:11 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
@@ -18,14 +18,13 @@ Response	*ListInventory(struct s_Drone *self, Request *request)
   rt = NULL;
   isFirst = true;
   if (self->inventory->countLinkedList(self->inventory) > 0)
-      ForEach(self->inventory, param, {
-					 Item *item = (Item *) param;
-					 if (!isFirst)
-					   rt = strappend(rt, ", ", FIRST);
-					 rt = strappend(rt, item->ToString(item), FIRST);
-					 rt = strappend(rt, asprintf(" %d", item->quantity), BOTH);
-					 isFirst = false;
-				       });
+    ForEach(self->inventory, param, { Item *item = (Item *) param;
+	if (!isFirst)
+	  rt = strappend(rt, ", ", FIRST);
+	rt = strappend(rt, item->ToString(item), FIRST);
+	rt = strappend(rt, asprintf(" %d", item->quantity), BOTH);
+	isFirst = false;
+      });
   rt = strappend(rt, "}", FIRST);
   rt = strappend("{", rt, SECOND);
   return (CreateResponseFromFdWithMessage(self->socketFd, rt));
@@ -41,9 +40,9 @@ Response	*Take(struct s_Drone *self, Request *request)
   if (item == NULL)
     return CreateKoResponseFrom(request);
   elem = FirstPred(self->inventory, itemPred, {
-							return (bool)(((Item *)itemPred)->type ==
-								      ItemFromString(request->actionSubject));
-						      });
+      return (bool)(((Item *)itemPred)->type ==
+		    ItemFromString(request->actionSubject));
+    });
   if (elem != NULL && elem->data != NULL)
     ((Item *)elem->data)->quantity++;
   else
@@ -59,9 +58,9 @@ Response	*Drop (struct s_Drone *self, Request *request)
 }
 
 void		DropInternal(struct s_Drone *self, ItemType itemType,
-                         int quantity, bool destroyItem)
+			     int quantity, bool destroyItem)
 {
-    t_list	*elem;
+  t_list	*elem;
 
     elem = FirstPred(self->inventory, itemPred, {
         return (bool)(((Item *)itemPred)->type == itemType);

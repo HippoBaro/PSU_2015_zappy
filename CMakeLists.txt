@@ -51,6 +51,12 @@ set(SOURCE_FILES
         srcs/Map/Seed.c
         srcs/Map/Drone.c
         srcs/Network/Network.c
+        GraphClient/blitRess.c
+        GraphClient/blitRess_next.c
+        GraphClient/terrain.c
+        GraphClient/command.c
+        GraphClient/utils.c
+        GraphClient/graph.c
 
         includes/Map.h
         includes/MapTile.h
@@ -65,7 +71,9 @@ set(SOURCE_FILES
         includes/ZappyServer.h
         includes/Timer.h
         includes/Sound.h
-        includes/Team.h)
+        includes/Team.h
+        includes/GraphClient.h
+        )
 
 set(UNIT_TEST_SOURCE
         unit-tests/linked_list.c
@@ -74,13 +82,15 @@ set(UNIT_TEST_SOURCE
         unit-tests/maptile_player.c
         unit-tests/main.c)
 
-set(MAIN_SOURCE srcs/main.c
+set(MAIN_SOURCE
+        #GraphClient/clientGraph.c
+        srcs/main.c
         srcs/Request/Transaction.c
         srcs/ZappyServer/Request.c
         srcs/ZappyServer/Drone.c
         srcs/ZappyServer/LifeCycle.c
         srcs/Generic/Log.c
-        srcs/Generic/String.c)
+        srcs/Generic/String.c GraphClient/blitRess.c GraphClient/utils.c)
 
 #set(UNIT_TEST TRUE)
 
@@ -88,6 +98,7 @@ if (UNIT_TEST)
     add_executable(PSU_2015_zappy ${SOURCE_FILES} ${UNIT_TEST_SOURCE})
 else()
     add_executable(PSU_2015_zappy ${SOURCE_FILES} ${MAIN_SOURCE})
+    target_link_libraries(PSU_2015_zappy SDL SDL_image)
 endif()
 
 

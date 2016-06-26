@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 15:37:04 2016 Etienne Pasteur
-** Last update Sun Jun 26 15:48:04 2016 Etienne Pasteur
+** Last update Sun Jun 26 18:51:00 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
@@ -19,8 +19,9 @@ Response	*CanTake(struct s_Drone *self, Request *request)
   if (itemType == UNKNOWN_ITEMTYPE)
     return (CreateKoResponseFrom(request));
   elem = FirstPred(self->mapTile->ressources, ress, {
-								  return (bool) (((Item *) ress)->type ==itemType && ((Item *) ress)->quantity > 0);
-								});
+      return (bool) (((Item *) ress)->type ==
+		     itemType && ((Item *) ress)->quantity > 0);
+    });
   if (elem == NULL || ((Item *) elem->data)->quantity < 1)
     return (CreateKoResponseFrom(request));
   return (NULL);
@@ -35,8 +36,8 @@ Response	*CanDrop(struct s_Drone *self, Request *request)
   if (itemType == UNKNOWN_ITEMTYPE)
     return (CreateKoResponseFrom(request));
   elem = FirstPred(self->inventory, itemPred, {
-							return (bool)(((Item *)itemPred)->type == itemType);
-						      });
+      return (bool)(((Item *)itemPred)->type == itemType);
+    });
   if (elem == NULL || elem->data == NULL ||
       ((Item *)elem->data)->quantity < 1)
     return (CreateKoResponseFrom(request));
