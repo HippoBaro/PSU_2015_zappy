@@ -21,13 +21,13 @@ void		initNetworkPtrFunc(Network *this)
   this->DeleteNetwork = &DeleteNetwork;
 }
 
-Network		*CreateNetwork(NetworkType type, uint16_t port, char *addr)
+Network		*CreateNetwork(int type, uint16_t port, char *addr)
 {
   Network	*this;
 
   this = xmalloc(sizeof(Network));
   initNetworkPtrFunc(this);
-  this->_type = type;
+  this->_type = (NetworkType) type;
   this->_port = port;
   this->_addr = addr;
   createSocket(this);

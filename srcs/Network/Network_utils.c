@@ -16,7 +16,7 @@ void		createSocket(struct Network *this)
   if (this->_sock != -1)
     {
       masterSocket = this->_sock;
-      this->_adressage.sin_addr.s_addr = (this->_type == SERVER ? htonl(
+        this->_adressage.sin_addr.s_addr = (this->_type == SERVER ? htonl(
 									INADDR_ANY) : inet_addr(this->_addr));
       this->_adressage.sin_family = AF_INET;
       this->_adressage.sin_port = htons(this->_port);

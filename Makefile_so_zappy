@@ -15,42 +15,57 @@ RM	=	rm -rf
 INCS	=	./includes/
 
 SRCS	=	srcs/LinkedList/LinkedList.c \
-		srcs/LinkedList/LinkedList_add.c \
-		srcs/LinkedList/LinkedList_forEach.c \
-		srcs/LinkedList/LinkedList_free.c \
-		srcs/LinkedList/LinkedList_getElem.c \
-		srcs/LinkedList/LinkedList_remove.c \
-		srcs/LinkedList/LinkedList_utils.c \
-		srcs/Network/Network.c \
-		srcs/Network/Network_utils.c \
-		srcs/Network/Network_client.c \
-		srcs/Network/Network_server.c \
-		srcs/Network/Network_receive.c \
-		srcs/Network/Network_send.c \
-		srcs/Request/Request.c \
-		srcs/Generic.c \
-		srcs/Drone/Drone.c \
-		srcs/Response/Response.c \
-		srcs/Item/Item.c \
-		srcs/Map/map.c \
-		srcs/Map/sound.c \
-		srcs/Map/map_sight.c \
-		srcs/Map/maptile.c \
-		srcs/Map/maptile_player_directions.c \
-		srcs/Map/maptile_player_sight.c \
-		srcs/Map/maptile_players.c \
-		srcs/Map/maptile_ressources.c \
-		srcs/Request/Parser.c \
-		srcs/ZappyServer/ZappyServer.c \
-		srcs/ZappyServer/Configuration.c \
-		srcs/Request/Timer.c \
-		srcs/Team/Team.c \
-		srcs/Drone/Action/Move.c \
-		srcs/Drone/Action/Inventory.c \
-		srcs/Drone/Action/Map.c \
-		srcs/Drone/Request.c \
-		srcs/Drone/Action/Team.c \
-		srcs/Drone/Action/Incant.c
+        srcs/LinkedList/LinkedList_add.c \
+        srcs/LinkedList/LinkedList_forEach.c \
+        srcs/LinkedList/LinkedList_free.c \
+        srcs/LinkedList/LinkedList_getElem.c \
+        srcs/LinkedList/LinkedList_remove.c \
+        srcs/LinkedList/LinkedList_utils.c \
+        srcs/Network/Network.c \
+        srcs/Network/Network_utils.c \
+        srcs/Network/Network_client.c \
+        srcs/Network/Network_server.c \
+        srcs/Network/Network_receive.c \
+        srcs/Network/Network_send.c \
+        srcs/Request/Request.c \
+        srcs/Generic/Generic.c \
+        srcs/Drone/Drone.c \
+        srcs/Response/Response.c \
+        srcs/Item/Item.c \
+        srcs/Map/map.c \
+        srcs/Map/sound.c \
+        srcs/Map/map_sight.c \
+        srcs/MapTile/maptile.c \
+        srcs/MapTile/maptile_player_directions.c \
+        srcs/MapTile/maptile_player_sight.c \
+        srcs/MapTile/maptile_players.c \
+        srcs/MapTile/maptile_ressources.c \
+        srcs/Request/Parser.c \
+        srcs/ZappyServer/ZappyServer.c \
+        srcs/ZappyServer/Configuration.c \
+        srcs/Request/Timer.c \
+        srcs/Team/Team.c \
+        srcs/Drone/Action/Move.c \
+        srcs/Drone/Action/Inventory.c \
+        srcs/Drone/Action/Map.c \
+        srcs/Drone/Request.c \
+        srcs/Drone/Action/Team.c \
+        srcs/Drone/Action/Incant.c \
+        srcs/Map/sound_getnum.c \
+        srcs/Drone/Validation/Inventory.c \
+        srcs/Drone/Validation/Move.c \
+        srcs/Drone/Validation/Map.c \
+        srcs/Drone/Validation/Incant.c \
+        srcs/Map/Seed.c \
+        srcs/Map/Drone.c \
+        srcs/Generic/Log.c \
+        srcs/Generic/String.c \
+        srcs/Request/Transaction.c \
+        srcs/ZappyServer/Request.c \
+        srcs/ZappyServer/Drone.c \
+        srcs/ZappyServer/LifeCycle.c \
+
+CFLAG 	=	-g
 
 OBJS	=	$(SRCS:.c=.o)
 
@@ -59,7 +74,7 @@ NAME	=	zappy.so
 all:		$(NAME)
 
 $(NAME):	$(SRC)
-		$(CC) -shared -o $(NAME) -fPIC $(SRCS) -I $(INCS)
+		$(CC) -shared -o $(NAME) -fPIC $(SRCS) -I $(INCS) $(CFLAG)
 
 clean:
 		rm $(OBJS)

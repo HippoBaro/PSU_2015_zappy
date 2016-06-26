@@ -27,10 +27,14 @@ namespace Zappy.Client.Network
         protected string ANSWER { get; set; }
 
         protected RequestType TYPE { get; set; }
-        public StatusType STATUS { get; set; } = StatusType.OK;
+        public StatusType STATUS { get; set; }
 
         public event RequestCallback RequestReceived;
         public delegate void RequestCallback(GenericRequest REQUEST, string ANSWER, StatusType STATUS);
+
+		public GenericRequest(){
+			STATUS = StatusType.OK;
+		}
 
         public void SetDataToSend(string data)
         {
