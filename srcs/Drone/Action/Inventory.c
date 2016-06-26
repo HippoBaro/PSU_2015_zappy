@@ -59,31 +59,33 @@ Response	*Drop (struct s_Drone *self, Request *request)
 }
 
 void		DropInternal(struct s_Drone *self, ItemType itemType,
-			     int quantity, bool destroyItem)
+                         int quantity, bool destroyItem)
 {
-  t_list	*elem;
+    t_list	*elem;
 
-  elem = FirstPred(self->inventory, itemPred, {
-							return (bool)(((Item *)itemPred)->type == itemType);
-						      });
-  if (elem != NULL && elem->data != NULL && quantity > 0)
+    elem = FirstPred(self->inventory, itemPred, {
+        return (bool)(((Item *)itemPred)->type == itemType);
+    });
+    if (elem != NULL && elem->data != NULL && quantity > 0)
     {
-      if (((Item *)elem->data)->quantity == 1)
-	{
-	  self->inventory->removeThisElem(self->inventory, elem);
-	  if (!destroyItem)
-	    self->mapTile->AddRessource(self->mapTile, elem->data);
-	  else
-	    self->inventory->freeThisElem(self->inventory,
-					  (void (*)(void *)) &DestroyItem, elem);
-	}
-      else
-	{
-	  ((Item *) elem->data)->quantity--;
-	  if (!destroyItem)
-	    self->mapTile->AddRessource(self->mapTile,
-					CreateItemFrom(((Item *) elem->data)->type));
-	  self->DropInternal(self, itemType, --quantity, destroyItem);
-	}
+        if (((Item *)elem->data)->quantity == 1)
+        {
+            if (!destroyItem)
+            {
+                self->mapTile->AddRessource(self->mapTile, elem->data);
+                self->inventory->removeThisElem(self->inventory, elem);
+            }
+            else
+                self->inventory->freeThisElem(self->inventory,
+                                              (void (*)(void *)) &DestroyItem, elem);
+        }
+        else
+        {
+            ((Item *) elem->data)->quantity--;
+            if (!destroyItem)
+                self->mapTile->AddRessource(self->mapTile,
+                                            CreateItemFrom(((Item *) elem->data)->type));
+            self->DropInternal(self, itemType, --quantity, destroyItem);
+        }
     }
 }
