@@ -40,14 +40,9 @@ static void	Disconnect(struct Network *this, int fd)
 
   shutdown(fd, 2);
   close(fd);
-  tmp = this->_clientSock->firstElementFromPredicate(
-						     this->_clientSock,
-						     lambda(bool, (void *elem, void *userData), {
-							 if (((t_client *) elem)->_sock == fd)
-							   return (true);
-							 else
-							   return (false);
-						       }), NULL);
+  tmp = FirstPred(this->_clientSock, elem, {
+							 return (bool) (((t_client *) elem)->_sock == fd);
+						       });
   if (tmp != NULL) {
     Log(INFORMATION, "Host disconnected , ip %s , port %d",
 	inet_ntoa(((t_client *) tmp->data)->_adressage.sin_addr),

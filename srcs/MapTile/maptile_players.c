@@ -18,26 +18,20 @@ bool add_refplayer(MapTile *tile, Drone *player) {
 bool is_refplayer(MapTile *tile, Drone *player) {
     t_list *elem;
 
-    elem = tile->drones->firstElementFromPredicate(tile->drones, lambda(bool, (void *element, void *null), {
-        if ((element) == (player))
-            return (true);
-        return (false);
-    }), NULL);
-
-    if (elem != NULL) {
+    elem = FirstPred(tile->drones, element, {
+        return (bool) ((element) == (player));
+    });
+    if (elem != NULL)
         return (true);
-    }
     return (false);
 }
 
 bool remove_refplayer(MapTile *tile, Drone *player) {
     t_list *elem;
 
-    elem = tile->drones->firstElementFromPredicate(tile->drones, lambda(bool, (void *element, void *null), {
-        if ((element) == (player))
-            return (true);
-        return (false);
-    }), NULL);
+    elem = FirstPred(tile->drones, element, {
+        return (bool) ((element) == (player));
+    });
     if (elem != NULL)
         return (bool) (tile->drones->removeThisElem(tile->drones, elem) == true);
     return (false);

@@ -23,11 +23,9 @@ Map		*RemoveDrone(Map *map, Drone *drone)
 {
   t_list	*element;
 
-  element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
-        if (elem == drone)
-	  return (true);
-        return (false);
-      }), NULL);
+  element = FirstPred(drone->mapTile->drones, elem, {
+        return (bool) (elem == drone);
+      });
   drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
   return (map);
 }
@@ -36,17 +34,13 @@ Map		*DeleteDrone(Map *map, Drone *drone)
 {
   t_list	*element;
 
-  element = drone->mapTile->drones->firstElementFromPredicate(drone->mapTile->drones, lambda(bool, (void *elem, void*data), {
-        if (elem == drone)
-	  return true;
-        return false;
-      }), NULL);
+  element = FirstPred(drone->mapTile->drones, elem, {
+        return  (bool)(elem == drone);
+      });
   drone->mapTile->drones->freeThisElem(drone->mapTile->drones, (void (*)(void *)) &DestroyDrone, element);
-  element = map->drones->firstElementFromPredicate(map->drones, lambda(bool, (void *elem, void*data), {
-        if (elem == drone)
-	  return true;
-        return false;
-      }), NULL);
+  element = FirstPred(map->drones, elem, {
+        return (bool) (elem == drone);
+      });
   map->drones->freeThisElem(map->drones, (void (*)(void *)) &DestroyDrone, element);
   return map;
 }

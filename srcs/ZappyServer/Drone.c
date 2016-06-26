@@ -66,11 +66,9 @@ static void     ExistingClient(ZappyServer *server, Request *request) {
 static Drone    *GetAssociatedDrone(Request *request, Map *map) {
     t_list *elem;
 
-    elem = map->drones->firstElementFromPredicate(map->drones, lambda(bool, (void *drone, void *data), {
-        if (((Drone *)drone)->socketFd == request->socketFd)
-            return true;
-        return false;
-    }), NULL);
+    elem = FirstPred(map->drones, drone, {
+        return (bool) (((Drone *)drone)->socketFd == request->socketFd);
+    });
     if (elem == NULL || elem->data == NULL)
         return NULL;
     return elem->data;

@@ -48,12 +48,13 @@ Item		*CreateItemWithQuantity(ItemType type, int quantity)
 Item		*CreateItemFrom(ItemType type)
 {
   Item		*ret;
-  int		i;
 
   ret = xmalloc(sizeof(Item));
   ret->type = type;
   ret->quantity = 1;
   ret->ToString = lambda(string, (Item *item), {
+    int		i;
+
       i = 0;
       while (i < 7)
         {

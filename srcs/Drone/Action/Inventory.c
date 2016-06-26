@@ -41,11 +41,10 @@ Response	*Take(struct s_Drone *self, Request *request)
 				     ItemFromString(request->actionSubject));
   if (item == NULL)
     return CreateKoResponseFrom(request);
-  elem = self->inventory->firstElementFromPredicate(self->inventory,
-						    lambda(bool, (void *itemPred, void *dat), {
+  elem = FirstPred(self->inventory, itemPred, {
 							return (bool)(((Item *)itemPred)->type ==
 								      ItemFromString(request->actionSubject));
-						      }), NULL);
+						      });
   if (elem != NULL && elem->data != NULL)
     ((Item *)elem->data)->quantity++;
   else
@@ -65,10 +64,9 @@ void		DropInternal(struct s_Drone *self, ItemType itemType,
 {
   t_list	*elem;
 
-  elem = self->inventory->firstElementFromPredicate(self->inventory,
-						    lambda(bool, (void *itemPred, void *dat), {
+  elem = FirstPred(self->inventory, itemPred, {
 							return (bool)(((Item *)itemPred)->type == itemType);
-						      }), NULL);
+						      });
   if (elem != NULL && elem->data != NULL && quantity > 0)
     {
       if (((Item *)elem->data)->quantity == 1)

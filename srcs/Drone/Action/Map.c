@@ -62,18 +62,14 @@ Response		*Die(Drone *s, Request *request)
   s->mapTile->map->server->network->Disconnect(s->mapTile->map->server->network,
 					       s->socketFd);
   drs = s->mapTile->map->drones;
-  elem =
-    drs->firstElementFromPredicate(drs,
-				   lambda(bool, (void *drone, void *dat), {
+  elem = FirstPred(drs, drone, {
 				       return ((bool)(s->socketFd == ((Drone *)drone)->socketFd));
-				     }), NULL);
+				     });
   drs->removeThisElem(drs, elem);
   drs = s->mapTile->drones;
-  elem2 =
-    drs->firstElementFromPredicate(drs,
-				   lambda(bool, (void *drone, void *dat), {
+  elem2 = FirstPred(drs, drone, {
 				       return ((bool)(s->socketFd == ((Drone *)drone)->socketFd));
-				     }), NULL);
+				     });
   drs->freeThisElem(drs, (void (*)(void *)) &DestroyDrone, elem2);
   Log(INFORMATION, "Drone is dead.");
   return (NULL);

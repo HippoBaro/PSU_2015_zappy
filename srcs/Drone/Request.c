@@ -73,9 +73,9 @@ static bool	UpdateLifeTime(Drone *drone)
   if (drone->scheduledDeath == 0)
     return (false);
   if (now >= drone->scheduledDeath) {
-    tList = drone->inventory->firstElementFromPredicate(drone->inventory, lambda(bool, (void *elem, void *det), {
+    tList = FirstPred(drone->inventory, elem, {
 	  return (bool)(((Item *)elem)->type == NOURRITURE);
-        }), NULL);
+        });
     if (tList != NULL && (food = tList->data) != NULL) {
       drone->scheduledDeath = (uint64_t) (now + food->quantity + SecToUSec(food->quantity * drone->mapTile->map->server->configuration->temporalDelay) * 126);
       drone->DropInternal(drone, NOURRITURE, food->quantity, true);

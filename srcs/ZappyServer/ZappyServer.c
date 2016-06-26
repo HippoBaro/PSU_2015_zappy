@@ -36,11 +36,9 @@ static Team *GetTeamFromTeamName(ZappyServer *self, string teamName) {
 
     if (self->teams == NULL || self->teams->countLinkedList(self->teams) == 0)
         return NULL;
-    elem = self->teams->firstElementFromPredicate(self->teams, lambda(bool, (void *team, void *dat), {
-        if (strcmp(((Team *)team)->teamName, teamName) == 0)
-            return true;
-        return false;
-    }), NULL);
+    elem = FirstPred(self->teams, team, {
+        return (bool) (strcmp(((Team *)team)->teamName, teamName) == 0);
+    });
     if (elem == NULL || elem->data == NULL)
         return NULL;
     return elem->data;

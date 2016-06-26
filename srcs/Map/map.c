@@ -32,11 +32,9 @@ static MapTile	*GetRandomTile(Map *self)
 
   x = randMinMax(0, self->X - 1);
   y = randMinMax(0, self->Y - 1);
-  elem = self->mapTiles->firstElementFromPredicate(self->mapTiles, lambda(bool, (void *tile, void *dat), {
-	if (((MapTile *)tile)->X == x && ((MapTile *)tile)->Y == y)
-	  return (true);
-	return (false);
-      }), NULL);
+  elem = FirstPred(self->mapTiles, tile, {
+	return (bool) (((MapTile *)tile)->X == x && ((MapTile *)tile)->Y == y);
+      });
   if (elem == NULL || elem->data == NULL)
     Log(ERROR, "Unable to select random MapTile. Response was NULL for coordinates %d, %d", x, y);
   return (elem->data);
@@ -50,12 +48,10 @@ static MapTile	*GetTile(Map *world, int X, int Y)
     return (NULL);
   if (X > world->X || Y > world->Y)
     return (NULL);
-  ret = world->mapTiles->firstElementFromPredicate(world->mapTiles, lambda(bool, (void *elem, void *dat), {
-	if (((MapTile *) elem)->X == X &&
-	    ((MapTile *) elem)->Y == Y)
-	  return (true);
-	return (false);
-      }), NULL);
+  ret = FirstPred(world->mapTiles, elem, {
+	return (bool) (((MapTile *) elem)->X == X &&
+	    ((MapTile *) elem)->Y == Y);
+      });
   if (ret == NULL)
     return (NULL);
   return (ret->data);
