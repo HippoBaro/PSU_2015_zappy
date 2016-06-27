@@ -31,7 +31,7 @@
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
     <additionalargs>-unsafe</additionalargs>
-    <Commandlineparameters>-p 1024 -h 127.0.0.1 -n test</Commandlineparameters>
+    <Commandlineparameters>-p 1024 -h 127.0.0.1 -n tata</Commandlineparameters>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
