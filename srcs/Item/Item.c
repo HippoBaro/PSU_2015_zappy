@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 16:09:33 2016 Etienne Pasteur
-** Last update Sun Jun 26 16:13:30 2016 Etienne Pasteur
+** Last update Mon Jun 27 02:01:07 2016 Etienne Pasteur
 */
 
 #include "Item.h"
@@ -53,7 +53,7 @@ Item		*CreateItemFrom(ItemType type)
   ret->type = type;
   ret->quantity = 1;
   ret->ToString = lambda(string, (Item *item), {
-    int		i;
+      int	i;
 
       i = 0;
       while (i < 7)

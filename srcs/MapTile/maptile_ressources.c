@@ -1,11 +1,11 @@
 /*
-** MapTile.c for Zappy in /home/diacon_c/Documents/repository/PSU_2015_zappy/includes
+** MapTile.c for Zappy in /PSU_2015_zappy/includes
 **
 ** Made by Christian Diaconu
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 15:26:32 2016 Christian Diaconu
-** Last update Sun Jun 26 23:21:41 2016 Christian Diaconu
+** Last update Mon Jun 27 02:11:26 2016 Etienne Pasteur
 */
 
 #include "MapTile.h"

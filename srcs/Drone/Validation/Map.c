@@ -5,21 +5,21 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 15:40:46 2016 Etienne Pasteur
-** Last update Sun Jun 26 15:41:27 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:52:17 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
 
 Response	*CanExpulse (Drone *self, Request *request)
 {
-  bool	canExpulse;
+  bool		canExpulse;
 
   canExpulse = false;
-    ForEach(self->mapTile->drones, droneD, {
-					     if (droneD == self)
-					       return;
-					     canExpulse = true;
-					   });
+  ForEach(self->mapTile->drones, droneD, {
+      if (droneD == self)
+	return;
+      canExpulse = true;
+    });
   if (canExpulse)
     return (NULL);
   return (CreateKoResponseFrom(request));

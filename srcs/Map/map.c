@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 16:37:15 2016 Etienne Pasteur
-** Last update Sun Jun 26 19:53:09 2016 Christian Diaconu
+** Last update Mon Jun 27 02:05:23 2016 Etienne Pasteur
 */
 
 #include "LinkedList.h"
@@ -33,8 +33,8 @@ static MapTile	*GetRandomTile(Map *self)
   x = randMinMax(0, self->X - 1);
   y = randMinMax(0, self->Y - 1);
   elem = FirstPred(self->mapTiles, tile, {
-	return (bool) (((MapTile *)tile)->X == x && ((MapTile *)tile)->Y == y);
-      });
+      return (bool) (((MapTile *)tile)->X == x && ((MapTile *)tile)->Y == y);
+    });
   if (elem == NULL || elem->data == NULL)
     Log(ERROR, "Unable to select random MapTile. Resulted in NULL at [%dx%d]",
 	x, y);
@@ -50,9 +50,9 @@ static MapTile	*GetTile(Map *world, int X, int Y)
   if (X > world->X || Y > world->Y)
     return (NULL);
   ret = FirstPred(world->mapTiles, elem, {
-	return (bool) (((MapTile *) elem)->X == X &&
-	    ((MapTile *) elem)->Y == Y);
-      });
+      return (bool) (((MapTile *) elem)->X == X &&
+		     ((MapTile *) elem)->Y == Y);
+    });
   if (ret == NULL)
     return (NULL);
   return (ret->data);

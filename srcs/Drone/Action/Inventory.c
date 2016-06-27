@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 13:47:27 2016 Etienne Pasteur
-** Last update Mon Jun 27 01:35:08 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:38:39 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
@@ -38,10 +38,10 @@ Response	*Take(struct s_Drone *self, Request *request)
   item = self->mapTile->GetRessource(self->mapTile,
 				     ItemFromString(request->actionSubject));
   if (item == NULL)
-    return CreateKoResponseFrom(request);
+    return (CreateKoResponseFrom(request));
   elem = FirstPred(self->inventory, itemPred, {
-      return (bool)(((Item *)itemPred)->type ==
-		    ItemFromString(request->actionSubject));
+      return ((bool)(((Item *)itemPred)->type ==
+		     ItemFromString(request->actionSubject)));
     });
   if (elem != NULL && elem->data != NULL)
     ((Item *)elem->data)->quantity++;
@@ -75,7 +75,7 @@ void		DropInternal(Drone *self, ItemType itemType,
   t_list	*elem;
 
   elem = FirstPred(self->inventory, itemPred, {
-      return (bool)(((Item *)itemPred)->type == itemType);
+      return ((bool)(((Item *)itemPred)->type == itemType));
     });
   if (elem != NULL && elem->data != NULL && quantity > 0)
     {

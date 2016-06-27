@@ -65,20 +65,20 @@ static void		OutputLog(LogLevel level, const string time,
 
 void			Log(LogLevel level, const string log, ...)
 {
-  va_list		ap;
-  string		time;
-  string		usage;
-  string		content;
-
-  time = GetCurrentTime();
-  usage = GetCurrentUsage();
-  va_start(ap, log);
-  content = vasprintf(log, ap);
-  va_end(ap);
-  if (content == NULL)
-    return;
-  OutputLog(level, time, usage, content);
-  xfree(time, strlen(time));
-  xfree(content, strlen(content));
-  xfree(usage, strlen(usage));
+//  va_list		ap;
+//  string		time;
+//  string		usage;
+//  string		content;
+//
+//  time = GetCurrentTime();
+//  usage = GetCurrentUsage();
+//  va_start(ap, log);
+//  content = vasprintf(log, ap);
+//  va_end(ap);
+//  if (content == NULL)
+//    return;
+//  OutputLog(level, time, usage, content);
+//  xfree(time, strlen(time));
+//  xfree(content, strlen(content));
+//  xfree(usage, strlen(usage));
 }

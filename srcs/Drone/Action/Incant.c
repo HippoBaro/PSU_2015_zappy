@@ -5,16 +5,16 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 13:43:56 2016 Etienne Pasteur
-** Last update Sun Jun 26 15:46:11 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:36:26 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
 
-Response *Incant(struct s_Drone *self, Request *request)
+Response	*Incant(struct s_Drone *self, Request *request)
 {
-	ForEach(self->mapTile->drones, drone, {
-					     if (((Drone *)drone)->level == self->level)
-					       ((Drone *)drone)->level++;
-					   });
+  ForEach(self->mapTile->drones, drone, {
+      if (((Drone *)drone)->level == self->level)
+	((Drone *)drone)->level++;
+    });
   return (NULL);
 }

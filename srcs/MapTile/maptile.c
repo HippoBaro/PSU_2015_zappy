@@ -5,11 +5,11 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 12 19:14:56 2016 Christian Diaconu
-** Last update Sun Jun 26 23:15:20 2016 Christian Diaconu
+** Last update Mon Jun 27 02:06:53 2016 Etienne Pasteur
 */
 
-#include <Map.h>
-#include <Drone.h>
+#include "Map.h"
+#include "Drone.h"
 
 void		DestroyMapTile(MapTile *mapTile)
 {
