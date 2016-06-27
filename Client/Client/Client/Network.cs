@@ -50,10 +50,10 @@ namespace Client
 		public string ReceiveMessage(TimeSpan? timeout) {
 			if (timeout.HasValue) {
 				var t = (UInt64)timeout.Value.TotalMilliseconds * 1000;
-				return GetRequestAsString(Receive (net, GetTimeValFrom (t)));
+				return GetRequestAsString(Receive (net, GetTimeValFrom (t))).TrimEnd('\n');
 			}
 			else
-				return GetRequestAsString(Receive (net, (IntPtr)0));
+				return GetRequestAsString(Receive (net, (IntPtr)0)).TrimEnd('\n');
 		}
 	}
 }
