@@ -44,6 +44,7 @@ typedef struct			s_ZappyServer
     struct s_ZappyServer	*(*UpdateState)(struct s_ZappyServer *self);
     struct s_ZappyServer	*(*ShutDown)(struct s_ZappyServer *self);
     Drone			*(*GetAssociatedDrone)(Request *self, Map *map);
+	void			(*InitialDialogue)(struct s_ZappyServer *, Request *request, Drone *drone);
     void			(*ExistingClient)(struct s_ZappyServer *, Request *);
     void			(*NewClient)(struct s_ZappyServer *, Request *);
     struct timeval		*(*GetNextRequestDelay)(struct s_ZappyServer *);
@@ -52,7 +53,7 @@ typedef struct			s_ZappyServer
 }				ZappyServer;
 
 ZappyServer			*CreateZappyServer();
-void				InitZappyServerDrone(ZappyServer *server);
+void				InitZappyServerDrone(ZappyServer *self);
 void				InitZappyServerLifeCycle(ZappyServer *server);
 void				InitZappyServerRequest(ZappyServer *server);
 void				DestroyZappyServer(ZappyServer *self);

@@ -80,10 +80,8 @@ static bool	UpdateLifeTime(Drone *d)
 	});
       if (tList != NULL && (food = tList->data) != NULL)
 	{
-	  d->scheduledDeath =
-      (uint64_t) (now + food->quantity +
-                  SecToUSec(food->quantity /
-                            d->mapTile->map->server->
+	  d->scheduledDeath = (uint64_t) (now + food->quantity +
+                  SecToUSec(food->quantity / d->mapTile->map->server->
                                     configuration->temporalDelay) * 126);
 	  d->DropInternal(d, NOURRITURE, food->quantity, true);
 	}

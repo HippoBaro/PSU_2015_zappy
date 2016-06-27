@@ -23,8 +23,7 @@ static void	InitDrone(ZappyServer *server, Drone *drone, Request *request)
     response->message = asprintf("%d", request->socketFd);
     response->Send(response);
     response = CreateResponseFrom(request);
-    response->message = asprintf("%d %d", drone->mapTile->X,
-				 drone->mapTile->Y);
+    response->message = asprintf("%d %d", drone->mapTile->X, drone->mapTile->Y);
     response->Send(response);
     team->currentUsedSlot++;
     drone->team = team;
@@ -33,12 +32,8 @@ static void	InitDrone(ZappyServer *server, Drone *drone, Request *request)
 					+ SecToUSec(10 / temp) * 126);
     drone->status = READY;
   }
-  else {
-    response = CreateKoResponseFrom(request);
-    response->Send(response);
-    server->network->Disconnect(server->network, request->socketFd);
-    drone->Die(drone, request);
-  }
+  else
+    server->InitialDialogue(server, request, drone);
   request->Free(request);
 }
 
@@ -94,9 +89,18 @@ static Drone	*GetAssociatedDrone(Request *request, Map *map)
   return elem->data;
 }
 
-void InitZappyServerDrone(ZappyServer *server)
+void InitZappyServerDrone(ZappyServer *self)
 {
-  server->GetAssociatedDrone = &GetAssociatedDrone;
-  server->ExistingClient = &ExistingClient;
-  server->NewClient = &NewClient;
+  self->GetAssociatedDrone = &GetAssociatedDrone;
+  self->ExistingClient = &ExistingClient;
+  self->NewClient = &NewClient;
+  self->InitialDialogue = lambda(void, (ZappyServer *server,
+          Request *request, Drone *drone), {
+    Response *response;
+
+    response = CreateKoResponseFrom(request);
+    response->Send(response);
+    server->network->Disconnect(server->network, request->socketFd);
+    drone->Die(drone, request);
+  });
 }
