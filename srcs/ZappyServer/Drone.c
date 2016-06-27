@@ -34,6 +34,8 @@ static void	InitDrone(ZappyServer *server, Drone *drone, Request *request)
     drone->status = READY;
   }
   else {
+    response = CreateKoResponseFrom(request);
+    response->Send(response);
     server->network->Disconnect(server->network, request->socketFd);
     drone->Die(drone, request);
   }
@@ -58,6 +60,7 @@ static void     NewClient(ZappyServer *server, Request *request) {
 static void	ExistingClient(ZappyServer *server, Request *request)
 {
   Drone		*drone;
+  Response  *res;
 
   drone = server->GetAssociatedDrone(request, server->world);
   if (drone != NULL && drone->status == WELCOME_SENT)
@@ -67,7 +70,11 @@ static void	ExistingClient(ZappyServer *server, Request *request)
 	request->message);
     request->Parse(request);
     if (request->requestedAction == UNKNOWN_ACTION)
+    {
+      res = CreateKoResponseFrom(request);
+      res->Send(res);
       request->Free(request);
+    }
     else
       drone->CommitRequest(drone, request);
   }

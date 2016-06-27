@@ -83,9 +83,8 @@ static bool	UpdateLifeTime(Drone *d)
 	  d->scheduledDeath =
       (uint64_t) (now + food->quantity +
                   SecToUSec(food->quantity /
-                            rone->mapTile->map->server->
-                                    configuration->temporalDelay) *
-                  126);
+                            d->mapTile->map->server->
+                                    configuration->temporalDelay) * 126);
 	  d->DropInternal(d, NOURRITURE, food->quantity, true);
 	}
       else

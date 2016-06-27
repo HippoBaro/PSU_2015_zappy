@@ -85,8 +85,8 @@ set(SOURCE_FILES
         )
 
 set(MAIN_SOURCE
-        GraphClient/clientGraph.c
-        #srcs/main.c
+        #GraphClient/clientGraph.c
+        srcs/main.c
         )
 
 add_executable(PSU_2015_zappy ${SOURCE_FILES} ${MAIN_SOURCE})
