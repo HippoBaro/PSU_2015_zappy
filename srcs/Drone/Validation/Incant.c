@@ -5,24 +5,24 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 15:29:03 2016 Etienne Pasteur
-** Last update Sun Jun 26 15:35:33 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:51:00 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
 
-static int CountDroneWithMinLevel(int minLevel, MapTile *tile)
+static int	CountDroneWithMinLevel(int minLevel, MapTile *tile)
 {
-  int ret;
+  int		ret;
 
   ret = 0;
   ForEach(tile->ressources, drone, {
-					if (((Drone *)drone)->level >= minLevel)
-					  ret++;
-				      });
+      if (((Drone *)drone)->level >= minLevel)
+	ret++;
+    });
   return (ret);
 }
 
-static bool CanIncantToLevel(Drone *s, MapTile *tile, const t_inc_tbl *l)
+static bool	CanIncantToLevel(Drone *s, MapTile *tile, const t_inc_tbl *l)
 {
   if (CountDroneWithMinLevel(l->requestedLevel - 1, tile) < l->minimumDrones)
     return (false);
@@ -41,7 +41,7 @@ static bool CanIncantToLevel(Drone *s, MapTile *tile, const t_inc_tbl *l)
   return (true);
 }
 
-Response *CanIncant(Drone *s, Request *request)
+Response	*CanIncant(Drone *s, Request *request)
 {
   if (s->level < 1 || s->level > 7)
     return CreateKoResponseFrom(request);

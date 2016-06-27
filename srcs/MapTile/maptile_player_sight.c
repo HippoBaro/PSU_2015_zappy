@@ -1,11 +1,11 @@
 /*
-** maptile_player_sight.c for Zappy in /home/diacon_c/Documents/repository/PSU_2015_zappy/srcs/Map
+** maptile_player_sight.c for Zappy in /PSU_2015_zappy/srcs/Map
 **
 ** Made by Christian Diaconu
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Wed Jun 15 20:07:17 2016 Christian Diaconu
-** Last update Sun Jun 26 23:21:59 2016 Christian Diaconu
+** Last update Mon Jun 27 02:10:37 2016 Etienne Pasteur
 */
 
 #include "LinkedList.h"

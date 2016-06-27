@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 15:28:04 2016 Etienne Pasteur
-** Last update Sun Jun 26 18:50:30 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:42:43 2016 Etienne Pasteur
 */
 
 #include "ZappyServer.h"
@@ -52,46 +52,48 @@ static Drone	*ExecutePendingRequest(Drone *drone)
       drone->pendingRequests->countLinkedList(drone->pendingRequests) == 0)
     return (drone);
   else if (drone->currentPendingRequest == NULL &&
-	   drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0) {
-    elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
-    drone->currentPendingRequest = elem->data;
-    drone->pendingRequests->removeThisElem(drone->pendingRequests, elem);
-    ValidateAndStartRequestTimer(drone, drone->currentPendingRequest);
-  }
+	   drone->pendingRequests->countLinkedList(drone->pendingRequests) > 0)
+    {
+      elem = drone->pendingRequests->getElementFirst(drone->pendingRequests);
+      drone->currentPendingRequest = elem->data;
+      drone->pendingRequests->removeThisElem(drone->pendingRequests, elem);
+      ValidateAndStartRequestTimer(drone, drone->currentPendingRequest);
+    }
   if (drone->currentPendingRequest != NULL)
     drone->ExecuteCurrentPendingRequest(drone);
   return (drone);
 }
 
-static bool	UpdateLifeTime(Drone *drone)
+static bool	UpdateLifeTime(Drone *d)
 {
   uint64_t	now;
   t_list	*tList;
-  Item	*food;
+  Item		*food;
 
   now = GetTimeNowAsUSec();
-  if (drone->scheduledDeath == 0)
+  if (d->scheduledDeath == 0)
     return (false);
-  if (now >= drone->scheduledDeath) {
-    tList = FirstPred(drone->inventory, elem, {
-	return (bool)(((Item *)elem)->type == NOURRITURE);
-      });
-    if (tList != NULL && (food = tList->data) != NULL) {
-      drone->scheduledDeath =
-	(uint64_t) (now + food->quantity +
-		    SecToUSec(food->quantity *
-			      drone->mapTile->map->server->configuration->temporalDelay) *
-		    126);
-      drone->DropInternal(drone, NOURRITURE, food->quantity, true);
+  if (now >= d->scheduledDeath)
+    {
+      tList = FirstPred(d->inventory, elem, {
+	  return (bool)(((Item *)elem)->type == NOURRITURE);
+	});
+      if (tList != NULL && (food = tList->data) != NULL)
+	{
+	  d->scheduledDeath =
+	    (uint64_t) (now + food->quantity +
+			SecToUSec(food->quantity *
+				  d->mapTile->map->server->configuration->temporalDelay) * 126);
+	  d->DropInternal(d, NOURRITURE, food->quantity, true);
+	}
+      else
+	d->Die(d, NULL);
+      return (true);
     }
-    else
-      drone->Die(drone, NULL);
-    return (true);
-  }
   return (false);
 }
 
-void	InitDroneRequest(Drone *selfDrone)
+void		InitDroneRequest(Drone *selfDrone)
 {
   selfDrone->UpdateLifeTime = &UpdateLifeTime;
   selfDrone->CommitRequest = &CommitRequest;

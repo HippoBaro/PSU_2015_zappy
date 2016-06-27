@@ -5,7 +5,7 @@
 ** Login   <diacon_c@epitech.net>
 **
 ** Started on  Sun Jun 19 16:21:45 2016 Christian Diaconu
-** Last update Sun Jun 26 20:24:24 2016 Christian Diaconu
+** Last update Mon Jun 27 02:05:45 2016 Etienne Pasteur
 */
 
 #include "Map.h"
@@ -46,10 +46,10 @@ void		sound_vector_compute_1(Drone *emitter, Drone *receiver,
     {
       temp_tile = Math_GetTopTile(world, temp_tile);
       if (temp_tile->X == receiver->mapTile->X)
-      {
-        metrics->x_direction = GO_TOP;
-        return ;
-      }
+	{
+	  metrics->x_direction = GO_TOP;
+	  return ;
+	}
       else
 	metrics->x_direction = GO_BOTTOM;
       i++;
@@ -65,14 +65,14 @@ void		sound_vector_compute_2(Drone *emitter, Drone *receiver,
   i = 0;
   temp_tile = emitter->mapTile;
   while (i != metrics->X)
-  {
-    temp_tile = Math_GetRightTile(world, temp_tile);
-    if (temp_tile->Y == receiver->mapTile->Y)
-      metrics->y_direction = GO_LEFT;
-    else
-      metrics->y_direction = GO_RIGHT;
-    i++;
-  }
+    {
+      temp_tile = Math_GetRightTile(world, temp_tile);
+      if (temp_tile->Y == receiver->mapTile->Y)
+	metrics->y_direction = GO_LEFT;
+      else
+	metrics->y_direction = GO_RIGHT;
+      i++;
+    }
 }
 
 void		sound_compile_results(Sound *metrics)

@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 16:01:58 2016 Etienne Pasteur
-** Last update Sun Jun 26 16:06:29 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:58:53 2016 Etienne Pasteur
 */
 
 #include "Generic.h"
@@ -40,15 +40,15 @@ static inline string	GetCurrentUsage()
     return (asprintf("MEM : %.3f MB", (float)sizeInByte / (float)1048576));
 }
 
-static void     OutputLog(LogLevel level, const string time,
-                          const string usage, const string content)
+static void		OutputLog(LogLevel level, const string time,
+				  const string usage, const string content)
 {
   if (level == ERROR)
-  {
-    fprintf(stderr, COLOR_RED "[%s | %s] ERROR : %s" COLOR_RESET "\n",
-            time, usage, content);
-    exit(EXIT_FAILURE);
-  }
+    {
+      fprintf(stderr, COLOR_RED "[%s | %s] ERROR : %s" COLOR_RESET "\n",
+	      time, usage, content);
+      exit(EXIT_FAILURE);
+    }
   else if (level == SUCCESS)
     fprintf(stdout, COLOR_GRN "[%s | %s] SUCCESS : %s" COLOR_RESET "\n",
             time, usage, content);
@@ -65,7 +65,6 @@ static void     OutputLog(LogLevel level, const string time,
 
 void			Log(LogLevel level, const string log, ...)
 {
-
   va_list		ap;
   string		time;
   string		usage;

@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 17:12:28 2016 Etienne Pasteur
-** Last update Sun Jun 26 19:01:52 2016 Etienne Pasteur
+** Last update Mon Jun 27 02:13:37 2016 Etienne Pasteur
 */
 
 #include "Drone.h"
@@ -94,7 +94,7 @@ static Request	*Sanitize(Request *self)
   return self;
 }
 
-void	InitRequestTransaction(Request *request)
+void		InitRequestTransaction(Request *request)
 {
   request->Execute = (void *(*)(Request *, void *)) &Execute;
   request->RequestDidBecomeActive =

@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 16:41:17 2016 Etienne Pasteur
-** Last update Sun Jun 26 16:43:33 2016 Etienne Pasteur
+** Last update Mon Jun 27 02:05:14 2016 Etienne Pasteur
 */
 
 #include "Map.h"
@@ -15,11 +15,11 @@ static Map	*SeedLoot(Map *self)
   long		totalItems;
 
   totalItems = 0;
-    ForEach(self->mapTiles, tile, {
-				      if ((bool)randMinMax(0, 1) == true)
-					((MapTile *)tile)->SeedLoot(tile);
-				      totalItems += ((MapTile *)tile)->CountRessources(tile);
-				    });
+  ForEach(self->mapTiles, tile, {
+      if ((bool)randMinMax(0, 1) == true)
+	((MapTile *)tile)->SeedLoot(tile);
+      totalItems += ((MapTile *)tile)->CountRessources(tile);
+    });
   Log(INFORMATION, "The map was successfully populated with %ld items",
       totalItems);
   return (self);

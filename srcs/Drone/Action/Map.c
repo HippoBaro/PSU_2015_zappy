@@ -5,7 +5,7 @@
 ** Login   <pasteu_e@epitech.net>
 **
 ** Started on  Sun Jun 26 14:03:04 2016 Etienne Pasteur
-** Last update Sun Jun 26 14:53:29 2016 Etienne Pasteur
+** Last update Mon Jun 27 01:38:53 2016 Etienne Pasteur
 */
 
 #include "ZappyServer.h"
@@ -39,7 +39,7 @@ Response		*Look(Drone *self, Request *request)
 
 Response		*Expulse(Drone *self, Request *request)
 {
-    self->mapTile->drones->forEachElements(self->mapTile->drones,
+  self->mapTile->drones->forEachElements(self->mapTile->drones,
 					 &func_expulse, self);
   return (CreateResponseFromFdWithMessage(self->socketFd, strdup("ok")));
 }
@@ -57,13 +57,13 @@ Response		*Die(Drone *s, Request *request)
 					       s->socketFd);
   drs = s->mapTile->map->drones;
   elem = FirstPred(drs, drone, {
-				       return ((bool)(s->socketFd == ((Drone *)drone)->socketFd));
-				     });
+      return ((bool)(s->socketFd == ((Drone *)drone)->socketFd));
+    });
   drs->removeThisElem(drs, elem);
   drs = s->mapTile->drones;
   elem2 = FirstPred(drs, drone, {
-				       return ((bool)(s->socketFd == ((Drone *)drone)->socketFd));
-				     });
+      return ((bool)(s->socketFd == ((Drone *)drone)->socketFd));
+    });
   drs->freeThisElem(drs, (void (*)(void *)) &DestroyDrone, elem2);
   Log(INFORMATION, "Drone is dead.");
   return (NULL);
