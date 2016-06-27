@@ -15,7 +15,7 @@ static uint64_t	GetCompletionTime(Request *self, ZappyServer *server)
     double	dlyAsSec;
     uint64_t	ret;
 
-    dlyAsSec = (double)self->absoluteActionTime *
+    dlyAsSec = (double)self->absoluteActionTime /
       server->configuration->temporalDelay;
     Log(INFORMATION, "Request time is %lu", dlyAsSec * 1000000);
     ret = (uint64_t) (dlyAsSec * 1000000);

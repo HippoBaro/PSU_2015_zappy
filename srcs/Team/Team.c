@@ -53,7 +53,7 @@ static Team     *ScheduleAddSlot(Team *self, double temporalDelay)
 {
   uint64_t next;
 
-  next = (uint64_t) (GetTimeNowAsUSec() + SecToUSec(300 * temporalDelay));
+  next = (uint64_t) (GetTimeNowAsUSec() + SecToUSec(300 / temporalDelay));
   self->nextslots->addElemFront(self->nextslots, atomicdup(uint64_t, next));
   return self;
 }

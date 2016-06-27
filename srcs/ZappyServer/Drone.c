@@ -24,7 +24,7 @@ static void     InitDrone(ZappyServer *server, Drone *drone, Request *request) {
         drone->team = team;
         temp = server->configuration->temporalDelay;
         drone->scheduledDeath = (uint64_t) (GetTimeNowAsUSec()
-                                            + SecToUSec(10 * temp) * 126);
+                                            + SecToUSec(10 / temp) * 126);
         drone->status = READY;
     }
     else

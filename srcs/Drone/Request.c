@@ -79,7 +79,7 @@ static bool	UpdateLifeTime(Drone *drone)
     if (tList != NULL && (food = tList->data) != NULL) {
       drone->scheduledDeath =
 	(uint64_t) (now + food->quantity +
-		    SecToUSec(food->quantity *
+		    SecToUSec(food->quantity /
 			      drone->mapTile->map->server->configuration->temporalDelay) *
 		    126);
       drone->DropInternal(drone, NOURRITURE, food->quantity, true);
