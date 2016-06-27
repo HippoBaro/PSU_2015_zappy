@@ -250,7 +250,10 @@ namespace Zappy.Client
 
             if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
-                rotation += 90;
+				if ((int)this.rotation + 90 >= 360)
+					this.rotation = (RotationState) 0;
+				else
+					this.rotation += 90;
                 return (true);
             }
             else
@@ -268,7 +271,10 @@ namespace Zappy.Client
 
             if (this.DroneRequest.STATUS == Network.StatusType.OK)
             {
-                rotation -= 90;
+				if ((int)(this.rotation - 90) < 0)
+					this.rotation = (RotationState) 270;
+				else
+					this.rotation -= 90;
                 return (true);
             }
             else
