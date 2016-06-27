@@ -23,7 +23,7 @@ static LinkedList(string)	*GetTeamsFromArg(string team)
   while (pch != NULL)
     {
       teams->addElemFront(teams, strdup(pch));
-      pch = strtok (NULL, " ,.-");
+      pch = strtok (team, " ");
     }
   return (teams);
 }
