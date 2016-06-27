@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{D737B538-F0F7-4601-9757-5E0C45C8D072}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Zappy.Client</RootNamespace>
+    <AssemblyName>Zappy.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class\Drone\AI.cs" />
+    <Compile Include="Class\Generic\App.cs" />
+    <Compile Include="Class\Generic\Constantes.cs" />
+    <Compile Include="Class\Item\Item.cs" />
+    <Compile Include="Class\Map\MapMaths.cs" />
+    <Compile Include="Class\Network\NetworkEngine.cs" />
+    <Compile Include="Class\Network\GenericRequest.cs" />
+    <Compile Include="Class\Network\RequestCollection\BroadcastRequest.cs" />
+    <Compile Include="Class\Network\RequestCollection\DroneManagementRequest.cs" />
+    <Compile Include="Class\Network\RequestCollection\DroneTakeObjectRequest.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Class\Map\Map.cs" />
+    <Compile Include="Class\Drone\Drone.cs" />
+    <Compile Include="Class\Map\MapTile.cs" />
+    <Compile Include="Class\Map\MapData.cs" />
+    <Compile Include="Class\Network\NetworkWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
